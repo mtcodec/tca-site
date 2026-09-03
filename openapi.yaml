@@ -1253,6 +1253,8 @@ components:
         trade_allowed: { type: [boolean, "null"], description: AutoTrading enabled in the terminal. }
         last_tick_at: { type: [string, "null"], format: date-time }
         disconnected_since: { type: [string, "null"], format: date-time, description: Start of the current outage, if any. }
+        previous_build: { type: [integer, "null"], description: Build the terminal ran before its last update (MT5 LiveUpdate applies at a restart). }
+        build_changed_at: { type: [string, "null"], format: date-time, description: When the build change was first observed. }
     AccountStatus:
       type: string
       enum: [ok, degraded, disconnected, auth_failed, unknown]
