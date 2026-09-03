@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Terminal Control API (TCA)
-  version: 0.1.0-draft
+  version: 0.2.0-draft
   summary: Operate MetaTrader 5 Expert Advisors on customer VPS machines from an AI chat or any API caller.
   description: |
     The Terminal Control API lets a dashboard agent (LLM tool-use) or a backend
@@ -23,8 +23,10 @@ info:
 
     ## Guarantees
 
-    * Every request carries `client_id`; resources are only visible to the client
-      that owns them. There is no shared database with the caller.
+    * Every request acts for exactly one client. With a **client key** the client
+      is fixed by the credential and cannot be overridden; with a **tenant key**
+      `client_id` must be sent explicitly. Resources are only visible to the
+      client that owns them. There is no shared database with the caller.
     * All validation (EA whitelist, symbol whitelist, parameter ranges, restart
       safety) is enforced server-side, regardless of what the caller validated.
       The LLM is never the security boundary.
@@ -38,7 +40,8 @@ info:
     ## Status
 
     Draft for integration review. Field names and error codes may still change
-    before 1.0; paths and the command lifecycle will not.
+    before 1.0; paths, the command lifecycle and the shape of the dry-run
+    preview (`CommandPreview`: summary, diff, requires_confirmation) will not.
   contact:
     name: MTCodec JSC
   license:
@@ -760,9 +763,10 @@ paths:
           application/json:
             schema:
               type: object
-              required: [client_id]
               properties:
-                client_id: { $ref: "#/components/schemas/ClientId" }
+                client_id:
+                  allOf: [{ $ref: "#/components/schemas/ClientId" }]
+                  description: Required with a tenant key; optional with a client key.
                 reason: { type: string }
       responses:
         "200":
@@ -839,22 +843,34 @@ components:
       scheme: bearer
       bearerFormat: API key
       description: |
-        One API key per integrating tenant (e.g. one for EasyAlgos production, one
-        for sandbox). The key identifies the tenant; `client_id` selects the end
-        customer within that tenant. Keys are rotated via the operator, not via
-        the API.
+        Two kinds of keys, both issued by the operator per tenant:
+
+        * **Client key** (recommended for anything acting on behalf of a user) –
+          bound to one `client_id`. The client is derived from the key;
+          `client_id` may be omitted in requests, and if it is sent and differs
+          from the key's client the request fails with `403 CLIENT_MISMATCH`.
+          A bug in the caller can therefore never reach another customer.
+        * **Tenant key** – may address any client registered for the tenant.
+          `client_id` is required on every call (`400 VALIDATION_FAILED` if
+          missing, `403 FORBIDDEN` if the client is not the tenant's). Intended
+          for backend/admin use only; must never reach a browser or a model.
+
+        Keys are rotated via the operator, not via the API.
 
   parameters:
     ClientIdPath:
       name: client_id
       in: path
       required: true
+      description: With a client key this must be the key's own client (`403 CLIENT_MISMATCH` otherwise).
       schema: { $ref: "#/components/schemas/ClientId" }
     ClientIdQuery:
       name: client_id
       in: query
-      required: true
-      description: The caller's own identifier for the end customer. Every resource is checked against it.
+      required: false
+      description: |
+        The caller's own identifier for the end customer. Required with a tenant key; optional with a
+        client key (must match the key's client when present). Every resource is checked against it.
       schema: { $ref: "#/components/schemas/ClientId" }
     ClientIdQueryOptional:
       name: client_id
@@ -896,7 +912,7 @@ components:
         application/json:
           schema: { $ref: "#/components/schemas/ErrorResponse" }
     Forbidden:
-      description: The API key's tenant does not own this client.
+      description: The API key may not act for this client (`FORBIDDEN` – not the tenant's client; `CLIENT_MISMATCH` – client key used with another client_id).
       content:
         application/json:
           schema: { $ref: "#/components/schemas/ErrorResponse" }
@@ -966,6 +982,7 @@ components:
         - VALIDATION_FAILED
         - UNAUTHORIZED
         - FORBIDDEN
+        - CLIENT_MISMATCH
         - NOT_FOUND
         - RATE_LIMITED
         - CONFLICT
@@ -992,7 +1009,8 @@ components:
         - INTERNAL
       description: |
         * `VALIDATION_FAILED` (400) malformed body / missing field.
-        * `UNAUTHORIZED` (401), `FORBIDDEN` (403), `NOT_FOUND` (404), `RATE_LIMITED` (429), `CONFLICT` (409).
+        * `UNAUTHORIZED` (401), `FORBIDDEN` (403), `CLIENT_MISMATCH` (403, client key used with a different
+          `client_id`), `NOT_FOUND` (404), `RATE_LIMITED` (429), `CONFLICT` (409).
         * `EA_NOT_IN_CATALOG`, `EA_NOT_APPROVED`, `SYMBOL_NOT_ALLOWED`, `PRESET_UNKNOWN`,
           `PARAM_UNKNOWN`, `PARAM_NOT_CHANGEABLE`, `PARAM_OUT_OF_RANGE`, `PARAM_TYPE_MISMATCH`,
           `INSTANCE_NOT_FOUND`, `INSTANCE_LIMIT`, `RESTART_UNSAFE`, `UNSUPPORTED_MODE` (422) – refused before queuing.
@@ -1098,6 +1116,10 @@ components:
       required: [vps_id, status, last_seen]
       properties:
         vps_id: { type: string, examples: [vps_7f3k2m] }
+        external_ref:
+          type: [string, "null"]
+          description: The integrating platform's own id for this VPS (e.g. the hosting provider's server id), given at enrolment. Null when not provided.
+          examples: [VPS-3391-LDN]
         status: { type: string, enum: [online, offline, degraded] }
         agent_version: { type: string }
         last_seen: { type: string, format: date-time }
@@ -1175,6 +1197,21 @@ components:
           type: object
           additionalProperties: {}
           description: Effective caller-visible inputs (hidden inputs omitted).
+        magic:
+          type: [integer, "null"]
+          description: |
+            Effective magic number of this running copy, read back from the EA's inputs on the
+            terminal. Null when the EA does not expose its magic as an input and the catalog has no
+            fixed value for it.
+        magic_default:
+          type: [integer, "null"]
+          description: The catalog value for the same input (vendor default), for comparison.
+        magic_changed:
+          type: boolean
+          description: |
+            `magic` differs from `magic_default` – someone edited the magic number in the terminal.
+            Reporting keyed on catalog magic numbers would silently lose this instance's trades;
+            use `magic` (or `magic_numbers`) instead.
         magic_numbers:
           type: array
           items: { type: integer }
@@ -1348,9 +1385,11 @@ components:
 
     CommandCreate:
       type: object
-      required: [client_id, type, params]
+      required: [type, params]
       properties:
-        client_id: { $ref: "#/components/schemas/ClientId" }
+        client_id:
+          allOf: [{ $ref: "#/components/schemas/ClientId" }]
+          description: Required with a tenant key. Optional with a client key; if present it must match the key's client.
         type: { $ref: "#/components/schemas/CommandType" }
         params:
           description: Type-specific parameters (see `type`).
@@ -1375,7 +1414,11 @@ components:
         callback_url:
           type: string
           format: uri
-          description: Optional HTTPS URL that receives a POST with the final `Command` object when the command reaches a terminal status.
+          description: |
+            Reserved for webhooks. Accepted and stored, but **not delivered in 0.x** – poll
+            `GET /v1/commands/{command_id}?wait=30` instead. When webhooks ship, this URL will
+            receive a signed POST with the final `Command` object; no schema change will be needed
+            on the caller's side.
         ttl_seconds:
           type: integer
           minimum: 30
