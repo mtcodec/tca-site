@@ -276,6 +276,39 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }
 
+  /v1/clients/{client_id}/vps/{vps_id}:
+    delete:
+      tags: [Provisioning]
+      operationId: decommissionVps
+      summary: Decommission a VPS
+      description: |
+        Switches a VPS off on our side: no further commands are accepted for its accounts, and
+        the agent on it stops and wipes its local state (templates, chart maps, agent key) at
+        its next request. Use it when a customer cancels the VPS or it is rebuilt. Idempotent.
+        To use the machine again, provision it afresh (`POST …/vps`) and re-enrol the agent.
+      parameters:
+        - $ref: "#/components/parameters/ClientIdPath"
+        - name: vps_id
+          in: path
+          required: true
+          schema: { type: string, pattern: "^vps_[a-z0-9]{6,}$", examples: [vps_7f3k2m] }
+      responses:
+        "200":
+          description: Decommissioned
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [vps_id, client_id, status, decommissioned_at]
+                properties:
+                  vps_id: { type: string }
+                  client_id: { $ref: "#/components/schemas/ClientId" }
+                  status: { type: string, enum: [decommissioned] }
+                  decommissioned_at: { type: string, format: date-time }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
   /v1/clients/{client_id}/state:
     get:
       tags: [State]
