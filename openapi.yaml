@@ -65,6 +65,8 @@ tags:
     description: Asynchronous actions on an account. Create → poll.
   - name: History
     description: Closed deals with per-EA attribution.
+  - name: Provisioning
+    description: Registering a customer's VPS and minting the one-time enrol token for the agent on it.
   - name: Backtests (v2)
     description: Strategy Tester runs on a dedicated tester pool. Specified for v2; not available in the pilot.
   - name: Meta
@@ -238,6 +240,41 @@ paths:
                         requires_confirmation: false
         "404": { $ref: "#/components/responses/NotFound" }
         "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/clients/{client_id}/vps:
+    post:
+      tags: [Provisioning]
+      operationId: provisionVps
+      summary: Register a VPS for a client and get its enrol token
+      description: |
+        Called by the integrating backend (or provisioning script) when a customer's VPS is
+        created. Returns a **one-time enrol token**; the provisioning step writes it into the
+        agent configuration on that machine. On first start the agent exchanges the token for
+        an agent key that is **bound to that machine** (Windows MachineGuid + system volume
+        serial): the key is stored under DPAPI on the VPS and every agent request carries the
+        machine fingerprint, so a copied key does not work anywhere else. The token cannot be
+        reused; if a machine is rebuilt, provision it again.
+
+        Works with a client key (client fixed by the credential) or a tenant key
+        (`client_id` in the path).
+      parameters:
+        - $ref: "#/components/parameters/ClientIdPath"
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/VpsCreate" }
+            examples:
+              easyvps:
+                value: { external_ref: "VPS-3391-LDN", label: "London, Windows Server 2022 + MT5" }
+      responses:
+        "201":
+          description: VPS registered; the enrol token is shown once.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VpsProvisioned" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
 
   /v1/clients/{client_id}/state:
     get:
@@ -1097,6 +1134,36 @@ components:
               items: { $ref: "#/components/schemas/EaParameter" }
             notes: { type: string }
 
+    # ------------------------------------------------------------------ provisioning
+    VpsCreate:
+      type: object
+      properties:
+        client_id:
+          allOf: [{ $ref: "#/components/schemas/ClientId" }]
+          description: Optional; if present it must equal the path parameter.
+        external_ref:
+          type: string
+          maxLength: 128
+          description: Your own id for this VPS (e.g. the hosting provider's server id). Returned in state as `vps.external_ref`.
+        label:
+          type: string
+          maxLength: 128
+          description: Free text shown in state under `host.label`.
+    VpsProvisioned:
+      type: object
+      required: [vps_id, client_id, enroll_token, status, created_at]
+      properties:
+        vps_id: { type: string, examples: [vps_7f3k2m] }
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        external_ref: { type: [string, "null"] }
+        enroll_token:
+          type: string
+          description: One-time token for the agent configuration on that machine. Shown only in this response.
+          examples: [enr_5Kz…]
+        status: { type: string, enum: [offline] }
+        created_at: { type: string, format: date-time }
+        instructions: { type: string }
+
     # ------------------------------------------------------------------ state
     ClientState:
       type: object
@@ -1120,7 +1187,15 @@ components:
           type: [string, "null"]
           description: The integrating platform's own id for this VPS (e.g. the hosting provider's server id), given at enrolment. Null when not provided.
           examples: [VPS-3391-LDN]
-        status: { type: string, enum: [online, offline, degraded] }
+        status:
+          type: string
+          enum: [online, offline, degraded, decommissioned]
+          description: |
+            `degraded` = the agent reports but something is wrong (see `host.auth_error` etc.);
+            `decommissioned` = switched off by the operator, the agent has stopped.
+        machine_bound:
+          type: boolean
+          description: The agent key of this VPS is bound to a machine fingerprint (true for every agent enrolled since 0.2.0).
         agent_version: { type: string }
         last_seen: { type: string, format: date-time }
         host:
