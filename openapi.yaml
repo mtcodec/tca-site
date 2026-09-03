@@ -1,0 +1,1543 @@
+openapi: 3.1.0
+info:
+  title: Terminal Control API (TCA)
+  version: 0.1.0-draft
+  summary: Operate MetaTrader 5 Expert Advisors on customer VPS machines from an AI chat or any API caller.
+  description: |
+    The Terminal Control API lets a dashboard agent (LLM tool-use) or a backend
+    start, stop and re-configure Expert Advisors (EAs) running in MetaTrader 5
+    terminals on a customer's Windows VPS, and read the live state of those
+    terminals.
+
+    ## Model
+
+    * **Client** – one end customer of the integrating platform (identified by the
+      platform's own `client_id`).
+    * **VPS** – a Windows machine running the TCA agent and one or more MT5 terminals.
+    * **Account** – one MT5 terminal logged into one broker account (`account_id`).
+    * **Instance** – one EA running on one chart of an account (`instance_id`).
+    * **EA** – a catalog entry (`ea_id`) describing a closed `.ex5`, its inputs,
+      the whitelist of what may be changed, and risk presets.
+    * **Command** – an asynchronous request to change something on a terminal
+      (`command_id`). Created with `202 Accepted`, then polled.
+
+    ## Guarantees
+
+    * Every request carries `client_id`; resources are only visible to the client
+      that owns them. There is no shared database with the caller.
+    * All validation (EA whitelist, symbol whitelist, parameter ranges, restart
+      safety) is enforced server-side, regardless of what the caller validated.
+      The LLM is never the security boundary.
+    * Every command reports `requested` → `resolved` → `result.observed`: what was
+      asked, what the server decided to apply, and what the terminal actually
+      shows afterwards. A mismatch is a failure, not a success.
+    * Every parameter change is implemented as a template re-application, which
+      restarts the EA. Commands that would restart an EA with open positions are
+      refused unless the EA's restart safety has been verified.
+
+    ## Status
+
+    Draft for integration review. Field names and error codes may still change
+    before 1.0; paths and the command lifecycle will not.
+  contact:
+    name: MTCodec JSC
+  license:
+    name: Proprietary – licensed, not sold
+
+servers:
+  - url: https://api.tca.mtcodec.com
+    description: Production (host to be confirmed)
+  - url: https://sandbox.tca.mtcodec.com
+    description: Sandbox against demo accounts
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Catalog
+    description: Which EAs exist, what can be changed on them, which presets exist.
+  - name: State
+    description: Live state of VPS machines, terminals, accounts and running EAs.
+  - name: Commands
+    description: Asynchronous actions on an account. Create → poll.
+  - name: History
+    description: Closed deals with per-EA attribution.
+  - name: Backtests (v2)
+    description: Strategy Tester runs on a dedicated tester pool. Specified for v2; not available in the pilot.
+  - name: Meta
+
+paths:
+  /v1/health:
+    get:
+      tags: [Meta]
+      operationId: getHealth
+      summary: Service health
+      security: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, version, time]
+                properties:
+                  status: { type: string, enum: [ok, degraded] }
+                  version: { type: string, examples: ["0.1.0"] }
+                  time: { type: string, format: date-time }
+
+  /v1/eas:
+    get:
+      tags: [Catalog]
+      operationId: listEas
+      summary: List EAs in the catalog
+      description: |
+        Returns the catalog visible to the caller's tenant. Use it to map a user's
+        words ("Waka", "the night scalper") to an `ea_id` and to show available
+        risk presets. Parameter lists are not included here; call `getEa`.
+      parameters:
+        - $ref: "#/components/parameters/ClientIdQueryOptional"
+        - name: status
+          in: query
+          description: Filter by registry status. Default returns `approved` only; pass `all` to include drafts (sandbox).
+          schema: { type: string, enum: [approved, all], default: approved }
+      responses:
+        "200":
+          description: Catalog
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [eas]
+                properties:
+                  eas:
+                    type: array
+                    items: { $ref: "#/components/schemas/EaSummary" }
+              examples:
+                default:
+                  value:
+                    eas:
+                      - ea_id: waka_waka
+                        name: Waka Waka EA
+                        vendor: valerytools.com
+                        category: grid
+                        description: Grid / averaging EA using Bollinger Bands and RSI for entries. Trades a list of symbols from a single chart.
+                        status: approved
+                        restart_safety: verified
+                        supports_soft_stop: true
+                        symbols_allowed: [AUDNZD, AUDCAD, NZDCAD, US500]
+                        presets:
+                          - { id: low, label: Low risk, description: "Vendor 'Low Risk Set 20% annual (0.25% load)'." }
+                          - { id: medium, label: Medium risk, description: "Vendor 'Mid Risk Set 40% annual (0.5% load)' — the shipped default." }
+                          - { id: significant, label: Significant risk, description: "Vendor 'Significant Risk Set 80% annual (1.0% load)'." }
+                          - { id: high, label: High risk, description: "Vendor 'High Risk Set 120% annual (1.5% load)'." }
+                        default_preset: medium
+                      - ea_id: night_hunter_pro
+                        name: Night Hunter Pro
+                        vendor: valerytools.com
+                        category: scalper
+                        description: Night scalper. Pending orders, no grid.
+                        status: approved
+                        restart_safety: verified
+                        supports_soft_stop: true
+                        symbols_allowed: [GBPUSD, EURUSD, EURCHF, USDCAD, USDCHF, CHFJPY, AUDCAD, EURCAD, EURAUD]
+                        presets:
+                          - { id: low, label: Low risk, description: "Vendor 'Low Risk Set (0.5% per Trade)'." }
+                          - { id: medium, label: Medium risk, description: "Vendor 'Mid Risk Set (2% per Trade)'." }
+                          - { id: high, label: High risk, description: "Vendor 'High Risk Set (5% per Trade)'." }
+                          - { id: risk_per_trade_5, label: Max risk per trade 5%, description: "Lots based on Max Risk per Trade, 5% of deposit per stop-loss hit." }
+                        default_preset: medium
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/eas/{ea_id}:
+    get:
+      tags: [Catalog]
+      operationId: getEa
+      summary: Get one EA with its changeable parameters and presets
+      description: |
+        Full description of an EA: every caller-visible input with type, default,
+        label, description, whether it may be changed via `set_param`, and the
+        allowed range. Hidden/internal inputs are not returned. Use this before
+        proposing a parameter change so the user sees the real name, the current
+        default and the allowed range.
+      parameters:
+        - $ref: "#/components/parameters/EaId"
+        - $ref: "#/components/parameters/ClientIdQueryOptional"
+      responses:
+        "200":
+          description: EA detail
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EaDetail" }
+              examples:
+                perceptrader:
+                  value:
+                    ea_id: perceptrader_ai
+                    name: Perceptrader AI
+                    vendor: valerytools.com
+                    category: grid
+                    description: Grid / averaging EA with a neural-network entry filter.
+                    status: approved
+                    restart_safety: verified
+                    supports_soft_stop: true
+                    symbols_allowed: [NZDUSD, USDCAD, AUDNZD, AUDCAD, NZDCAD, GBPCHF]
+                    default_preset: medium
+                    presets:
+                      - { id: low, label: Low risk, description: "Vendor 'Low Risk Set (0.25% load)'." }
+                      - { id: medium, label: Medium risk, description: "Vendor 'Mid Risk Set (0.5% load)'." }
+                      - { id: significant, label: Significant risk, description: "Vendor 'Significant Risk Set (1.0% load)'." }
+                      - { id: high, label: High risk, description: "Vendor 'High Risk Set (1.5% load)'." }
+                    parameters:
+                      - name: AllowOpeningNewGrid
+                        label: Allow Opening a new Grid
+                        description: Enable/disable new grids. Does not affect open grids, which keep being managed.
+                        type: bool
+                        default: true
+                        group: Select the risk settings
+                        changeable: true
+                        constraints: { allowed: [true, false] }
+                        requires_confirmation: false
+                      - name: MaximumSpread
+                        label: Maximum Spread, in pips
+                        description: Maximum allowed spread for opening positions.
+                        type: double
+                        default: 5.0
+                        group: Select the risk settings
+                        changeable: true
+                        constraints: { min: 0.5, max: 50 }
+                        requires_confirmation: false
+                      - name: MaximumTrades
+                        label: Maximum Trades
+                        description: Maximum number of averaging trades in a grid.
+                        type: int
+                        default: 9
+                        group: Adjust the grid distance and multipliers
+                        changeable: true
+                        constraints: { min: 1, max: 12 }
+                        requires_confirmation: true
+                      - name: LotSizingMethod
+                        label: Lot-sizing Method
+                        description: Fixed Lots / Dynamic Lots / Deposit load / predefined risk presets. Only the value parameter matching the chosen method applies.
+                        type: enum
+                        default: 7
+                        group: Select the risk settings
+                        changeable: true
+                        constraints: { allowed: [0, 1, 2, 3, 4, 5, 6, 7] }
+                        enum_labels: { "0": Fixed Lot, "1": Dynamic Lot based on Balance, "2": Dynamic Lot based on Equity, "3": Significant Risk Set (1.0% load), "4": Mid Risk Set (0.5% load), "5": Low Risk Set (0.25% load), "6": Lots based on Deposit load, "7": High Risk Set (1.5% load) }
+                        requires_confirmation: true
+                      - name: TradeDistance
+                        label: Trade Distance
+                        description: Minimum step in pips between averaging trades.
+                        type: double
+                        default: 25
+                        group: Adjust the grid distance and multipliers
+                        changeable: false
+                        requires_confirmation: false
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/clients/{client_id}/state:
+    get:
+      tags: [State]
+      operationId: getClientState
+      summary: Live state of everything the client owns
+      description: |
+        One call to answer "what is running?": every VPS, every terminal/account,
+        every EA instance with its effective inputs, open positions and pending
+        orders with per-EA attribution, plus VPS health. This is the entry point
+        for an LLM: it yields the `account_id` and `instance_id` values needed
+        for commands.
+
+        `as_of` is the time of the newest agent report; `stale: true` means the
+        agent has not reported within the freshness window (default 90 s) and
+        the numbers may be out of date.
+      parameters:
+        - $ref: "#/components/parameters/ClientIdPath"
+        - name: include
+          in: query
+          description: Comma-separated sections to include. Default is everything.
+          schema:
+            type: string
+            examples: ["accounts,instances", "accounts,instances,positions,orders,vps"]
+      responses:
+        "200":
+          description: Client state
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClientState" }
+              examples:
+                twoTerminals:
+                  value:
+                    client_id: "ea-cust-1042"
+                    as_of: "2026-09-02T10:15:07Z"
+                    stale: false
+                    vps:
+                      - vps_id: vps_7f3k2m
+                        status: online
+                        agent_version: "0.1.0"
+                        last_seen: "2026-09-02T10:15:07Z"
+                        host: { hostname: EASYVPS-1042, os: "Windows Server 2022", cpu_pct: 12.5, mem_pct: 41.0, disk_free_gb: 38.2, uptime_s: 864211 }
+                        terminals: 2
+                    accounts:
+                      - account_id: acc_9q1x7d
+                        vps_id: vps_7f3k2m
+                        mt5_login: 51234567
+                        mt5_server: ICMarketsSC-MT5-2
+                        broker: IC Markets
+                        currency: USD
+                        leverage: 500
+                        type: real
+                        terminal: { connected: true, build: 5120, trade_allowed: true, last_tick_at: "2026-09-02T10:15:06Z" }
+                        balance: 10250.40
+                        equity: 10198.12
+                        margin: 312.50
+                        free_margin: 9885.62
+                        margin_level: 3263.4
+                        floating_pnl: -52.28
+                        as_of: "2026-09-02T10:15:07Z"
+                        stale: false
+                        instances:
+                          - instance_id: inst_a1b2c3
+                            ea_id: waka_waka
+                            ea_name: Waka Waka EA
+                            status: running
+                            symbol: AUDNZD
+                            timeframe: M15
+                            preset: medium
+                            uid: 0
+                            inputs: { AllowOpeningNewGrid: true, LotSizingMethod: 4, MaximumSpread: 10, MaximumTrades: 9 }
+                            magic_numbers: [184570000, 184570001, 284570000]
+                            started_at: "2026-08-28T07:02:11Z"
+                            last_command_id: cmd_01J6X0Q4M9
+                            open_positions: 3
+                            pending_orders: 0
+                            floating_pnl: -52.28
+                            health: { on_chart: true, last_seen_on_chart: "2026-09-02T10:15:06Z", errors: [] }
+                        positions:
+                          - ticket: 88123401
+                            symbol: AUDNZD
+                            type: buy
+                            volume: 0.10
+                            price_open: 1.09812
+                            price_current: 1.09760
+                            sl: 0
+                            tp: 1.09912
+                            profit: -31.20
+                            swap: -1.10
+                            magic: 184570000
+                            comment: Waka
+                            ea_id: waka_waka
+                            instance_id: inst_a1b2c3
+                            opened_at: "2026-09-01T22:40:03Z"
+                        orders: []
+                      - account_id: acc_2z8w4p
+                        vps_id: vps_7f3k2m
+                        mt5_login: 51234568
+                        mt5_server: ICMarketsSC-MT5-2
+                        broker: IC Markets
+                        currency: USD
+                        leverage: 500
+                        type: real
+                        terminal: { connected: true, build: 5120, trade_allowed: true, last_tick_at: "2026-09-02T10:15:05Z" }
+                        balance: 5000.00
+                        equity: 5000.00
+                        margin: 0
+                        free_margin: 5000.00
+                        margin_level: null
+                        floating_pnl: 0
+                        as_of: "2026-09-02T10:15:07Z"
+                        stale: false
+                        instances: []
+                        positions: []
+                        orders: []
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/accounts/{account_id}:
+    get:
+      tags: [State]
+      operationId: getAccount
+      summary: Live state of one account
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ClientIdQuery"
+      responses:
+        "200":
+          description: Account state
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AccountState" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/accounts/{account_id}/history:
+    get:
+      tags: [History]
+      operationId: getAccountHistory
+      summary: Closed deals with per-EA attribution
+      description: |
+        Deals from the terminal's history, each mapped to `ea_id` / `instance_id`
+        via magic number (and order comment as a fallback). Reporting and
+        analytics are the caller's job; this endpoint exists so that attribution
+        is done once, in the layer that knows which magic belongs to which EA.
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ClientIdQuery"
+        - name: from
+          in: query
+          schema: { type: string, format: date-time }
+          description: Inclusive lower bound on deal time. Default 7 days ago.
+        - name: to
+          in: query
+          schema: { type: string, format: date-time }
+          description: Exclusive upper bound. Default now.
+        - name: ea_id
+          in: query
+          schema: { type: string }
+        - name: instance_id
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 500, default: 100 }
+        - name: cursor
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Deal page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HistoryPage" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/accounts/{account_id}/commands:
+    post:
+      tags: [Commands]
+      operationId: createCommand
+      summary: Create a command (start / stop / set_risk / set_param / restart)
+      description: |
+        Validates the request against the catalog and the client's whitelist,
+        then queues it for the VPS agent. Returns `202 Accepted` with a
+        `command_id` to poll. Validation failures return `422` immediately with
+        a machine-readable code and a human-readable message.
+
+        Set `dry_run: true` to get the full validation result and the exact
+        before → after diff **without** queuing anything (`200`). This is the
+        recommended way to build a confirmation step: show the user the dry-run
+        `summary` and `diff`, then send the real command.
+
+        A command is refused with `409 CONFLICT` while another command is still
+        in flight for the same instance.
+
+        Send an `Idempotency-Key` header to make retries safe: the same key with
+        the same body within 24 h returns the original command instead of
+        creating a new one.
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CommandCreate" }
+            examples:
+              startEa:
+                summary: Add Night Hunter Pro with medium risk
+                value:
+                  client_id: "ea-cust-1042"
+                  type: start_ea
+                  requested_by: "edgard"
+                  reason: "User asked: add Night Hunter Pro with medium risk"
+                  params:
+                    ea_id: night_hunter_pro
+                    preset: medium
+              stopEa:
+                summary: Stop Waka Waka (soft – no new grids, keep managing open basket)
+                value:
+                  client_id: "ea-cust-1042"
+                  type: stop_ea
+                  requested_by: "edgard"
+                  params:
+                    instance_id: inst_a1b2c3
+                    mode: soft
+              setRisk:
+                summary: Switch Perceptrader to low risk
+                value:
+                  client_id: "ea-cust-1042"
+                  type: set_risk
+                  requested_by: "edgard"
+                  params:
+                    instance_id: inst_d4e5f6
+                    preset: low
+              setParam:
+                summary: Restart Night Hunter with MaxSpread 15
+                value:
+                  client_id: "ea-cust-1042"
+                  type: set_param
+                  requested_by: "edgard"
+                  params:
+                    instance_id: inst_g7h8i9
+                    inputs:
+                      MaximumSpread: 15
+              dryRun:
+                summary: Preview a change without applying it
+                value:
+                  client_id: "ea-cust-1042"
+                  type: set_param
+                  dry_run: true
+                  params:
+                    instance_id: inst_g7h8i9
+                    inputs:
+                      MaximumSpread: 15
+      responses:
+        "202":
+          description: Command accepted and queued.
+          headers:
+            Location:
+              description: URL to poll.
+              schema: { type: string, examples: ["/v1/commands/cmd_01J6X0Q4M9?client_id=ea-cust-1042"] }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Command" }
+              examples:
+                queued:
+                  value:
+                    command_id: cmd_01J6X0Q4M9
+                    client_id: "ea-cust-1042"
+                    account_id: acc_9q1x7d
+                    type: set_param
+                    status: queued
+                    summary: "Set MaximumSpread 10 → 15 on Night Hunter Pro (EURUSD) — EA will restart"
+                    requested:
+                      instance_id: inst_g7h8i9
+                      inputs: { MaximumSpread: 15 }
+                    resolved:
+                      ea_id: night_hunter_pro
+                      ea_name: Night Hunter Pro
+                      instance_id: inst_g7h8i9
+                      symbol: EURUSD
+                      restarts_ea: true
+                      open_positions_at_request: 1
+                      diff:
+                        - { name: MaximumSpread, label: "Maximum Spread, in pips", was: 10, now: 15 }
+                    result: null
+                    error: null
+                    timeline:
+                      - { status: queued, at: "2026-09-02T10:16:00Z" }
+                    created_at: "2026-09-02T10:16:00Z"
+                    updated_at: "2026-09-02T10:16:00Z"
+                    completed_at: null
+                    expires_at: "2026-09-02T10:26:00Z"
+                    requested_by: "edgard"
+        "200":
+          description: Dry run – validated, nothing queued.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandPreview" }
+              examples:
+                preview:
+                  value:
+                    valid: true
+                    type: set_param
+                    account_id: acc_9q1x7d
+                    summary: "Set MaximumSpread 10 → 15 on Night Hunter Pro (EURUSD) — EA will restart"
+                    resolved:
+                      ea_id: night_hunter_pro
+                      ea_name: Night Hunter Pro
+                      instance_id: inst_g7h8i9
+                      symbol: EURUSD
+                      restarts_ea: true
+                      open_positions_at_request: 1
+                      diff:
+                        - { name: MaximumSpread, label: "Maximum Spread, in pips", was: 10, now: 15 }
+                    requires_confirmation: false
+                    warnings:
+                      - "The EA will restart; 1 open position will be re-adopted by the EA (restart safety: verified)."
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409":
+          description: Another command is in flight for this instance.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+              examples:
+                conflict:
+                  value:
+                    error:
+                      code: CONFLICT
+                      message: "Command cmd_01J6X0Q4M9 (set_param) is still running on this instance. Wait for it to finish or cancel it."
+                      details: { in_flight_command_id: cmd_01J6X0Q4M9 }
+                      retryable: true
+                      hint: "Poll GET /v1/commands/cmd_01J6X0Q4M9 and retry once it is terminal."
+        "422":
+          description: Validation failed (whitelist, range, restart safety, unknown preset…).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+              examples:
+                outOfRange:
+                  value:
+                    error:
+                      code: PARAM_OUT_OF_RANGE
+                      message: "MaximumSpread must be between 0.5 and 50 (got 150)."
+                      details: { name: MaximumSpread, value: 150, min: 0.5, max: 50 }
+                      retryable: false
+                      hint: "Ask the user for a value within the allowed range."
+                notChangeable:
+                  value:
+                    error:
+                      code: PARAM_NOT_CHANGEABLE
+                      message: "TradeDistance is not on the list of parameters that can be changed for Perceptrader AI."
+                      details: { name: TradeDistance, changeable: [AllowOpeningNewGrid, MaximumSpread, MaximumTrades, "..."] }
+                      retryable: false
+                      hint: "Offer one of the changeable parameters instead, or explain that this one is locked."
+                restartUnsafe:
+                  value:
+                    error:
+                      code: RESTART_UNSAFE
+                      message: "Waka Waka EA has 3 open positions and its restart safety is not verified. Changing parameters would restart the EA and could orphan the basket."
+                      details: { instance_id: inst_a1b2c3, open_positions: 3, restart_safety: untested }
+                      retryable: false
+                      hint: "Suggest waiting until the basket closes, or a soft stop."
+        "429": { $ref: "#/components/responses/RateLimited" }
+
+    get:
+      tags: [Commands]
+      operationId: listCommands
+      summary: Recent commands on an account (audit trail)
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ClientIdQuery"
+        - name: status
+          in: query
+          schema: { $ref: "#/components/schemas/CommandStatus" }
+        - name: instance_id
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+        - name: cursor
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Command page
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [commands]
+                properties:
+                  commands:
+                    type: array
+                    items: { $ref: "#/components/schemas/Command" }
+                  next_cursor: { type: [string, "null"] }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/commands/{command_id}:
+    get:
+      tags: [Commands]
+      operationId: getCommand
+      summary: Poll a command
+      description: |
+        Returns the command with its current status. Pass `wait` (seconds, max 30)
+        to long-poll: the server holds the response until the command reaches a
+        terminal status or the wait elapses, so an LLM agent needs one call
+        instead of a polling loop.
+
+        Terminal statuses: `succeeded`, `failed`, `rejected`, `expired`, `cancelled`.
+      parameters:
+        - $ref: "#/components/parameters/CommandId"
+        - $ref: "#/components/parameters/ClientIdQuery"
+        - name: wait
+          in: query
+          description: Long-poll for up to this many seconds.
+          schema: { type: integer, minimum: 0, maximum: 30, default: 0 }
+      responses:
+        "200":
+          description: Command
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Command" }
+              examples:
+                succeeded:
+                  value:
+                    command_id: cmd_01J6X0Q4M9
+                    client_id: "ea-cust-1042"
+                    account_id: acc_9q1x7d
+                    type: set_param
+                    status: succeeded
+                    summary: "MaximumSpread 10 → 15 applied on Night Hunter Pro (EURUSD); EA restarted and re-adopted 1 position"
+                    requested:
+                      instance_id: inst_g7h8i9
+                      inputs: { MaximumSpread: 15 }
+                    resolved:
+                      ea_id: night_hunter_pro
+                      ea_name: Night Hunter Pro
+                      instance_id: inst_g7h8i9
+                      symbol: EURUSD
+                      restarts_ea: true
+                      open_positions_at_request: 1
+                      diff:
+                        - { name: MaximumSpread, label: "Maximum Spread, in pips", was: 10, now: 15 }
+                    result:
+                      observed:
+                        instance_status: running
+                        inputs: { MaximumSpread: 15 }
+                        open_positions: 1
+                        pending_orders: 2
+                        observed_at: "2026-09-02T10:16:09Z"
+                      reconciled: true
+                      notes: []
+                    error: null
+                    timeline:
+                      - { status: queued, at: "2026-09-02T10:16:00Z" }
+                      - { status: dispatched, at: "2026-09-02T10:16:03Z" }
+                      - { status: running, at: "2026-09-02T10:16:04Z", note: "template applied" }
+                      - { status: succeeded, at: "2026-09-02T10:16:09Z" }
+                    created_at: "2026-09-02T10:16:00Z"
+                    updated_at: "2026-09-02T10:16:09Z"
+                    completed_at: "2026-09-02T10:16:09Z"
+                    expires_at: "2026-09-02T10:26:00Z"
+                    requested_by: "edgard"
+                failed:
+                  value:
+                    command_id: cmd_01J6X0R7ZZ
+                    client_id: "ea-cust-1042"
+                    account_id: acc_9q1x7d
+                    type: start_ea
+                    status: failed
+                    summary: "Could not start Night Hunter Pro on EURUSD: the terminal reported that the EA file is missing"
+                    requested: { ea_id: night_hunter_pro, preset: medium }
+                    resolved:
+                      ea_id: night_hunter_pro
+                      ea_name: Night Hunter Pro
+                      instance_id: inst_g7h8i9
+                      symbol: EURUSD
+                      restarts_ea: false
+                      open_positions_at_request: 0
+                      diff: []
+                    result:
+                      observed: { instance_status: stopped, inputs: {}, open_positions: 0, pending_orders: 0, observed_at: "2026-09-02T10:20:05Z" }
+                      reconciled: false
+                      notes: ["ChartOpen succeeded, ChartApplyTemplate failed: expert 'NightHunterPro.ex5' not found in MQL5/Experts"]
+                    error:
+                      code: EA_NOT_INSTALLED
+                      message: "Night Hunter Pro is not installed in this terminal (NightHunterPro.ex5 missing)."
+                      details: { file: NightHunterPro.ex5 }
+                      retryable: false
+                      hint: "Tell the user the EA needs to be installed on the VPS first."
+                    timeline:
+                      - { status: queued, at: "2026-09-02T10:20:00Z" }
+                      - { status: dispatched, at: "2026-09-02T10:20:02Z" }
+                      - { status: running, at: "2026-09-02T10:20:03Z" }
+                      - { status: failed, at: "2026-09-02T10:20:05Z" }
+                    created_at: "2026-09-02T10:20:00Z"
+                    updated_at: "2026-09-02T10:20:05Z"
+                    completed_at: "2026-09-02T10:20:05Z"
+                    expires_at: "2026-09-02T10:30:00Z"
+                    requested_by: "edgard"
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/commands/{command_id}/cancel:
+    post:
+      tags: [Commands]
+      operationId: cancelCommand
+      summary: Cancel a queued command
+      description: Only commands in `queued` status can be cancelled. Once dispatched to the agent the command runs to completion.
+      parameters:
+        - $ref: "#/components/parameters/CommandId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [client_id]
+              properties:
+                client_id: { $ref: "#/components/schemas/ClientId" }
+                reason: { type: string }
+      responses:
+        "200":
+          description: Cancelled
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Command" }
+        "409":
+          description: Command is no longer cancellable.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/backtests:
+    post:
+      tags: [Backtests (v2)]
+      operationId: runBacktest
+      x-status: v2
+      summary: "(v2) Run a Strategy Tester backtest of an EA"
+      description: |
+        **Not available in the pilot.** Specified so that the command shape is
+        agreed early; returns `501 NOT_IMPLEMENTED` until v2.
+
+        Runs the MT5 Strategy Tester headlessly on a dedicated tester pool —
+        never on the client's live VPS, because the tester saturates CPU and
+        would disturb live execution. Behaves like every other command:
+        `202` + `command_id`, then poll `GET /v1/commands/{command_id}`
+        (runs take minutes). On success `result.backtest` carries the metrics
+        and a link to the full report.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/BacktestCreate" }
+            examples:
+              waka:
+                value:
+                  client_id: "ea-cust-1042"
+                  ea_id: waka_waka
+                  preset: medium
+                  symbol: AUDNZD
+                  timeframe: M15
+                  from: "2026-01-01"
+                  to: "2026-08-31"
+                  deposit: 10000
+                  currency: USD
+                  leverage: 500
+                  tick_model: every_tick_real
+                  requested_by: edgard
+      responses:
+        "202":
+          description: Backtest queued on the tester pool.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Command" }
+        "501":
+          description: Not implemented in this version.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "422":
+          description: Validation failed.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API key
+      description: |
+        One API key per integrating tenant (e.g. one for EasyAlgos production, one
+        for sandbox). The key identifies the tenant; `client_id` selects the end
+        customer within that tenant. Keys are rotated via the operator, not via
+        the API.
+
+  parameters:
+    ClientIdPath:
+      name: client_id
+      in: path
+      required: true
+      schema: { $ref: "#/components/schemas/ClientId" }
+    ClientIdQuery:
+      name: client_id
+      in: query
+      required: true
+      description: The caller's own identifier for the end customer. Every resource is checked against it.
+      schema: { $ref: "#/components/schemas/ClientId" }
+    ClientIdQueryOptional:
+      name: client_id
+      in: query
+      required: false
+      description: Optional on catalog endpoints; when given, the response is limited to what this client is licensed to use.
+      schema: { $ref: "#/components/schemas/ClientId" }
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      schema: { type: string, pattern: "^acc_[a-z0-9]{6,}$", examples: [acc_9q1x7d] }
+    CommandId:
+      name: command_id
+      in: path
+      required: true
+      schema: { type: string, pattern: "^cmd_[A-Z0-9]{10,}$", examples: [cmd_01J6X0Q4M9] }
+    EaId:
+      name: ea_id
+      in: path
+      required: true
+      schema: { $ref: "#/components/schemas/EaId" }
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      schema: { type: string, maxLength: 128 }
+      description: Client-chosen key. Same key + same body within 24 h returns the original command.
+
+  responses:
+    BadRequest:
+      description: Malformed request.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    Forbidden:
+      description: The API key's tenant does not own this client.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    NotFound:
+      description: Resource does not exist or does not belong to `client_id`.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+    RateLimited:
+      description: Too many requests.
+      headers:
+        Retry-After:
+          schema: { type: integer }
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorResponse" }
+
+  schemas:
+    # ------------------------------------------------------------------ ids
+    ClientId:
+      type: string
+      minLength: 1
+      maxLength: 64
+      pattern: "^[A-Za-z0-9._:-]+$"
+      description: Opaque identifier of the end customer, owned by the integrating platform.
+      examples: ["ea-cust-1042"]
+    EaId:
+      type: string
+      pattern: "^[a-z][a-z0-9_]{1,63}$"
+      description: Catalog slug. Stable; never renamed.
+      examples: [waka_waka, night_hunter_pro, perceptrader_ai, news_catcher_pro]
+    InstanceId:
+      type: string
+      pattern: "^inst_[a-z0-9]{6,}$"
+      examples: [inst_a1b2c3]
+    Timeframe:
+      type: string
+      enum: [M1, M5, M15, M30, H1, H4, D1]
+
+    # ------------------------------------------------------------------ errors
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error: { $ref: "#/components/schemas/Error" }
+    Error:
+      type: object
+      required: [code, message, retryable]
+      properties:
+        code: { $ref: "#/components/schemas/ErrorCode" }
+        message:
+          type: string
+          description: Human-readable, safe to show to the end user verbatim.
+        details:
+          type: object
+          additionalProperties: true
+          description: Machine-readable specifics (parameter name, limits, ids).
+        retryable:
+          type: boolean
+          description: Whether the same request may succeed later without changes.
+        hint:
+          type: string
+          description: Suggested next step, phrased for an LLM agent.
+    ErrorCode:
+      type: string
+      enum:
+        - VALIDATION_FAILED
+        - UNAUTHORIZED
+        - FORBIDDEN
+        - NOT_FOUND
+        - RATE_LIMITED
+        - CONFLICT
+        - EA_NOT_IN_CATALOG
+        - EA_NOT_APPROVED
+        - EA_NOT_INSTALLED
+        - SYMBOL_NOT_ALLOWED
+        - PRESET_UNKNOWN
+        - PARAM_UNKNOWN
+        - PARAM_NOT_CHANGEABLE
+        - PARAM_OUT_OF_RANGE
+        - PARAM_TYPE_MISMATCH
+        - INSTANCE_NOT_FOUND
+        - INSTANCE_LIMIT
+        - RESTART_UNSAFE
+        - UNSUPPORTED_MODE
+        - AGENT_OFFLINE
+        - TERMINAL_NOT_CONNECTED
+        - TRADING_DISABLED
+        - TEMPLATE_APPLY_FAILED
+        - COMMAND_TIMEOUT
+        - COMMAND_NOT_CANCELLABLE
+        - RECONCILE_MISMATCH
+        - INTERNAL
+      description: |
+        * `VALIDATION_FAILED` (400) malformed body / missing field.
+        * `UNAUTHORIZED` (401), `FORBIDDEN` (403), `NOT_FOUND` (404), `RATE_LIMITED` (429), `CONFLICT` (409).
+        * `EA_NOT_IN_CATALOG`, `EA_NOT_APPROVED`, `SYMBOL_NOT_ALLOWED`, `PRESET_UNKNOWN`,
+          `PARAM_UNKNOWN`, `PARAM_NOT_CHANGEABLE`, `PARAM_OUT_OF_RANGE`, `PARAM_TYPE_MISMATCH`,
+          `INSTANCE_NOT_FOUND`, `INSTANCE_LIMIT`, `RESTART_UNSAFE`, `UNSUPPORTED_MODE` (422) – refused before queuing.
+        * `AGENT_OFFLINE`, `TERMINAL_NOT_CONNECTED`, `TRADING_DISABLED`, `EA_NOT_INSTALLED`,
+          `TEMPLATE_APPLY_FAILED`, `COMMAND_TIMEOUT`, `RECONCILE_MISMATCH` – reported in `Command.error`
+          of a `failed` / `expired` command.
+        * `INTERNAL` (500).
+
+    # ------------------------------------------------------------------ catalog
+    Preset:
+      type: object
+      required: [id, label]
+      properties:
+        id: { type: string, examples: [low, medium, high] }
+        label: { type: string }
+        description: { type: string }
+    EaSummary:
+      type: object
+      required: [ea_id, name, category, status, restart_safety, supports_soft_stop, symbols_allowed, presets]
+      properties:
+        ea_id: { $ref: "#/components/schemas/EaId" }
+        name: { type: string }
+        vendor: { type: string }
+        version: { type: [string, "null"] }
+        category: { type: string, enum: [grid, scalper, news, trend, breakout, other] }
+        description: { type: string }
+        status:
+          type: string
+          enum: [draft, reviewed, approved, retired]
+          description: Only `approved` EAs can be started on real accounts.
+        restart_safety:
+          type: string
+          enum: [untested, verified, conditional, unsafe]
+          description: Whether re-applying the template while positions are open is known to be safe. Parameter changes on instances with open positions require `verified` (or `conditional` with its conditions met).
+        supports_soft_stop:
+          type: boolean
+          description: "The EA has a 'no new trades' input, so `stop_ea` with `mode: soft` is available."
+        symbols_allowed:
+          type: array
+          items: { type: string }
+        presets:
+          type: array
+          items: { $ref: "#/components/schemas/Preset" }
+        default_preset: { type: [string, "null"] }
+    EaParameter:
+      type: object
+      required: [name, type, default, changeable, requires_confirmation]
+      properties:
+        name:
+          type: string
+          description: Exact input variable name. Use this in `set_param`.
+        label: { type: string, description: Name shown in the terminal's Inputs dialog. }
+        description: { type: string }
+        type: { type: string, enum: [bool, int, double, string, csv, enum] }
+        default: { description: Effective default (from the base set file, not necessarily the vendor's compiled default). }
+        group: { type: string }
+        changeable: { type: boolean }
+        constraints:
+          type: object
+          description: Present when `changeable` is true.
+          properties:
+            min: { type: number }
+            max: { type: number }
+            step: { type: number }
+            allowed: { type: array, items: {} }
+            subset_of:
+              type: string
+              description: For csv inputs – every value must come from this list (e.g. `symbols_allowed`).
+        enum_labels:
+          type: object
+          additionalProperties: { type: string }
+          description: Index → label for enum inputs.
+        requires_confirmation:
+          type: boolean
+          description: Changing this affects risk or exposure; the caller should confirm with the user first. Advisory – the server does not block.
+    EaDetail:
+      allOf:
+        - $ref: "#/components/schemas/EaSummary"
+        - type: object
+          required: [parameters]
+          properties:
+            parameters:
+              type: array
+              items: { $ref: "#/components/schemas/EaParameter" }
+            notes: { type: string }
+
+    # ------------------------------------------------------------------ state
+    ClientState:
+      type: object
+      required: [client_id, as_of, stale, vps, accounts]
+      properties:
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        as_of: { type: string, format: date-time }
+        stale: { type: boolean }
+        vps:
+          type: array
+          items: { $ref: "#/components/schemas/VpsState" }
+        accounts:
+          type: array
+          items: { $ref: "#/components/schemas/AccountState" }
+    VpsState:
+      type: object
+      required: [vps_id, status, last_seen]
+      properties:
+        vps_id: { type: string, examples: [vps_7f3k2m] }
+        status: { type: string, enum: [online, offline, degraded] }
+        agent_version: { type: string }
+        last_seen: { type: string, format: date-time }
+        host:
+          type: object
+          properties:
+            hostname: { type: string }
+            os: { type: string }
+            cpu_pct: { type: number }
+            mem_pct: { type: number }
+            disk_free_gb: { type: number }
+            uptime_s: { type: integer }
+        terminals: { type: integer, description: Number of MT5 terminals managed on this VPS. }
+    TerminalState:
+      type: object
+      required: [connected]
+      properties:
+        connected: { type: boolean, description: Terminal has a live connection to the broker server. }
+        build: { type: [integer, "null"] }
+        trade_allowed: { type: [boolean, "null"], description: AutoTrading enabled in the terminal. }
+        last_tick_at: { type: [string, "null"], format: date-time }
+    AccountState:
+      type: object
+      required: [account_id, vps_id, mt5_login, mt5_server, currency, terminal, as_of, stale, instances]
+      properties:
+        account_id: { type: string, examples: [acc_9q1x7d] }
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        vps_id: { type: string }
+        mt5_login: { type: integer }
+        mt5_server: { type: string }
+        broker: { type: string }
+        name: { type: string, description: Account holder name as reported by the terminal. }
+        currency: { type: string }
+        leverage: { type: integer }
+        type: { type: string, enum: [demo, real, contest] }
+        terminal: { $ref: "#/components/schemas/TerminalState" }
+        balance: { type: number }
+        equity: { type: number }
+        margin: { type: number }
+        free_margin: { type: number }
+        margin_level: { type: [number, "null"] }
+        floating_pnl: { type: number }
+        as_of: { type: string, format: date-time }
+        stale: { type: boolean }
+        instances:
+          type: array
+          items: { $ref: "#/components/schemas/Instance" }
+        positions:
+          type: array
+          items: { $ref: "#/components/schemas/Position" }
+        orders:
+          type: array
+          items: { $ref: "#/components/schemas/PendingOrder" }
+    InstanceStatus:
+      type: string
+      enum: [starting, running, paused, stopping, stopped, error, unknown]
+      description: |
+        `paused` = on the chart but new trades disallowed (soft stop). `unknown` = the agent
+        cannot currently observe the chart (terminal restarting, agent reconnecting).
+    Instance:
+      type: object
+      required: [instance_id, ea_id, ea_name, status, symbol, timeframe, inputs]
+      properties:
+        instance_id: { $ref: "#/components/schemas/InstanceId" }
+        ea_id: { $ref: "#/components/schemas/EaId" }
+        ea_name: { type: string }
+        status: { $ref: "#/components/schemas/InstanceStatus" }
+        symbol: { type: string, description: Chart symbol. Multi-symbol EAs trade their own list; see `inputs`. }
+        timeframe: { $ref: "#/components/schemas/Timeframe" }
+        preset:
+          type: [string, "null"]
+          description: Preset last applied, or null when inputs were set individually.
+        uid: { type: [integer, "null"], description: Instance number passed to the EA (UID input) where applicable. }
+        inputs:
+          type: object
+          additionalProperties: {}
+          description: Effective caller-visible inputs (hidden inputs omitted).
+        magic_numbers:
+          type: array
+          items: { type: integer }
+          description: Magic numbers observed on positions/deals attributed to this instance.
+        started_at: { type: [string, "null"], format: date-time }
+        last_command_id: { type: [string, "null"] }
+        open_positions: { type: integer }
+        pending_orders: { type: integer }
+        floating_pnl: { type: number }
+        health:
+          type: object
+          properties:
+            on_chart: { type: boolean, description: The EA is attached to its chart (observed, not assumed). }
+            last_seen_on_chart: { type: [string, "null"], format: date-time }
+            errors:
+              type: array
+              items: { type: string }
+              description: Recent journal lines for this EA that look like errors.
+    Position:
+      type: object
+      required: [ticket, symbol, type, volume, price_open, profit, magic]
+      properties:
+        ticket: { type: integer }
+        symbol: { type: string }
+        type: { type: string, enum: [buy, sell] }
+        volume: { type: number }
+        price_open: { type: number }
+        price_current: { type: number }
+        sl: { type: number }
+        tp: { type: number }
+        profit: { type: number }
+        swap: { type: number }
+        magic: { type: integer }
+        comment: { type: string }
+        ea_id: { type: [string, "null"] }
+        instance_id: { type: [string, "null"] }
+        opened_at: { type: string, format: date-time }
+    PendingOrder:
+      type: object
+      required: [ticket, symbol, type, volume, price_open, magic]
+      properties:
+        ticket: { type: integer }
+        symbol: { type: string }
+        type: { type: string, enum: [buy_limit, sell_limit, buy_stop, sell_stop, buy_stop_limit, sell_stop_limit] }
+        volume: { type: number }
+        price_open: { type: number }
+        sl: { type: number }
+        tp: { type: number }
+        magic: { type: integer }
+        comment: { type: string }
+        ea_id: { type: [string, "null"] }
+        instance_id: { type: [string, "null"] }
+        placed_at: { type: string, format: date-time }
+        expires_at: { type: [string, "null"], format: date-time }
+
+    # ------------------------------------------------------------------ history
+    Deal:
+      type: object
+      required: [deal_id, time, symbol, type, entry, volume, price, profit, magic]
+      properties:
+        deal_id: { type: integer }
+        order_id: { type: integer }
+        position_id: { type: integer }
+        time: { type: string, format: date-time }
+        symbol: { type: string }
+        type: { type: string, enum: [buy, sell, balance, credit, charge, correction, bonus, commission, other] }
+        entry: { type: string, enum: [in, out, inout, out_by] }
+        volume: { type: number }
+        price: { type: number }
+        profit: { type: number }
+        swap: { type: number }
+        commission: { type: number }
+        fee: { type: number }
+        magic: { type: integer }
+        comment: { type: string }
+        ea_id: { type: [string, "null"], description: Attributed via magic number, comment as fallback; null if unattributed (manual trade, unknown EA). }
+        instance_id: { type: [string, "null"] }
+    HistoryPage:
+      type: object
+      required: [account_id, deals, as_of]
+      properties:
+        account_id: { type: string }
+        from: { type: string, format: date-time }
+        to: { type: string, format: date-time }
+        deals:
+          type: array
+          items: { $ref: "#/components/schemas/Deal" }
+        next_cursor: { type: [string, "null"] }
+        as_of: { type: string, format: date-time }
+
+    # ------------------------------------------------------------------ commands
+    CommandType:
+      type: string
+      enum: [start_ea, stop_ea, set_risk, set_param, restart_ea, run_backtest]
+      description: "`run_backtest` is v2 (tester pool, not the client's VPS); its commands have `account_id: null`."
+    CommandStatus:
+      type: string
+      enum: [queued, dispatched, running, succeeded, failed, rejected, expired, cancelled]
+      description: |
+        `queued` → `dispatched` (agent picked it up) → `running` (template being applied) →
+        `succeeded` | `failed`. `rejected` = failed validation after queuing (rare; normally 422 at creation).
+        `expired` = agent did not pick it up before `expires_at` (VPS offline). `cancelled` = cancelled while queued.
+    InputValue:
+      description: A value for an EA input. Booleans as JSON booleans, numbers as JSON numbers, csv/strings as strings, enums as their integer index.
+      oneOf:
+        - { type: boolean }
+        - { type: number }
+        - { type: string }
+    InputMap:
+      type: object
+      additionalProperties: { $ref: "#/components/schemas/InputValue" }
+      description: Input variable name → value. Names are case-sensitive and must match `EaParameter.name`.
+      examples:
+        - { MaximumSpread: 15, NewsFilterEnabled: true }
+
+    StartEaParams:
+      type: object
+      required: [ea_id]
+      properties:
+        ea_id: { $ref: "#/components/schemas/EaId" }
+        preset:
+          type: string
+          description: Risk preset id from the catalog. Defaults to the EA's `default_preset`.
+        symbol:
+          type: string
+          description: Chart symbol to attach to. Defaults to the EA's default. Must be in `symbols_allowed`.
+        timeframe: { $ref: "#/components/schemas/Timeframe" }
+        inputs:
+          $ref: "#/components/schemas/InputMap"
+          description: Overrides applied on top of the preset. Whitelist applies.
+    StopEaParams:
+      type: object
+      required: [instance_id]
+      properties:
+        instance_id: { $ref: "#/components/schemas/InstanceId" }
+        mode:
+          type: string
+          enum: [soft, hard]
+          default: soft
+          description: |
+            `soft` – disallow new trades; the EA stays on the chart and keeps managing its open positions until they close
+            (instance status becomes `paused`). Requires `supports_soft_stop`.
+            `hard` – remove the EA from the chart. Open positions and pending orders are left untouched and unmanaged.
+        positions:
+          type: string
+          enum: [keep, close]
+          default: keep
+          description: "`close` – close all positions and pending orders attributed to this instance before stopping. Not enabled in the pilot; returns UNSUPPORTED_MODE."
+    SetRiskParams:
+      type: object
+      required: [instance_id, preset]
+      properties:
+        instance_id: { $ref: "#/components/schemas/InstanceId" }
+        preset: { type: string, description: Risk preset id from the catalog. }
+    SetParamParams:
+      type: object
+      required: [instance_id, inputs]
+      properties:
+        instance_id: { $ref: "#/components/schemas/InstanceId" }
+        inputs:
+          $ref: "#/components/schemas/InputMap"
+          description: One or more inputs to change. Everything else keeps its current value.
+    RestartEaParams:
+      type: object
+      required: [instance_id]
+      properties:
+        instance_id: { $ref: "#/components/schemas/InstanceId" }
+        inputs:
+          $ref: "#/components/schemas/InputMap"
+          description: Optional inputs to change during the restart. Same rules as `set_param`.
+
+    CommandCreate:
+      type: object
+      required: [client_id, type, params]
+      properties:
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        type: { $ref: "#/components/schemas/CommandType" }
+        params:
+          description: Type-specific parameters (see `type`).
+          oneOf:
+            - $ref: "#/components/schemas/StartEaParams"
+            - $ref: "#/components/schemas/StopEaParams"
+            - $ref: "#/components/schemas/SetRiskParams"
+            - $ref: "#/components/schemas/SetParamParams"
+            - $ref: "#/components/schemas/RestartEaParams"
+        dry_run:
+          type: boolean
+          default: false
+          description: Validate and compute the diff, do not queue. Response is `200 CommandPreview`.
+        requested_by:
+          type: string
+          maxLength: 128
+          description: Free-text actor for the audit trail, e.g. `edgard`, `user:5521`, `support:anna`.
+        reason:
+          type: string
+          maxLength: 500
+          description: Free-text reason, e.g. the user's message that triggered the command. Stored, shown in the audit trail.
+        callback_url:
+          type: string
+          format: uri
+          description: Optional HTTPS URL that receives a POST with the final `Command` object when the command reaches a terminal status.
+        ttl_seconds:
+          type: integer
+          minimum: 30
+          maximum: 3600
+          default: 600
+          description: How long the command may wait for the agent before expiring.
+    Diff:
+      type: object
+      required: [name, was, now]
+      properties:
+        name: { type: string }
+        label: { type: string }
+        was: {}
+        now: {}
+    Resolved:
+      type: object
+      description: What the server decided to apply after validation.
+      required: [ea_id, ea_name, instance_id, symbol, restarts_ea, diff]
+      properties:
+        ea_id: { $ref: "#/components/schemas/EaId" }
+        ea_name: { type: string }
+        instance_id: { $ref: "#/components/schemas/InstanceId" }
+        symbol: { type: string }
+        timeframe: { $ref: "#/components/schemas/Timeframe" }
+        preset: { type: [string, "null"] }
+        restarts_ea: { type: boolean, description: True for every command except a hard stop of a stopped instance. }
+        open_positions_at_request: { type: integer }
+        diff:
+          type: array
+          items: { $ref: "#/components/schemas/Diff" }
+          description: Input changes that will be applied (was → now). Empty for start and hard stop; a soft stop shows the kill-switch input.
+    Observed:
+      type: object
+      description: What the agent saw on the terminal after executing.
+      properties:
+        instance_status: { $ref: "#/components/schemas/InstanceStatus" }
+        inputs: { $ref: "#/components/schemas/InputMap" }
+        open_positions: { type: integer }
+        pending_orders: { type: integer }
+        observed_at: { type: string, format: date-time }
+    CommandResult:
+      type: object
+      required: [observed, reconciled, notes]
+      properties:
+        observed: { $ref: "#/components/schemas/Observed" }
+        reconciled:
+          type: boolean
+          description: "True when `observed` matches `resolved`. A command with `reconciled: false` is `failed` with `RECONCILE_MISMATCH`."
+        notes:
+          type: array
+          items: { type: string }
+        backtest:
+          oneOf:
+            - $ref: "#/components/schemas/BacktestResult"
+            - type: "null"
+          description: Present only for `run_backtest` commands (v2).
+
+    # ------------------------------------------------------------------ backtests (v2)
+    BacktestCreate:
+      type: object
+      x-status: v2
+      required: [client_id, ea_id, symbol, timeframe, from, to, deposit]
+      properties:
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        ea_id: { $ref: "#/components/schemas/EaId" }
+        preset: { type: string, description: Risk preset; defaults to the EA's default preset. }
+        inputs: { $ref: "#/components/schemas/InputMap" }
+        symbol: { type: string }
+        timeframe: { $ref: "#/components/schemas/Timeframe" }
+        from: { type: string, format: date }
+        to: { type: string, format: date }
+        deposit: { type: number }
+        currency: { type: string, default: USD }
+        leverage: { type: integer, default: 100 }
+        tick_model:
+          type: string
+          enum: [every_tick_real, every_tick, one_minute_ohlc, open_prices]
+          default: every_tick_real
+        broker_server:
+          type: string
+          description: Tester-pool history source. Defaults to the tenant's primary broker server.
+        requested_by: { type: string, maxLength: 128 }
+        reason: { type: string, maxLength: 500 }
+        callback_url: { type: string, format: uri }
+    BacktestResult:
+      type: object
+      x-status: v2
+      required: [net_profit, max_drawdown_pct, profit_factor, trades, report_url]
+      properties:
+        net_profit: { type: number }
+        gross_profit: { type: number }
+        gross_loss: { type: number }
+        max_drawdown_pct: { type: number, description: Maximal equity drawdown, percent. }
+        max_drawdown_money: { type: number }
+        profit_factor: { type: [number, "null"] }
+        recovery_factor: { type: [number, "null"] }
+        sharpe: { type: [number, "null"] }
+        expected_payoff: { type: number }
+        trades: { type: integer }
+        win_rate_pct: { type: number }
+        period: { type: object, properties: { from: { type: string, format: date }, to: { type: string, format: date } } }
+        report_url:
+          type: string
+          format: uri
+          description: Full HTML report, served by the API for 30 days.
+        history_quality_pct: { type: [number, "null"], description: Tester's modelling quality. }
+    TimelineEntry:
+      type: object
+      required: [status, at]
+      properties:
+        status: { $ref: "#/components/schemas/CommandStatus" }
+        at: { type: string, format: date-time }
+        note: { type: string }
+    Command:
+      type: object
+      required: [command_id, client_id, account_id, type, status, summary, requested, timeline, created_at, updated_at]
+      properties:
+        command_id: { type: string, examples: [cmd_01J6X0Q4M9] }
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        account_id: { type: [string, "null"], description: "null for `run_backtest` (tester pool, not an account)." }
+        type: { $ref: "#/components/schemas/CommandType" }
+        status: { $ref: "#/components/schemas/CommandStatus" }
+        summary:
+          type: string
+          description: One human-readable sentence describing the command and its current outcome. Safe to show to the end user.
+        requested:
+          type: object
+          additionalProperties: true
+          description: The `params` object exactly as received.
+        resolved:
+          oneOf:
+            - $ref: "#/components/schemas/Resolved"
+            - type: "null"
+        result:
+          oneOf:
+            - $ref: "#/components/schemas/CommandResult"
+            - type: "null"
+        error:
+          oneOf:
+            - $ref: "#/components/schemas/Error"
+            - type: "null"
+        timeline:
+          type: array
+          items: { $ref: "#/components/schemas/TimelineEntry" }
+        requested_by: { type: [string, "null"] }
+        reason: { type: [string, "null"] }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+        completed_at: { type: [string, "null"], format: date-time }
+        expires_at: { type: [string, "null"], format: date-time }
+    CommandPreview:
+      type: object
+      required: [valid, type, account_id, summary, resolved, requires_confirmation, warnings]
+      properties:
+        valid: { type: boolean, const: true }
+        type: { $ref: "#/components/schemas/CommandType" }
+        account_id: { type: string }
+        summary: { type: string }
+        resolved: { $ref: "#/components/schemas/Resolved" }
+        requires_confirmation:
+          type: boolean
+          description: True if any changed input is flagged `requires_confirmation`, or the command restarts an EA with open positions.
+        warnings:
+          type: array
+          items: { type: string }
