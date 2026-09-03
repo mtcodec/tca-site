@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Terminal Control API (TCA)
-  version: 0.2.0-draft
+  version: 0.2.1-draft
   summary: Operate MetaTrader 5 Expert Advisors on customer VPS machines from an AI chat or any API caller.
   description: |
     The Terminal Control API lets a dashboard agent (LLM tool-use) or a backend
@@ -1071,6 +1071,7 @@ components:
         - UNSUPPORTED_MODE
         - AGENT_OFFLINE
         - TERMINAL_NOT_CONNECTED
+        - TERMINAL_AUTH_FAILED
         - TRADING_DISABLED
         - TEMPLATE_APPLY_FAILED
         - COMMAND_TIMEOUT
@@ -1084,9 +1085,11 @@ components:
         * `EA_NOT_IN_CATALOG`, `EA_NOT_APPROVED`, `SYMBOL_NOT_ALLOWED`, `PRESET_UNKNOWN`,
           `PARAM_UNKNOWN`, `PARAM_NOT_CHANGEABLE`, `PARAM_OUT_OF_RANGE`, `PARAM_TYPE_MISMATCH`,
           `INSTANCE_NOT_FOUND`, `INSTANCE_LIMIT`, `RESTART_UNSAFE`, `UNSUPPORTED_MODE` (422) – refused before queuing.
-        * `AGENT_OFFLINE`, `TERMINAL_NOT_CONNECTED`, `TRADING_DISABLED`, `EA_NOT_INSTALLED`,
-          `TEMPLATE_APPLY_FAILED`, `COMMAND_TIMEOUT`, `RECONCILE_MISMATCH` – reported in `Command.error`
-          of a `failed` / `expired` command.
+        * `AGENT_OFFLINE`, `TERMINAL_NOT_CONNECTED`, `TERMINAL_AUTH_FAILED`, `TRADING_DISABLED` – refused
+          before queuing (422) when the account's `status` shows the terminal could not execute (see
+          `AccountStatus`); `AGENT_OFFLINE` also appears in `Command.error` of an `expired` command.
+        * `EA_NOT_INSTALLED`, `TEMPLATE_APPLY_FAILED`, `COMMAND_TIMEOUT`, `RECONCILE_MISMATCH` – reported in
+          `Command.error` of a `failed` command.
         * `INTERNAL` (500).
 
     # ------------------------------------------------------------------ catalog
@@ -1249,9 +1252,25 @@ components:
         build: { type: [integer, "null"] }
         trade_allowed: { type: [boolean, "null"], description: AutoTrading enabled in the terminal. }
         last_tick_at: { type: [string, "null"], format: date-time }
+        disconnected_since: { type: [string, "null"], format: date-time, description: Start of the current outage, if any. }
+    AccountStatus:
+      type: string
+      enum: [ok, degraded, disconnected, auth_failed, unknown]
+      description: |
+        * `ok` – terminal connected, AutoTrading on, agent reporting.
+        * `degraded` – connected but something needs attention (`status_reason`): AutoTrading off, a
+          connection blip under a minute, manager EA silent.
+        * `disconnected` – no broker connection for over a minute. The agent restarts the terminal
+          if the outage lasts (default after 5 min, at most every 15 min).
+        * `auth_failed` – the broker rejected the login; the agent does **not** restart in this case
+          (credentials need attention). Commands are refused with `TERMINAL_AUTH_FAILED`.
+        * `unknown` – the agent has not reported within the freshness window (`stale: true`).
+        Commands on an account that is not `ok` (or `degraded` with AutoTrading on) are refused
+        before queuing: `AGENT_OFFLINE`, `TERMINAL_NOT_CONNECTED`, `TERMINAL_AUTH_FAILED`,
+        `TRADING_DISABLED` (stop_ea is still allowed with AutoTrading off).
     AccountState:
       type: object
-      required: [account_id, vps_id, mt5_login, mt5_server, currency, terminal, as_of, stale, instances]
+      required: [account_id, vps_id, mt5_login, mt5_server, currency, status, terminal, as_of, stale, instances]
       properties:
         account_id: { type: string, examples: [acc_9q1x7d] }
         client_id: { $ref: "#/components/schemas/ClientId" }
@@ -1263,6 +1282,8 @@ components:
         currency: { type: string }
         leverage: { type: integer }
         type: { type: string, enum: [demo, real, contest] }
+        status: { $ref: "#/components/schemas/AccountStatus" }
+        status_reason: { type: [string, "null"], description: Human-readable explanation when status is not `ok`; safe to show to the user. }
         terminal: { $ref: "#/components/schemas/TerminalState" }
         balance: { type: number }
         equity: { type: number }
