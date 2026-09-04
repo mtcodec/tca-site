@@ -1152,6 +1152,12 @@ components:
             subset_of:
               type: string
               description: For csv inputs – every value must come from this list (e.g. `symbols_allowed`).
+            requires_flat:
+              type: boolean
+              description: |
+                The input may only change while the instance has no open positions and no pending
+                orders (the EA would lose them after the restart, e.g. `Symbols`). Enforced server-side:
+                otherwise the command is refused with `RESTART_UNSAFE` naming the input in `details.inputs`.
         enum_labels:
           type: object
           additionalProperties: { type: string }
