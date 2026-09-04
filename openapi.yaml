@@ -1261,6 +1261,12 @@ components:
         disconnected_since: { type: [string, "null"], format: date-time, description: Start of the current outage, if any. }
         previous_build: { type: [integer, "null"], description: Build the terminal ran before its last update (MT5 LiveUpdate applies at a restart). }
         build_changed_at: { type: [string, "null"], format: date-time, description: When the build change was first observed. }
+        discovered:
+          type: boolean
+          description: |
+            The agent found this terminal running on the VPS by itself (not part of the provisioning
+            config) and took it under management: a terminal the customer installed later.
+        path: { type: [string, "null"], description: Install directory of the terminal on the VPS. }
     AccountStatus:
       type: string
       enum: [ok, degraded, disconnected, auth_failed, unknown]
