@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand for traders — run your EAs by chat</title>
+<meta name="description" content="Run the Expert Advisors on your MetaTrader 5 VPS by chat: see what they do, pause, lower the risk, restart with a new setting — from your phone, with a confirmation before anything changes.">
+<link rel="canonical" href="https://algohand.com/traders">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234f8cff'/%3E%3Ctext x='32' y='43' font-family='Inter,Arial' font-weight='800' font-size='34' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/"><span class="logo">A</span>AlgoHand</a>
+  <button class="navtoggle" type="button" aria-label="Menu">Menu</button>
+  <nav class="main">
+    <a href="/business">For business</a>
+    <a href="/traders" aria-current="page">For traders</a>
+    <a href="/authors">EA authors</a>
+    <a href="/docs/">API docs</a>
+    <a class="btn sm primary" href="/demo">Try the demo</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+  <div class="hero" style="padding-bottom:24px">
+    <div>
+      <div class="eyebrow">For traders who run EAs on a VPS</div>
+      <h1 style="margin-top:14px">Your robots, one <em>message</em> away.</h1>
+      <p class="lead">News in ten minutes and you are on the road? "Pause Night Hunter." Want less risk over the weekend? "Switch Waka Waka to low." Curious how the week went? "Show P&amp;L by robot." No RDP, no squinting at a remote desktop on a phone.</p>
+      <div class="cta">
+        <a class="btn primary" href="#join">Join early access</a>
+        <a class="btn" href="/demo">Try the demo first</a>
+      </div>
+      <div class="trust">
+        <span>Works with the EAs you own</span>
+        <span>Nothing changes without your yes</span>
+        <span>Your VPS, your accounts</span>
+      </div>
+    </div>
+    <div class="replay" data-replay="auto">
+      <div class="bar"><span>What a Sunday evening looks like</span><button type="button">Replay</button></div>
+      <div class="log" style="min-height:360px">
+        <div class="m user">Which robots are running right now?</div>
+        <div class="m bot">Four EAs on account 53133702 (Vantage):
+- Night Hunter Pro — EURUSD M5, medium
+- News Catcher Pro — EURUSD M5, medium
+- Perceptrader AI — AUDCAD M5, medium
+- Waka Waka — AUDCAD M15, medium
+All on their charts, terminal connected, AutoTrading on.</div>
+        <div class="m user">Switch Waka Waka to low risk before the open</div>
+        <div class="m tool"><span class="st">✓</span> set_risk <span class="rq">dry_run</span> · preset medium → low · 3 inputs change · EA restarts · 2 open positions (grid, recovery verified)</div>
+        <div class="m bot">Dry run for <b>Waka Waka</b> (AUDCAD M15): preset medium → low.
+• LotSizingMethod stays, risk per trade 2% → 1%, max grid orders 8 → 5
+• The EA restarts and picks up its 2 open positions by magic number (verified for this EA).
+Apply it?</div>
+        <div class="m user">yes</div>
+        <div class="m tool"><span class="st">✓</span> set_risk · succeeded in 2 s · reconciled: true</div>
+        <div class="m bot">Done ✅ Waka Waka is back on AUDCAD M15 with the low preset, both positions still managed. I'll keep an eye on it.</div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="eyebrow">What you need</div>
+    <h2>A VPS, your terminals, ten minutes</h2>
+    <div class="steps" style="margin-top:26px">
+      <div class="step"><h3>A Windows VPS with MT5</h3><p>Any provider. Your terminals stay exactly as they are, logged in to your accounts, with your EAs and licences.</p></div>
+      <div class="step"><h3>One installer</h3><p>Download, run, paste the code from your AlgoHand account. The agent finds every terminal on the machine by itself.</p></div>
+      <div class="step"><h3>Open the chat</h3><p>On your phone or laptop. Your robots appear with their real settings — nothing to re-create, nothing to configure.</p></div>
+      <div class="step"><h3>Keep control</h3><p>Every change is shown as a dry run first. You approve, the agent applies it, the terminal confirms it. You can always check the audit trail.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">What you can ask</div>
+    <h2>Plain questions, plain answers</h2>
+    <div class="grid3" style="margin-top:26px">
+      <div class="card"><h3>"How did last week go?"</h3><p>Closed P&amp;L per robot, win rate, best and worst trade, drawdown — with charts in the chat.</p></div>
+      <div class="card"><h3>"Pause everything on EURUSD"</h3><p>Soft stop: the EAs keep managing their open trades and open no new ones. Resume with one message.</p></div>
+      <div class="card"><h3>"Restart Night Hunter with MaxSpread 15"</h3><p>The assistant finds the exact input name and its allowed range, shows you the change, and applies it after your yes.</p></div>
+      <div class="card"><h3>"Is my VPS OK?"</h3><p>Terminal connected, AutoTrading on, last tick time, memory and disk. If something broke overnight, you hear what the agent did about it.</p></div>
+      <div class="card"><h3>"Show my balance curve since January"</h3><p>The whole deal history of the account, drawn as a curve, with the maximum drawdown marked.</p></div>
+      <div class="card"><h3>"Which hours make money?"</h3><p>Profit and win rate by hour of day and weekday — the kind of question that used to mean exporting to Excel.</p></div>
+      <div class="card" style="grid-column:1 / -1"><span class="pill soon">Roadmap</span><h3 style="margin-top:10px">"Backtest the low preset over the last year"</h3><p>Coming: backtests run for you on our dedicated tester servers, not on your VPS. Two settings side by side, the report in the chat, and "apply it?" one message later.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid2">
+      <div>
+        <div class="eyebrow">Honest limits</div>
+        <h2>What it does not do</h2>
+        <ul class="checks" style="margin-top:14px">
+          <li>It does not trade. It operates the robots you chose; it never opens or closes positions itself.</li>
+          <li>It does not change settings on a grid EA with open trades until that EA's recovery has been verified — you get a clear refusal, not a gamble.</li>
+          <li>It does not give financial advice. Performance figures are information; decisions are yours.</li>
+          <li>It does not need your passwords, and it does not store them.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Early access</div>
+        <h3 style="margin-top:10px">What early access includes</h3>
+        <ul class="checks">
+          <li>One VPS, unlimited terminals and accounts</li>
+          <li>Onboarding of the EAs you run (we check names, ranges and restart safety)</li>
+          <li>Direct line to the people who build it</li>
+          <li>Early-access price locked for a year</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="join">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Join</div>
+        <h2>Early access for traders</h2>
+        <p class="sub">We onboard a few traders at a time so that every EA is checked properly. Tell us which robots you run and on which broker; we will get back with a date.</p>
+      </div>
+      <form class="lead" data-lead="trader" data-thanks="Thanks! You are on the list — we will write with the next available slot.">
+        <div class="row">
+          <div><label>Name</label><input name="name" required maxlength="128" autocomplete="name"></div>
+          <div><label>E-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
+        </div>
+        <div><label>Your EAs and broker</label><textarea name="message" maxlength="4000" placeholder="e.g. Waka Waka and Night Hunter Pro on IC Markets, VPS at Contabo"></textarea></div>
+        <div class="hp"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Join early access</button>
+        <div class="msg"></div>
+        <div class="note">No spam. We write when there is a slot for you.</div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/" style="font-size:16px"><span class="logo" style="width:26px;height:26px;font-size:13px;border-radius:7px">A</span>AlgoHand</a><p style="margin-top:10px;max-width:28em">Chat-driven control for MetaTrader 5 Expert Advisors. A product of MTCodec JSC, Georgia.</p></div>
+    <div><b>Product</b><a href="/business">For business</a><a href="/traders">For traders</a><a href="/authors">EA authors</a><a href="/demo">Live demo</a></div>
+    <div><b>Developers</b><a href="/docs/">API reference</a><a href="/docs/openapi.yaml">OpenAPI document</a><a href="/docs/claude_tools.json">Tool definitions</a><a href="https://tca.mtcodec.com">Terminal Control API</a></div>
+    <div><b>Company</b><a href="https://www.mtcodec.com">MTCodec</a><a href="mailto:info@mtcodec.com">info@mtcodec.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 MTCodec JSC. AlgoHand and Terminal Control API are products of MTCodec.</span><span>MetaTrader is a trademark of MetaQuotes Ltd. Not affiliated with MetaQuotes. Trading involves risk; nothing here is financial advice.</span></div>
+</div></footer>
+
+<script src="/assets/site.js"></script>
+</body>
+</html>

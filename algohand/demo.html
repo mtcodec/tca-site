@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand live demo — drive real MT5 terminals from a chat</title>
+<meta name="description" content="Try AlgoHand on real MetaTrader 5 terminals with demo accounts or on a simulated VPS: start, stop and reconfigure Expert Advisors by chat, see charts of equity and P&L.">
+<link rel="canonical" href="https://algohand.com/demo">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234f8cff'/%3E%3Ctext x='32' y='43' font-family='Inter,Arial' font-weight='800' font-size='34' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/"><span class="logo">A</span>AlgoHand</a>
+  <button class="navtoggle" type="button" aria-label="Menu">Menu</button>
+  <nav class="main">
+    <a href="/business">For business</a>
+    <a href="/traders">For traders</a>
+    <a href="/authors">EA authors</a>
+    <a href="/docs/">API docs</a>
+    <a class="btn sm primary" href="/demo" aria-current="page">Try the demo</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+  <div class="hero" style="padding-bottom:24px">
+    <div>
+      <div class="eyebrow">Live demo</div>
+      <h1 style="margin-top:14px">Real terminals. Real commands. <em>Your questions.</em></h1>
+      <p class="lead">The demo chat is the same assistant a broker would embed in its dashboard. It drives real MetaTrader 5 terminals on our test VPS (demo accounts, real EAs) and a simulated VPS that resets every night. Access is by code so that nobody strangers' robots get restarted for fun.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://chat.algohand.com">Open the chat</a>
+        <a class="btn" href="#code">Get an access code</a>
+      </div>
+      <div class="trust">
+        <span>Two environments: real VPS and sandbox</span>
+        <span>Charts in the chat</span>
+        <span>Nothing to install</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Things to try</div>
+      <ul class="checks" style="margin-top:12px">
+        <li>"How is my account doing?"</li>
+        <li>"Which EAs are running right now?"</li>
+        <li>"Draw my balance curve"</li>
+        <li>"Win rate by hour of day"</li>
+        <li>"Switch Perceptrader to low risk" — watch the dry run, then say yes</li>
+        <li>"Restart Night Hunter with MaxSpread 15"</li>
+        <li>"Stop Waka Waka" — soft stop, positions stay managed</li>
+        <li>"Start Night Hunter Pro on EURUSD with the medium preset"</li>
+      </ul>
+      <p class="small muted" style="margin-top:14px">The assistant answers in the language you write in. Every change is shown as a dry run and applied only after your explicit yes; the outcome comes back with timestamps and the settings read from the terminal.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="eyebrow">Environments</div>
+    <h2>Pick the one that matches your question</h2>
+    <div class="grid2" style="margin-top:26px">
+      <div class="card"><span class="pill">Sandbox</span><h3 style="margin-top:12px">Simulated VPS, resets nightly</h3><p>A full control server with a simulated VPS, two demo accounts, three running EAs and nine weeks of trade history. Commands complete in about a second. Ideal to explore the API and the chat without waiting for a terminal.</p></div>
+      <div class="card"><span class="pill">Live</span><h3 style="margin-top:12px">Real MT5 terminals on our test VPS</h3><p>Two terminals with demo accounts and the EAs from our pilot catalog. Commands take one to three seconds because a real terminal applies a real template. This is what your customers get.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid2">
+      <div class="replay" data-replay="auto">
+        <div class="bar"><span>Recorded · charts in the chat</span><button type="button">Replay</button></div>
+        <div class="log" style="min-height:320px">
+          <div class="m user">Draw my balance curve and show the win rate by hour of day</div>
+          <div class="m tool"><span class="st">✓</span> get_equity_curve source=deals · 259 deals · 170 points</div>
+          <div class="m tool"><span class="st">✓</span> get_pnl group=hour · 55 deals · 24 buckets</div>
+          <div class="m bot">Both charts are for your main account (balance 10 250.40 USD).
+
+Balance curve (whole history): grew from 0 to 10 250.40 USD, steadily, worst drawdown 158.76 USD (1.58%) on 17 Jul.
+
+Win rate by hour (last 30 days, broker time): 55 deals, 76.4% wins, +234.75 USD. Strongest block 08:00 (13 deals, 84.6% wins); weak spot 11:00 (33% wins, −39.37).
+
+Want the same cut by weekday, or per EA?</div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">For developers</div>
+        <h2>Same demo, from your code</h2>
+        <p class="sub">The chat is a thin client over the public API. With a sandbox key you can call the same endpoints from curl, from your assistant's tools or through MCP.</p>
+        <pre style="margin-top:16px">curl -H "Authorization: Bearer $KEY" \
+  "https://api.algohand.com/v1/clients/ea-cust-1042/state"
+
+curl -H "Authorization: Bearer $KEY" -X POST \
+  https://api.algohand.com/v1/accounts/acc_9q1x7d/commands \
+  -d '{"client_id":"ea-cust-1042","type":"set_risk",
+       "params":{"instance_id":"inst_d4e5f6","preset":"low"},
+       "dry_run":true}'</pre>
+        <div class="cta"><a class="btn" href="/docs/">API reference</a><a class="btn" href="/business#contact">Request sandbox keys</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="code">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Access</div>
+        <h2>Get a demo code</h2>
+        <p class="sub">Tell us who you are and what you would like to try; we send a code for the sandbox, or for the live terminals if you want to see real EAs move. Codes are personal and can be revoked.</p>
+        <p class="small muted" style="margin-top:14px">Already have a code? <a href="https://chat.algohand.com">Open the chat</a> and enter it.</p>
+      </div>
+      <form class="lead" data-lead="demo" data-thanks="Thanks! Your access code is on its way — usually within a few hours.">
+        <div class="row">
+          <div><label>Name</label><input name="name" required maxlength="128" autocomplete="name"></div>
+          <div><label>E-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
+        </div>
+        <div><label>Company (optional)</label><input name="company" maxlength="256" autocomplete="organization"></div>
+        <div><label>What would you like to try?</label><textarea name="message" maxlength="4000" placeholder="sandbox, live terminals, or both"></textarea></div>
+        <div class="hp"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Request a code</button>
+        <div class="msg"></div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/" style="font-size:16px"><span class="logo" style="width:26px;height:26px;font-size:13px;border-radius:7px">A</span>AlgoHand</a><p style="margin-top:10px;max-width:28em">Chat-driven control for MetaTrader 5 Expert Advisors. A product of MTCodec JSC, Georgia.</p></div>
+    <div><b>Product</b><a href="/business">For business</a><a href="/traders">For traders</a><a href="/authors">EA authors</a><a href="/demo">Live demo</a></div>
+    <div><b>Developers</b><a href="/docs/">API reference</a><a href="/docs/openapi.yaml">OpenAPI document</a><a href="/docs/claude_tools.json">Tool definitions</a><a href="https://tca.mtcodec.com">Terminal Control API</a></div>
+    <div><b>Company</b><a href="https://www.mtcodec.com">MTCodec</a><a href="mailto:info@mtcodec.com">info@mtcodec.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 MTCodec JSC. AlgoHand and Terminal Control API are products of MTCodec.</span><span>MetaTrader is a trademark of MetaQuotes Ltd. Not affiliated with MetaQuotes. Trading involves risk; nothing here is financial advice.</span></div>
+</div></footer>
+
+<script src="/assets/site.js"></script>
+</body>
+</html>

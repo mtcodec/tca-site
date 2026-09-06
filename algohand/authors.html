@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand for EA authors — list your Expert Advisor</title>
+<meta name="description" content="List your MetaTrader 5 Expert Advisor in the AlgoHand catalog: your description, your presets, your parameter notes. Traders pick it from a list and run it by chat. Closed .ex5 only.">
+<link rel="canonical" href="https://algohand.com/authors">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234f8cff'/%3E%3Ctext x='32' y='43' font-family='Inter,Arial' font-weight='800' font-size='34' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/"><span class="logo">A</span>AlgoHand</a>
+  <button class="navtoggle" type="button" aria-label="Menu">Menu</button>
+  <nav class="main">
+    <a href="/business">For business</a>
+    <a href="/traders">For traders</a>
+    <a href="/authors" aria-current="page">EA authors</a>
+    <a href="/docs/">API docs</a>
+    <a class="btn sm primary" href="/demo">Try the demo</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+  <div class="hero" style="padding-bottom:24px">
+    <div>
+      <span class="pill soon">Opening soon</span>
+      <h1 style="margin-top:14px">List your EA where it gets <em>used</em>, not just sold.</h1>
+      <p class="lead">Traders on AlgoHand pick a robot from a list and run it by chat. Put yours there with your own description, your presets and your notes on every parameter — and get a verified restart-safety badge that tells buyers the robot survives a restart with open trades.</p>
+      <div class="cta">
+        <a class="btn primary" href="#apply">Tell us about your EA</a>
+      </div>
+      <div class="trust">
+        <span>Closed .ex5 only, no source code</span>
+        <span>Your licensing stays yours</span>
+        <span>Free during early access</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Your listing, your words</div>
+      <table style="margin-top:12px">
+        <tr><td class="muted">Name</td><td>Night Hunter Pro <span class="small muted">· v6.74</span></td></tr>
+        <tr><td class="muted">Style</td><td>Night scalper, EURUSD &amp; GBPUSD, M5, no grid</td></tr>
+        <tr><td class="muted">Presets</td><td><code>low</code> 0.5% · <code>medium</code> 1% · <code>high</code> 2% risk per trade</td></tr>
+        <tr><td class="muted">Changeable by chat</td><td>MaximumSpread <span class="muted">0.5–50 pips</span> · LotSizingMethod <span class="muted">fixed / risk %</span> · TradeComment</td></tr>
+        <tr><td class="muted">Locked</td><td>Magic number, licence key, internal filters</td></tr>
+        <tr><td class="muted">Restart safety</td><td><span style="color:var(--ok)">verified</span> — recovers open trades by magic number</td></tr>
+        <tr><td class="muted">Licensing</td><td>By account number on the author's server, as today</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <section>
+    <div class="eyebrow">How it will work</div>
+    <h2>You describe it once, every trader gets it right</h2>
+    <div class="steps" style="margin-top:26px">
+      <div class="step"><h3>Upload the .ex5</h3><p>Our discovery reads the input names, types and defaults straight from the compiled file on a demo terminal. No source code, ever.</p></div>
+      <div class="step"><h3>Describe</h3><p>Write the description traders see, name the presets, mark which inputs may be changed by chat and within which ranges, and which must stay locked.</p></div>
+      <div class="step"><h3>We verify</h3><p>We test restart behaviour with open trades on a demo account and review ranges and enum values. Takes a few days; you see the results.</p></div>
+      <div class="step"><h3>Live in the catalog</h3><p>Your EA appears for traders and partner platforms with your name on it. Updates: upload a new build, we re-verify, the listing keeps its history.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid2">
+      <div>
+        <div class="eyebrow">Why bother</div>
+        <h2>Fewer support tickets, more happy users</h2>
+        <ul class="checks" style="margin-top:14px">
+          <li>Users change only what you allow, within ranges you set — no more "I set the lot to 10 and it blew up"</li>
+          <li>Your presets replace the guesswork of ninety inputs</li>
+          <li>The badge says out loud what you already know: it survives a restart</li>
+          <li>A new channel: brokers and platforms integrating AlgoHand see your EA in their catalog</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Not part of the deal</div>
+        <ul class="checks" style="margin-top:12px">
+          <li>We do not resell, re-license or host your EA — licensing and payment stay with you</li>
+          <li>We do not ask for source code and we do not reverse-engineer compiled files</li>
+          <li>We do not publish performance claims; traders see their own results, not marketing</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="apply">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Apply</div>
+        <h2>Tell us about your EA</h2>
+        <p class="sub">Author accounts open in stages. Leave your details and the EAs you would like to list; we will invite you when the author portal is ready and onboard the first ones by hand.</p>
+      </div>
+      <form class="lead" data-lead="author" data-thanks="Thanks! We will invite you as soon as author onboarding opens.">
+        <div class="row">
+          <div><label>Name</label><input name="name" required maxlength="128" autocomplete="name"></div>
+          <div><label>E-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
+        </div>
+        <div><label>Company or brand (optional)</label><input name="company" maxlength="256" autocomplete="organization"></div>
+        <div><label>Your EAs and where they are sold</label><textarea name="message" maxlength="4000" placeholder="e.g. Night Hunter Pro and Waka Waka, sold on our site and MQL5 Market; licence by account number"></textarea></div>
+        <div class="hp"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Apply as an author</button>
+        <div class="msg"></div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/" style="font-size:16px"><span class="logo" style="width:26px;height:26px;font-size:13px;border-radius:7px">A</span>AlgoHand</a><p style="margin-top:10px;max-width:28em">Chat-driven control for MetaTrader 5 Expert Advisors. A product of MTCodec JSC, Georgia.</p></div>
+    <div><b>Product</b><a href="/business">For business</a><a href="/traders">For traders</a><a href="/authors">EA authors</a><a href="/demo">Live demo</a></div>
+    <div><b>Developers</b><a href="/docs/">API reference</a><a href="/docs/openapi.yaml">OpenAPI document</a><a href="/docs/claude_tools.json">Tool definitions</a><a href="https://tca.mtcodec.com">Terminal Control API</a></div>
+    <div><b>Company</b><a href="https://www.mtcodec.com">MTCodec</a><a href="mailto:info@mtcodec.com">info@mtcodec.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 MTCodec JSC. AlgoHand and Terminal Control API are products of MTCodec.</span><span>MetaTrader is a trademark of MetaQuotes Ltd. Not affiliated with MetaQuotes. Trading involves risk; nothing here is financial advice.</span></div>
+</div></footer>
+
+<script src="/assets/site.js"></script>
+</body>
+</html>

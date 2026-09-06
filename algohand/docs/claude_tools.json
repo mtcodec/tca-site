@@ -1,0 +1,234 @@
+[
+  {
+    "name": "get_client_state",
+    "description": "Get the live state of everything a customer owns: VPS machines, MT5 terminals/accounts (balance, equity, margin), every running EA instance with its effective inputs, open positions and pending orders with per-EA attribution, and VPS health. Call this FIRST for any question or action: it returns the account_id and instance_id values that every command needs. If `stale` is true the agent has not reported recently and numbers may be old. Maps to GET /v1/clients/{client_id}/state.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string",
+          "description": "The customer's identifier in the calling platform."
+        },
+        "include": {
+          "type": "string",
+          "description": "Optional comma-separated sections to include (accounts,instances,positions,orders,vps). Default: everything."
+        }
+      },
+      "required": ["client_id"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "list_eas",
+    "description": "List the Expert Advisors available in the catalog with their ea_id, description, category (grid/scalper/news), risk presets (e.g. low/medium/high), allowed symbols, and whether they support a soft stop. Use it to map what the user says (\"Waka\", \"the night scalper\") to an ea_id and to show which presets exist. Does not include the parameter list; call get_ea for that. Maps to GET /v1/eas.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string",
+          "description": "Optional. When given, limits the list to EAs this customer is licensed to use."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "get_ea",
+    "description": "Get one EA's full description: every caller-visible input with its exact name, label, explanation, type, default, whether it can be changed, the allowed range, and whether changing it should be confirmed with the user first (risk-related). Always call this before proposing a parameter change so you use the exact input name and a value inside the allowed range. Maps to GET /v1/eas/{ea_id}.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "ea_id": {
+          "type": "string",
+          "description": "Catalog id, e.g. waka_waka, night_hunter_pro, perceptrader_ai, news_catcher_pro."
+        }
+      },
+      "required": ["ea_id"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "start_ea",
+    "description": "Start an EA on a customer's account with a risk preset (add an EA). Asynchronous: returns a command_id and status `queued`; call get_command with wait to learn the outcome. Use dry_run=true first to get a human-readable summary and diff to confirm with the user, then call again without dry_run. Fails with a clear error if the EA is not in the catalog, the symbol is not allowed, or the instance limit is reached. Maps to POST /v1/accounts/{account_id}/commands with type=start_ea.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": { "type": "string" },
+        "account_id": { "type": "string", "description": "From get_client_state (e.g. acc_9q1x7d)." },
+        "ea_id": { "type": "string", "description": "From list_eas." },
+        "preset": { "type": "string", "description": "Risk preset id from list_eas (e.g. low, medium, high). Defaults to the EA's default preset." },
+        "symbol": { "type": "string", "description": "Optional chart symbol; must be in the EA's symbols_allowed. Defaults to the EA's default." },
+        "timeframe": { "type": "string", "enum": ["M1", "M5", "M15", "M30", "H1", "H4", "D1"], "description": "Optional chart timeframe. Defaults to the EA's default." },
+        "inputs": {
+          "type": "object",
+          "description": "Optional input overrides on top of the preset, keyed by exact input name from get_ea. Only whitelisted inputs are accepted.",
+          "additionalProperties": { "type": ["boolean", "number", "string"] }
+        },
+        "dry_run": { "type": "boolean", "description": "If true, validate and return the summary/diff without starting anything." },
+        "reason": { "type": "string", "description": "The user's request in their words, for the audit trail." }
+      },
+      "required": ["client_id", "account_id", "ea_id"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "stop_ea",
+    "description": "Stop a running EA instance. mode=soft (default): the EA stops opening new trades but stays on the chart and keeps managing its open positions until they close on their own; the instance becomes `paused`. mode=hard: the EA is removed from the chart; open positions and pending orders are left untouched and unmanaged, which is dangerous for grid EAs with an open basket. Positions are never closed by this tool. Asynchronous: poll with get_command. Maps to POST /v1/accounts/{account_id}/commands with type=stop_ea.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": { "type": "string" },
+        "account_id": { "type": "string" },
+        "instance_id": { "type": "string", "description": "From get_client_state (e.g. inst_a1b2c3)." },
+        "mode": { "type": "string", "enum": ["soft", "hard"], "description": "Default soft." },
+        "dry_run": { "type": "boolean" },
+        "reason": { "type": "string" }
+      },
+      "required": ["client_id", "account_id", "instance_id"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "set_risk",
+    "description": "Switch a running EA instance to a different risk preset (e.g. low/medium/high from list_eas). This restarts the EA with the preset's lot-sizing inputs; the response's `resolved.diff` shows exactly which inputs change from what to what. Refused with RESTART_UNSAFE if the EA has open positions and its restart safety is not verified. Use dry_run=true to show the user the diff before applying. Asynchronous: poll with get_command. Maps to POST /v1/accounts/{account_id}/commands with type=set_risk.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": { "type": "string" },
+        "account_id": { "type": "string" },
+        "instance_id": { "type": "string" },
+        "preset": { "type": "string", "description": "Preset id from list_eas." },
+        "dry_run": { "type": "boolean" },
+        "reason": { "type": "string" }
+      },
+      "required": ["client_id", "account_id", "instance_id", "preset"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "set_param",
+    "description": "Change one or more inputs of a running EA instance (e.g. MaximumSpread to 15). Use the exact input names and allowed ranges from get_ea; anything not on the whitelist is refused with PARAM_NOT_CHANGEABLE or PARAM_OUT_OF_RANGE and a message you can relay. Every change restarts the EA; the response shows the was → now diff. Inputs flagged requires_confirmation in get_ea should be confirmed with the user first (use dry_run=true to get the summary). Asynchronous: poll with get_command. Maps to POST /v1/accounts/{account_id}/commands with type=set_param.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": { "type": "string" },
+        "account_id": { "type": "string" },
+        "instance_id": { "type": "string" },
+        "inputs": {
+          "type": "object",
+          "description": "Input name → new value. Booleans as booleans, numbers as numbers, enums as their integer index, comma-separated lists as strings.",
+          "additionalProperties": { "type": ["boolean", "number", "string"] },
+          "minProperties": 1
+        },
+        "dry_run": { "type": "boolean" },
+        "reason": { "type": "string" }
+      },
+      "required": ["client_id", "account_id", "instance_id", "inputs"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "restart_ea",
+    "description": "Restart a running EA instance, optionally changing inputs at the same time (\"restart Night Hunter with MaxSpread 15\"). Without inputs it re-applies the current configuration, which is useful when an instance shows status `error`. With inputs it behaves like set_param. Asynchronous: poll with get_command. Maps to POST /v1/accounts/{account_id}/commands with type=restart_ea.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": { "type": "string" },
+        "account_id": { "type": "string" },
+        "instance_id": { "type": "string" },
+        "inputs": {
+          "type": "object",
+          "description": "Optional input changes, same rules as set_param.",
+          "additionalProperties": { "type": ["boolean", "number", "string"] }
+        },
+        "dry_run": { "type": "boolean" },
+        "reason": { "type": "string" }
+      },
+      "required": ["client_id", "account_id", "instance_id"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "get_command",
+    "description": "Get the status and outcome of a command created by start_ea / stop_ea / set_risk / set_param / restart_ea. Pass wait (up to 30 seconds) to block until the command finishes instead of polling. Terminal statuses: succeeded, failed, rejected, expired, cancelled. The `summary` field is a one-sentence, user-safe description of what happened; `resolved.diff` is what was applied; `result.observed` is what the terminal actually shows afterwards; `error` explains a failure. Maps to GET /v1/commands/{command_id}.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": { "type": "string" },
+        "command_id": { "type": "string" },
+        "wait": { "type": "integer", "description": "Seconds to wait for completion, 0–30. Use 30." }
+      },
+      "required": ["client_id", "command_id"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "list_commands",
+    "description": "List recent commands on an account (audit trail): what was requested, by whom, when, and the outcome. Use it to answer \"what did you change recently?\" or to find a command that is still in flight before creating a new one for the same instance. Maps to GET /v1/accounts/{account_id}/commands.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": { "type": "string" },
+        "account_id": { "type": "string" },
+        "instance_id": { "type": "string", "description": "Optional filter." },
+        "status": { "type": "string", "enum": ["queued", "dispatched", "running", "succeeded", "failed", "rejected", "expired", "cancelled"], "description": "Optional filter." },
+        "limit": { "type": "integer", "description": "1–200, default 50." }
+      },
+      "required": ["client_id", "account_id"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "get_account_history",
+    "description": "Closed deals on an account, each attributed to an ea_id / instance_id by magic number. Use it for per-EA results over a period. Defaults to the last 7 days. Reporting logic (weekly summaries, recommendations) is the caller's job; this tool only supplies attributed raw deals. Maps to GET /v1/accounts/{account_id}/history.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": { "type": "string" },
+        "account_id": { "type": "string" },
+        "from": { "type": "string", "description": "ISO 8601 date-time, inclusive." },
+        "to": { "type": "string", "description": "ISO 8601 date-time, exclusive." },
+        "ea_id": { "type": "string", "description": "Optional filter." },
+        "instance_id": { "type": "string", "description": "Optional filter." },
+        "limit": { "type": "integer", "description": "1–500, default 100." },
+        "cursor": { "type": "string", "description": "From a previous page's next_cursor." }
+      },
+      "required": ["client_id", "account_id"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "get_equity_curve",
+    "description": "Balance / equity of an account over time with a drawdown summary. source=samples (default): balance and equity sampled about once a minute, kept 90 days, shows floating P&L — use for 'how did equity move this week'. source=deals: the balance after every deal of the whole account history, any period — use for 'draw my balance curve', 'growth since the start', anything older than 90 days. The dashboard renders the result as a chart automatically, so after calling it give a two-line takeaway (change over the window, max drawdown) instead of listing points. Maps to GET /v1/accounts/{account_id}/equity.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": { "type": "string" },
+        "account_id": { "type": "string" },
+        "source": { "type": "string", "enum": ["samples", "deals"], "description": "Default samples." },
+        "from": { "type": "string", "description": "ISO 8601 date-time. Default: 7 days before `to` (samples) or the first deal (deals)." },
+        "to": { "type": "string", "description": "ISO 8601 date-time. Default now." },
+        "step": { "type": "integer", "description": "Seconds per point (60–86400). Default fits about 400 points." }
+      },
+      "required": ["client_id", "account_id"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "get_pnl",
+    "description": "Closed profit and loss of an account grouped by ea (default), instance, symbol, day, hour (of day, 00–23) or weekday (Mon–Sun): per group deals, wins/losses, profit, win rate, profit factor, average result and max drawdown, plus cumulative curves. Use it for 'which EA earned most', 'how did last week go', 'win rate by symbol', 'which hours / weekdays are profitable', 'drawdown by EA'. Hours and weekdays are in the broker's server time. The dashboard renders the groups as a histogram (profit / win rate / drawdown / deals, switchable) and the cumulative curve as a line, so summarise the picture in words rather than repeating every number. Defaults to the last 30 days; pass `from` for longer periods (the whole history is available). Maps to GET /v1/accounts/{account_id}/pnl.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": { "type": "string" },
+        "account_id": { "type": "string" },
+        "from": { "type": "string", "description": "ISO 8601 date-time. Default 30 days before `to`." },
+        "to": { "type": "string", "description": "ISO 8601 date-time. Default now." },
+        "group": { "type": "string", "enum": ["ea", "instance", "symbol", "day", "hour", "weekday"], "description": "Default ea." }
+      },
+      "required": ["client_id", "account_id"],
+      "additionalProperties": false
+    }
+  }
+]

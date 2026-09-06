@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand — talk to your trading robots</title>
+<meta name="description" content="AlgoHand runs your MetaTrader 5 Expert Advisors by chat: start, stop, change risk, see how they do — on your VPS, with every change validated and verified. For brokers, platforms and traders.">
+<link rel="canonical" href="https://algohand.com/">
+<meta property="og:title" content="AlgoHand — your trading robots, in good hands">
+<meta property="og:description" content="Run MetaTrader 5 Expert Advisors by chat, safely. API for platforms, chat for traders.">
+<meta property="og:url" content="https://algohand.com/">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234f8cff'/%3E%3Ctext x='32' y='43' font-family='Inter,Arial' font-weight='800' font-size='34' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/"><span class="logo">A</span>AlgoHand</a>
+  <button class="navtoggle" type="button" aria-label="Menu">Menu</button>
+  <nav class="main">
+    <a href="/business">For business</a>
+    <a href="/traders">For traders</a>
+    <a href="/authors">EA authors</a>
+    <a href="/docs/">API docs</a>
+    <a class="btn sm primary" href="/demo">Try the demo</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow">MetaTrader 5 · Expert Advisors · your VPS</div>
+      <h1 style="margin-top:14px">Your trading robots, <em>in good hands.</em></h1>
+      <p class="lead">AlgoHand lets you run MetaTrader 5 Expert Advisors by talking to them: start, stop, switch risk, change a setting, ask how they did. Every change is checked before it happens and verified after — on your own VPS.</p>
+      <div class="cta">
+        <a class="btn primary" href="/demo">Try the live demo</a>
+        <a class="btn" href="/business">For brokers &amp; platforms</a>
+        <a class="btn" href="/traders">For traders</a>
+      </div>
+      <div class="trust">
+        <span>Runs on your VPS</span>
+        <span>No passwords leave the terminal</span>
+        <span>Every change confirmed and verified</span>
+      </div>
+    </div>
+
+    <div class="replay" data-replay="auto" aria-label="Recorded transcript of a real session">
+      <div class="bar"><span>Recorded session · <b>3 Sep 2026</b> · demo account</span><button type="button">Replay</button></div>
+      <div class="log">
+        <div class="m user">How is my account doing?</div>
+        <div class="m tool"><span class="st">✓</span> get_client_state · <span class="rq">200</span> · 2 accounts, 5 EA instances, VPS online</div>
+        <div class="m bot"><b>Account 53133703</b> (Alpari-MT5-Demo, EUR): balance €5,000.00, equity €5,000.00, no open positions.
+1 EA running: <b>Night Hunter Pro</b> — EURUSD M5, preset medium, MaximumSpread 7.
+This is information about your account, not financial advice.</div>
+        <div class="m user">Restart Night Hunter with MaxSpread 15</div>
+        <div class="m tool"><span class="st">✓</span> get_ea night_hunter_pro · 92 inputs · "MaxSpread" resolves to <b>MaximumSpread</b> (0.5–50)</div>
+        <div class="m tool"><span class="st">✓</span> restart_ea <span class="rq">dry_run</span> · MaximumSpread 7 → 15 on Night Hunter Pro (EURUSD) — EA will restart</div>
+        <div class="m bot">Here's the dry run for <b>Night Hunter Pro</b> (EURUSD M5):
+• <b>MaximumSpread: 7.0 → 15.0 pips</b>
+• The EA will restart — 0 open positions, 0 pending orders, nothing at risk.
+Shall I apply it?</div>
+        <div class="m user">yes, go ahead</div>
+        <div class="m tool"><span class="st">✓</span> restart_ea · <span class="rq">202</span> queued · cmd_01M1JY85A07NCXYZ</div>
+        <div class="m tool"><span class="st">✓</span> get_command wait=30 · succeeded · reconciled: true · read back MaximumSpread=15.0</div>
+        <div class="m bot">Done ✅
+<div class="tl"><span>Requested <b>06:10:41</b></span><span>Confirmed <b>06:10:42</b></span><span>Happened <b>06:10:43</b></span></div><b>MaximumSpread 7 → 15 applied on Night Hunter Pro; EA restarted.</b>
+The terminal confirms it back: MaximumSpread = 15.0, everything else unchanged.</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="who">
+    <div class="eyebrow">Who it is for</div>
+    <h2>One engine, two front doors</h2>
+    <p class="sub">The same control layer serves a broker's AI assistant and a single trader's chat. You choose the door.</p>
+    <div class="grid2" style="margin-top:26px">
+      <div class="card audience">
+        <span class="pill">Business</span>
+        <h3 style="margin-top:12px">Brokers, VPS providers, trading platforms</h3>
+        <p>Give your own AI assistant hands. A REST/MCP API with tool definitions for any function-calling model, server-side validation, a sandbox, and per-customer keys. You keep the dashboard, the persona and the customer.</p>
+        <ul>
+          <li>Integrate in a day: OpenAPI 3.1, Claude tool schemas, MCP server</li>
+          <li>Your EA catalog onboarded with presets and parameter ranges</li>
+          <li>Agent inside your VPS image — zero clicks for the customer</li>
+        </ul>
+        <a class="btn primary" href="/business">See the integration</a>
+      </div>
+      <div class="card audience">
+        <span class="pill">Private</span>
+        <h3 style="margin-top:12px">Traders who run EAs on a VPS</h3>
+        <p>Stop logging in over RDP to flip a switch. Ask in chat what your robots are doing, pause one, lower the risk before the news, restart with a new setting — from your phone, with a confirmation before anything changes.</p>
+        <ul>
+          <li>One installer on your VPS, then it just works</li>
+          <li>Works with the EAs you already own</li>
+          <li>Equity, P&amp;L and win rate per robot, as charts</li>
+        </ul>
+        <a class="btn primary" href="/traders">Join the early access</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="eyebrow">How it works</div>
+    <h2>Say it. AlgoHand does it. The terminal confirms it.</h2>
+    <p class="sub">The chat never touches the terminal directly. Every request goes through validation, is executed by a small agent on the VPS, and is checked against what the terminal actually shows afterwards.</p>
+    <div class="steps" style="margin-top:26px">
+      <div class="step"><h3>Install once</h3><p>A tiny agent on the VPS finds your MT5 terminals, attaches a manager service and reports back. Outbound HTTPS only, no open ports, no RDP dependency.</p></div>
+      <div class="step"><h3>Ask</h3><p>"Which robots are running?", "Switch Waka Waka to low risk", "Show my balance curve." The assistant resolves names, presets and exact parameter names from the catalog.</p></div>
+      <div class="step"><h3>Confirm</h3><p>You see the dry run: what changes, from what to what, whether the EA restarts and what is at risk. Nothing is queued until you say yes.</p></div>
+      <div class="step"><h3>Verified</h3><p>The agent applies the change and reads the settings back from the running EA. Requested, applied and observed must match — a mismatch is a failed command, never a silent success.</p></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>1–3 s</b><span>from command to confirmed result</span></div>
+      <div class="stat"><b>0</b><span>inbound ports on the VPS</span></div>
+      <div class="stat"><b>0</b><span>passwords stored — we attach to logged-in terminals</span></div>
+      <div class="stat"><b>90 days</b><span>of equity samples, full deal history</span></div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="eyebrow">What you can do</div>
+    <h2>Everything you would do over RDP — without RDP</h2>
+    <div class="grid3" style="margin-top:26px">
+      <div class="card"><div class="ic">▶</div><h3>Start and stop</h3><p>Start an EA on the right chart with a risk preset; stop it softly (it keeps managing its open trades) or hard. Positions are never closed behind your back.</p></div>
+      <div class="card"><div class="ic">⚖</div><h3>Risk presets</h3><p>Low, medium, high — defined per EA by the author or by us, applied as a whole. No guessing which of 90 inputs means "risk".</p></div>
+      <div class="card"><div class="ic">⚙</div><h3>Safe parameter changes</h3><p>Only whitelisted inputs, only inside their ranges, with the exact name looked up for you. "MaxSpread" becomes MaximumSpread, 15 is checked against 0.5–50.</p></div>
+      <div class="card"><div class="ic">◉</div><h3>Live state</h3><p>Balance, equity, floating P&amp;L, every running EA with its effective settings, open positions and pending orders — attributed to the robot that made them.</p></div>
+      <div class="card"><div class="ic">📈</div><h3>Charts and P&amp;L</h3><p>Equity curve with drawdown, balance history over the whole account, profit, win rate and drawdown by EA, symbol, day, hour or weekday — drawn right in the chat.</p></div>
+      <div class="card"><div class="ic">🛡</div><h3>Restart safety</h3><p>Changing a setting restarts the EA. Grid and basket EAs are verified to recover their trades first; until then, changes with open positions are refused, not gambled.</p></div>
+      <div class="card"><div class="ic">⟳</div><h3>Self-healing VPS</h3><p>Terminal closed, chart removed, VPS rebooted, broker disconnected — the agent notices, restarts what is needed and tells you what happened, in plain words.</p></div>
+      <div class="card"><div class="ic">≡</div><h3>Audit trail</h3><p>Every command with who asked, what was requested, what was applied and what the terminal showed, with timestamps. Good for you, required for regulated partners.</p></div>
+      <div class="card"><div class="ic">＋</div><h3>Adoption</h3><p>EAs you already run by hand show up as managed instances with their real settings, untouched. Nothing to re-create.</p></div>
+    </div>
+  </section>
+
+  <section id="security">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Security</div>
+        <h2>The AI is never the security boundary</h2>
+        <p class="sub">Whatever the model sends, our server validates again. Whatever the terminal is asked, it is asked through a signed, pinned, outbound-only channel.</p>
+        <ul class="checks">
+          <li>Server-side whitelist of EAs, symbols, inputs and ranges for every tenant</li>
+          <li>No trading or investor passwords — the agent works with already logged-in terminals</li>
+          <li>Per-VPS credentials bound to the machine; TLS pinned to our own certificate authority</li>
+          <li>Signed auto-updates; a decommissioned VPS loses access instantly</li>
+          <li>Per-customer API keys for platforms: a key sees one customer, never another</li>
+        </ul>
+      </div>
+      <div class="card" style="background:var(--tool)">
+        <div class="eyebrow">Under the hood</div>
+        <pre style="margin:10px 0 0;border:0;padding:0;background:none">chat / dashboard  →  AlgoHand API
+                     validate · dry run · queue
+                          ↓ outbound HTTPS, pinned
+                     agent on the VPS
+                          ↓ file protocol
+                     manager service in MT5
+                          ↓
+                     charts · EAs · read-back
+                     requested = applied = observed ✓</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="backtests">
+    <div class="band">
+      <div>
+        <span class="pill soon">Roadmap</span>
+        <h2 style="margin-top:12px">Backtests by chat, on a tester pool that never blocks your VPS</h2>
+        <p class="sub">"Would MaxSpread 15 have done better over the last year?" AlgoHand will run the Strategy Tester for you on dedicated fast servers — a pool of MetaTrader testers that takes requests from every customer, queues them, and returns the report to the chat with the numbers that matter: net profit, drawdown, profit factor, trades. Compare presets side by side before you touch a live robot; the pool grows with demand, your trading VPS stays untouched.</p>
+      </div>
+      <div class="card" style="background:var(--tool)">
+        <div class="eyebrow">How a request will flow</div>
+        <pre style="margin:10px 0 0;border:0;padding:0;background:none">chat: "backtest Night Hunter, medium vs low,
+       EURUSD M5, Jan–Aug 2026"
+  → AlgoHand queues 2 runs
+  → tester pool (dedicated servers, closed .ex5)
+  → reports parsed, side by side in the chat
+  → "apply the low preset?" — dry run, yes, done</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="authors">
+    <div class="grid2">
+      <div>
+        <span class="pill soon">Coming</span>
+        <h2 style="margin-top:12px">EA authors: list your robot where it gets used</h2>
+        <p class="sub">Add your Expert Advisor to the AlgoHand catalog with your own description, presets and parameter notes. Traders pick it from a list and run it by chat; you get a verified restart-safety badge and a new distribution channel. Closed .ex5 only — we never ask for source code.</p>
+        <div class="cta"><a class="btn" href="/authors">Tell us about your EA</a></div>
+      </div>
+      <div class="card">
+        <h3>What a listing looks like</h3>
+        <table style="margin-top:10px">
+          <tr><td class="muted">Night Hunter Pro</td><td>EURUSD, GBPUSD · M5 · night scalper</td></tr>
+          <tr><td class="muted">Presets</td><td>low · medium · high (author-defined)</td></tr>
+          <tr><td class="muted">Changeable</td><td>MaximumSpread 0.5–50 · LotSizingMethod · TradeComment</td></tr>
+          <tr><td class="muted">Restart safety</td><td><span style="color:var(--ok)">verified</span> · recovers by magic number</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Try it</div>
+        <h2>Drive real terminals from a chat, today</h2>
+        <p class="sub">The live demo runs on real MetaTrader 5 terminals with demo accounts, and on a simulated VPS that resets every night. Ask for an access code and you can start, stop and reconfigure EAs within a minute.</p>
+        <div class="cta"><a class="btn primary" href="/demo">Get a demo code</a><a class="btn" href="https://chat.algohand.com">Open the chat</a></div>
+      </div>
+      <form class="lead" data-lead="demo" data-thanks="Thanks! Your access code is on its way — usually within a few hours.">
+        <div class="row">
+          <div><label>Name</label><input name="name" required maxlength="128" autocomplete="name"></div>
+          <div><label>E-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
+        </div>
+        <div><label>Company (optional)</label><input name="company" maxlength="256" autocomplete="organization"></div>
+        <div><label>What would you like to try?</label><textarea name="message" maxlength="4000" placeholder="e.g. our own EAs on a demo account, or the sandbox first"></textarea></div>
+        <div class="hp"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Request access</button>
+        <div class="msg"></div>
+        <div class="note">No spam, no newsletter. We answer personally.</div>
+      </form>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <div class="eyebrow">Questions</div>
+    <h2 style="margin-bottom:18px">Straight answers</h2>
+    <details><summary>Does AlgoHand need my account password?</summary><p>No. The agent attaches to terminals that are already logged in on your VPS and talks to them through the MetaTrader file system. Trading and investor passwords never leave the terminal and are never stored by us.</p></details>
+    <details><summary>Which brokers and EAs does it work with?</summary><p>Any MetaTrader 5 broker. Any EA that is in the catalog — the ones we onboarded, the ones your platform onboards, and soon the ones authors list themselves. EAs you already run are adopted as they are; changing their settings by chat needs a short onboarding so that names, ranges and presets are known.</p></details>
+    <details><summary>Where does it run?</summary><p>On your Windows VPS, next to your terminals, as a small service that only makes outbound HTTPS calls. There is no cloud copy of your terminal and no inbound port. Our control server keeps state, validation rules and history.</p></details>
+    <details><summary>Can the AI trade on its own?</summary><p>No. AlgoHand operates your robots; it does not place trades and it does not act without confirmation. Every change starts as a dry run that you approve. Performance information in the chat is information, not advice.</p></details>
+    <details><summary>What happens if the VPS reboots or a terminal crashes?</summary><p>The agent starts with Windows, relaunches terminals, re-attaches the manager and re-applies settings that a restore dropped. You get a plain-language status ("terminal restarted by the agent, back in a minute") instead of a mystery.</p></details>
+    <details><summary>Pricing?</summary><p>Business: per VPS per month, non-exclusive licence, no source code transfer. Private: a monthly subscription per VPS during early access. Ask us for the current numbers.</p></details>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/" style="font-size:16px"><span class="logo" style="width:26px;height:26px;font-size:13px;border-radius:7px">A</span>AlgoHand</a><p style="margin-top:10px;max-width:28em">Chat-driven control for MetaTrader 5 Expert Advisors. A product of MTCodec JSC, Georgia.</p></div>
+    <div><b>Product</b><a href="/business">For business</a><a href="/traders">For traders</a><a href="/authors">EA authors</a><a href="/demo">Live demo</a></div>
+    <div><b>Developers</b><a href="/docs/">API reference</a><a href="/docs/openapi.yaml">OpenAPI document</a><a href="/docs/claude_tools.json">Tool definitions</a><a href="https://tca.mtcodec.com">Terminal Control API</a></div>
+    <div><b>Company</b><a href="https://www.mtcodec.com">MTCodec</a><a href="mailto:info@mtcodec.com">info@mtcodec.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 MTCodec JSC. AlgoHand and Terminal Control API are products of MTCodec.</span><span>MetaTrader is a trademark of MetaQuotes Ltd. Not affiliated with MetaQuotes. Trading involves risk; nothing here is financial advice.</span></div>
+</div></footer>
+
+<script src="/assets/site.js"></script>
+</body>
+</html>
