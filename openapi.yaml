@@ -486,6 +486,82 @@ paths:
         "404": { $ref: "#/components/responses/NotFound" }
         "401": { $ref: "#/components/responses/Unauthorized" }
 
+  /v1/accounts/{account_id}/equity:
+    get:
+      tags: [History]
+      operationId: getEquityCurve
+      summary: Balance / equity over time, with drawdown
+      description: |
+        Two sources. `samples` (default): balance and equity sampled about once a minute from the
+        agent's reports (kept 90 days) — shows floating P&L and intraday drawdown. `deals`: the balance
+        after every deal of the complete history (trades, deposits, withdrawals), reconstructed from
+        the current balance — any period, balance only, the classic "balance curve". Points are
+        downsampled to `step` seconds (default: about 400 points for the window). The summary carries
+        start/end/min/max and the maximum drawdown in the window. Meant to be drawn as a chart by the
+        caller's UI; the chat demo does exactly that.
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ClientIdQuery"
+        - name: source
+          in: query
+          schema: { type: string, enum: [samples, deals], default: samples }
+        - name: from
+          in: query
+          schema: { type: string, format: date-time }
+          description: Default 7 days before `to` for `samples`; the first deal for `deals`.
+        - name: to
+          in: query
+          schema: { type: string, format: date-time }
+          description: Default now.
+        - name: step
+          in: query
+          schema: { type: integer, minimum: 60, maximum: 86400 }
+          description: Seconds per point.
+      responses:
+        "200":
+          description: Equity curve
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EquityCurve" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/accounts/{account_id}/pnl:
+    get:
+      tags: [History]
+      operationId: getPnl
+      summary: Closed P&L grouped by EA, instance, symbol, day, hour of day or weekday
+      description: |
+        Closed results from the deal history (profit + swap + commission + fee of closing deals;
+        deposits and withdrawals excluded), grouped, with win rate, profit factor, average result,
+        the maximum drawdown of each group's cumulative curve, and the cumulative curves themselves.
+        `hour` and `weekday` always return all 24 / 7 buckets (empty ones with zero deals), in the time
+        zone of the deal timestamps (the broker's server time). Attribution to EAs is by magic number,
+        as in `/history`.
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ClientIdQuery"
+        - name: from
+          in: query
+          schema: { type: string, format: date-time }
+          description: Default 30 days before `to`.
+        - name: to
+          in: query
+          schema: { type: string, format: date-time }
+        - name: group
+          in: query
+          schema: { type: string, enum: [ea, instance, symbol, day, hour, weekday], default: ea }
+      responses:
+        "200":
+          description: P&L report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PnlReport" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
   /v1/accounts/{account_id}/commands:
     post:
       tags: [Commands]
@@ -1444,6 +1520,105 @@ components:
           items: { $ref: "#/components/schemas/Deal" }
         next_cursor: { type: [string, "null"] }
         as_of: { type: string, format: date-time }
+
+    # ------------------------------------------------------------------ analytics
+    EquityCurve:
+      type: object
+      required: [account_id, currency, from, to, summary, points]
+      properties:
+        account_id: { type: string }
+        currency: { type: string }
+        from: { type: string, format: date-time }
+        to: { type: string, format: date-time }
+        summary:
+          type: object
+          properties:
+            source: { type: string, enum: [samples, deals] }
+            samples: { type: integer, description: Raw samples (or deals) in the window. }
+            points: { type: integer }
+            step_s: { type: integer }
+            start_equity: { type: [number, "null"], description: "`samples` only." }
+            end_equity: { type: [number, "null"] }
+            start_balance: { type: [number, "null"] }
+            end_balance: { type: [number, "null"] }
+            min_equity: { type: [number, "null"] }
+            max_equity: { type: [number, "null"] }
+            min_balance: { type: [number, "null"], description: "`deals` only." }
+            max_balance: { type: [number, "null"] }
+            max_drawdown: { type: number, description: Largest peak-to-trough drop of equity (`samples`) or balance (`deals`) in the window, account currency. }
+            max_drawdown_pct: { type: number }
+            max_drawdown_at: { type: [string, "null"], format: date-time }
+            change: { type: [number, "null"], description: end − start of equity (`samples`) or balance (`deals`). }
+        points:
+          type: array
+          items:
+            type: object
+            required: [at, balance]
+            properties:
+              at: { type: string, format: date-time }
+              balance: { type: number }
+              equity: { type: number, description: "`samples` only." }
+              floating_pnl: { type: number, description: "`samples` only." }
+    PnlReport:
+      type: object
+      required: [account_id, currency, from, to, group, total, groups, curve]
+      properties:
+        account_id: { type: string }
+        currency: { type: string }
+        from: { type: string, format: date-time }
+        to: { type: string, format: date-time }
+        group: { type: string, enum: [ea, instance, symbol, day, hour, weekday] }
+        total:
+          type: object
+          properties:
+            profit: { type: number }
+            deals: { type: integer }
+            wins: { type: integer }
+            losses: { type: integer }
+            win_rate_pct: { type: [number, "null"] }
+            profit_factor: { type: [number, "null"] }
+            max_drawdown: { type: number, description: Largest peak-to-trough drop of the cumulative closed P&L in the window. }
+            max_drawdown_at: { type: [string, "null"], format: date-time }
+        groups:
+          type: array
+          description: Best first; chronological for `day`, `hour` (00–23) and `weekday` (Mon–Sun).
+          items:
+            type: object
+            required: [key, label, deals, profit]
+            properties:
+              key: { type: string, description: ea_id / instance_id / symbol / date / "HH" / "Mon".."Sun"; `unattributed` for manual or unknown trades. }
+              label: { type: string }
+              deals: { type: integer }
+              wins: { type: integer }
+              losses: { type: integer }
+              profit: { type: number }
+              gross_profit: { type: number }
+              gross_loss: { type: number }
+              best: { type: [number, "null"] }
+              worst: { type: [number, "null"] }
+              avg_profit: { type: [number, "null"] }
+              profit_factor: { type: [number, "null"] }
+              win_rate_pct: { type: [number, "null"] }
+              max_drawdown: { type: number, description: Largest peak-to-trough drop of this group's cumulative closed P&L. }
+              max_drawdown_at: { type: [string, "null"], format: date-time }
+        curve:
+          type: array
+          description: Cumulative closed P&L over the window, one point per closing deal.
+          items:
+            type: object
+            properties:
+              at: { type: string, format: date-time }
+              cumulative: { type: number }
+        curves:
+          type: object
+          description: The same per group key.
+          additionalProperties:
+            type: array
+            items:
+              type: object
+              properties:
+                at: { type: string, format: date-time }
+                cumulative: { type: number }
 
     # ------------------------------------------------------------------ commands
     CommandType:

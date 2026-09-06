@@ -176,7 +176,7 @@ The terminal confirms it back: instance running on EURUSD M5 with MaximumSpread 
       <div class="g"><h3>Proof, not promises</h3><p>Each command carries what was asked, what was applied and what the terminal shows afterwards, with timestamps. Inputs are read back from the running EA.</p></div>
       <div class="g"><h3>Dry run first</h3><p><span class="mono">dry_run: true</span> returns the summary and the was → now diff without queuing anything — the natural place for a confirmation step.</p></div>
       <div class="g"><h3>Adoption</h3><p>EAs a customer already runs by hand appear in the API as managed instances, with their real inputs, without touching them.</p></div>
-      <div class="g"><h3>Per-EA attribution</h3><p>Positions and closed deals are mapped to EA instances by magic number, so your reporting knows which EA did what.</p></div>
+      <div class="g"><h3>Per-EA attribution</h3><p>Positions and closed deals are mapped to EA instances by magic number, so your reporting knows which EA did what. Equity curve, balance history and P&amp;L by EA, symbol, hour or weekday come ready to chart.</p></div>
     </div>
   </section>
 
@@ -192,6 +192,7 @@ The terminal confirms it back: instance running on EURUSD M5 with MaximumSpread 
         <tr><td><code>POST</code></td><td><code>/v1/accounts/{account_id}/commands</code></td><td><code>start_ea</code>, <code>stop_ea</code>, <code>set_risk</code>, <code>set_param</code>, <code>restart_ea</code> — 202 + command id, or 200 dry run.</td></tr>
         <tr><td><code>GET</code></td><td><code>/v1/commands/{command_id}?wait=30</code></td><td>Long-poll the outcome: status, diff, observed state, timeline.</td></tr>
         <tr><td><code>GET</code></td><td><code>/v1/accounts/{account_id}/history</code></td><td>Closed deals with <code>ea_id</code> attribution.</td></tr>
+        <tr><td><code>GET</code></td><td><code>/v1/accounts/{account_id}/equity</code> · <code>/pnl</code></td><td>Equity curve with drawdown; balance curve over the whole history; closed P&amp;L with win rate and drawdown by EA, symbol, day, hour of day or weekday — chart-ready.</td></tr>
       </tbody>
     </table></div>
     <p style="margin-top:16px;color:var(--ink2)">Full reference: <a href="api/">OpenAPI document and Swagger UI</a> · tool definitions for Claude and other function-calling models · MCP server (stdio).</p>
