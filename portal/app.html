@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-i18n="title.app">AlgoHand dashboard</title>
 <meta name="robots" content="noindex">
-<link rel="icon" href="https://algohand.com/favicon.ico" sizes="32x32">
-<link rel="icon" href="https://algohand.com/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/app.webmanifest">
+<meta name="theme-color" content="#0b0f16">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
@@ -111,20 +114,22 @@
     <p class="muted small" data-i18n="al.intro">Tell the assistant what to watch: "tell me when the drawdown reaches 10%", "if the balance drops below 4500", "when a deal closes", "if my VPS goes offline", "stop trading 30 minutes before important news and 15 after". Alerts arrive in Telegram when it is linked below, otherwise by e-mail.</p>
     <div id="alertlist" class="card" style="margin-top:12px"><span class="muted" data-i18n="al.none">No alerts yet.</span></div>
     <div id="alertrecent" style="margin-top:12px"></div>
+    <div id="pushbox" class="card" style="margin-top:12px"><span class="muted" data-i18n="loading">Loading…</span></div>
   </section>
 
   <section class="tight" id="telegram-section">
     <div class="rowhead">
       <div><div class="eyebrow">Telegram</div><h2 style="font-size:26px" data-i18n="tg.h2">Alerts and the assistant in Telegram</h2></div>
-      <div class="cta"><button class="btn primary" id="tglink" type="button" data-i18n="tg.connect">Connect Telegram</button><button class="btn" id="tgtest" type="button" data-i18n="tg.test" hidden>Send a test</button><button class="kill" id="tgunlink" type="button" data-i18n="tg.disconnect" hidden>Disconnect</button></div>
+      <div class="cta"><button class="btn primary" id="tglink" type="button" data-i18n="tg.connect">Connect Telegram</button><button class="btn" id="tgtest" type="button" data-i18n="tg.test" hidden>Send a test</button><button class="kill" id="tgunlink" type="button" data-i18n="tg.disconnectAll" hidden>Disconnect all</button></div>
     </div>
-    <p class="muted small" data-i18n="tg.intro">Link your Telegram to get alerts there and to talk to the assistant from your phone. Questions and alerts work at once; changes to your EAs from Telegram need the PIN you set here.</p>
+    <p class="muted small" data-i18n="tg.intro">Link your Telegram to get alerts there and to talk to the assistant from your phone. You can link several chats (family, team). Changes to your EAs are confirmed with the buttons under the preview; if you want a second factor, set a PIN below and switch it on.</p>
     <div id="tgstatus" class="card" style="margin-top:12px"><span class="muted" data-i18n="loading">Loading…</span></div>
     <form id="pinform" class="lead card" style="margin-top:12px;max-width:520px">
-      <div class="row"><div><label data-i18n="tg.pin">PIN for actions (4–8 digits)</label><input name="pin" inputmode="numeric" pattern="[0-9]{4,8}" minlength="4" maxlength="8" required autocomplete="off"></div><div><label data-i18n="f.curpw">Current password</label><input name="current_password" type="password" required autocomplete="current-password"></div></div>
+      <div class="row"><div><label data-i18n="tg.pin">PIN (4–8 digits)</label><input name="pin" inputmode="numeric" pattern="[0-9]{4,8}" minlength="4" maxlength="8" required autocomplete="off"></div><div><label data-i18n="f.curpw">Current password</label><input name="current_password" type="password" required autocomplete="current-password"></div></div>
       <button class="btn" type="submit" data-i18n="tg.savepin">Save PIN</button>
       <div class="msg"></div>
     </form>
+    <label class="small" id="pinreq" style="display:block;margin-top:10px" hidden><input type="checkbox" id="pinrequired"> <span data-i18n="tg.pinreq">Ask my PIN in Telegram after the Apply button, too</span></label>
   </section>
 
   <section class="tight" id="llm-section">

@@ -1987,6 +1987,8 @@ components:
         last_tick_at: { type: [string, "null"], format: date-time }
         disconnected_since: { type: [string, "null"], format: date-time, description: Start of the current outage, if any. }
         previous_build: { type: [integer, "null"], description: Build the terminal ran before its last update (MT5 LiveUpdate applies at a restart). }
+        manager_version: { type: [string, "null"], description: Version of the TcaManager running in this terminal (a new build loads at the next terminal restart, normally in the maintenance window). }
+        manager_mode: { type: [string, "null"], enum: [service, ea, null], description: How the manager runs — as an MQL5 service (normal) or as a chart EA (fallback). }
         build_changed_at: { type: [string, "null"], format: date-time, description: When the build change was first observed. }
         discovered:
           type: boolean

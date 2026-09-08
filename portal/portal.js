@@ -309,16 +309,64 @@ const Portal = (() => {
     rec.innerHTML = newsHtml + (d.recent && d.recent.length ? `<div class="card"><b class="small">${t('al.recent')}</b>${d.recent.map(e => `<div class="keyrow"><span class="small" style="white-space:pre-wrap">${esc(e.message)}</span><span class="muted small">${esc(when(e.fired_at))}</span></div>`).join('')}</div>` : '');
   }
 
+  const urlB64ToU8 = s => { const b = atob((s + '='.repeat((4 - s.length % 4) % 4)).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(b, c => c.charCodeAt(0)); };
+  async function refreshPush() {
+    const box = document.getElementById('pushbox');
+    if (!box) return;
+    const cfg = await api('/portal/push');
+    const supported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+    const ios = /iP(hone|ad|od)/.test(navigator.userAgent);
+    const standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+    let sub = null;
+    if (supported) { try { const reg = await navigator.serviceWorker.ready; sub = await reg.pushManager.getSubscription(); } catch (e) {} }
+    const on = !!sub && Notification.permission === 'granted';
+    const parts = [`<b>${t('al.push')}</b>`, `<p class="muted small" style="margin:6px 0 10px">${t('al.push.intro')}</p>`];
+    let cta = '';
+    if (!cfg.enabled) parts.push(`<span class="muted small">${t('al.push.unavailable')}</span>`);
+    else if (!supported) parts.push(`<span class="muted small">${t('al.push.unsupported')}</span>${ios && !standalone ? `<div class="muted small" style="margin-top:6px">${t('al.push.ios')}</div>` : ''}`);
+    else if (Notification.permission === 'denied') parts.push(`<span class="status offline">${t('al.push.denied')}</span>`);
+    else {
+      parts.push(`<span class="status ${on ? 'online' : ''}">${t(on ? 'al.push.on' : 'al.push.off')}</span> <span class="muted small">· ${t('al.push.devices', { n: cfg.subscriptions.length })}</span>`);
+      if (ios && !standalone && !on) parts.push(`<div class="muted small" style="margin-top:6px">${t('al.push.ios')}</div>`);
+      cta = `<div class="cta" style="margin-top:10px"><button class="btn sm" id="pushtoggle" type="button">${t(on ? 'al.push.disable' : 'al.push.enable')}</button>${cfg.subscriptions.length ? `<button class="btn sm" id="pushtest" type="button">${t('al.push.test')}</button>` : ''}<span class="muted small" id="pushmsg"></span></div>`;
+    }
+    box.innerHTML = parts.join('') + cta;
+    const toggle = document.getElementById('pushtoggle');
+    if (toggle) toggle.addEventListener('click', async () => {
+      toggle.disabled = true; const msg = document.getElementById('pushmsg');
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        if (on) {
+          const s = await reg.pushManager.getSubscription();
+          if (s) { await api('/portal/push/subscribe', { method: 'DELETE', body: JSON.stringify({ endpoint: s.endpoint }) }); await s.unsubscribe(); }
+        } else {
+          const perm = await Notification.requestPermission();            // only here, on the customer's own click
+          if (perm !== 'granted') { msg.textContent = t('al.push.denied'); toggle.disabled = false; return; }
+          const s = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToU8(cfg.public_key) });
+          await api('/portal/push/subscribe', { method: 'POST', body: JSON.stringify({ subscription: s.toJSON(), ua: navigator.userAgent.slice(0, 200), lang: I18N.lang }) });
+        }
+      } catch (e) { msg.textContent = I18N.errorText(e); }
+      refreshPush();
+    });
+    const test = document.getElementById('pushtest');
+    if (test) test.addEventListener('click', async () => { test.disabled = true; try { await api('/portal/push/test', { method: 'POST' }); test.textContent = t('js.sent'); } catch (e) { test.textContent = I18N.errorText(e); } });
+  }
+
   async function refreshTelegram() {
     const box = document.getElementById('tgstatus');
     if (!box) return;
     const s = await api('/portal/telegram');
-    document.getElementById('tglink').hidden = !s.enabled || s.linked;
-    document.getElementById('tgtest').hidden = !s.linked; document.getElementById('tgunlink').hidden = !s.linked;
+    const linkBtn = document.getElementById('tglink'); linkBtn.hidden = !s.enabled; linkBtn.textContent = s.linked ? t('tg.connectMore') : t('tg.connect');
+    document.getElementById('tgtest').hidden = !s.linked; document.getElementById('tgunlink').hidden = !s.linked || (s.chats || []).length < 2;
     document.getElementById('pinform').hidden = !s.enabled;
+    const req = document.getElementById('pinreq'), cb = document.getElementById('pinrequired');
+    req.hidden = !s.enabled || !s.pin_set; cb.checked = !!s.pin_required;
     if (!s.enabled) { box.innerHTML = `<span class="muted">${t('tg.unavailable')}</span>`; return; }
-    box.innerHTML = s.linked ? `<div class="line"><span class="status online">${t('tg.linked')}</span> <b>@${esc(s.tg_username || '')}</b> ${esc(s.tg_name || '')}</div><div class="muted small" style="margin-top:6px">${s.pin_set ? t('tg.pinset') : t('tg.nopin')}</div>`
+    const chats = s.chats || [];
+    box.innerHTML = s.linked ? chats.map(c => `<div class="keyrow"><span><span class="status online">${t('tg.linked')}</span> <b>${c.tg_username ? '@' + esc(c.tg_username) : esc(c.tg_name || '')}</b> ${c.tg_username ? esc(c.tg_name || '') : ''} <span class="muted small">· ${esc(String(c.lang || 'en').toUpperCase())}${c.last_message_at ? ' · ' + esc(c.last_message_at.slice(0, 16).replace('T', ' ')) : ''}</span></span><button class="kill" data-tgchat="${esc(String(c.chat_id))}" type="button">${t('tg.disconnect')}</button></div>`).join('')
+                               + `<div class="muted small" style="margin-top:6px">${s.pin_set ? (s.pin_required ? t('tg.pinon') : t('tg.pinset')) : t('tg.nopin')}</div>`
                              : `<span class="status">${t('tg.notlinked')}</span><div class="muted small" style="margin-top:6px">${t('tg.how', { bot: '@' + esc(s.bot) })}</div>`;
+    box.querySelectorAll('[data-tgchat]').forEach(b => b.addEventListener('click', async () => { if (confirm(t('tg.confirmUnlink'))) { await api('/portal/telegram/chats/' + b.dataset.tgchat, { method: 'DELETE' }); refreshTelegram(); } }));
   }
 
 
@@ -555,7 +603,10 @@ const Portal = (() => {
   }
 
   function appPage() {
-    api('/portal/me').then(me => {
+    // the dashboard is installable: the service worker gives an honest offline page and carries push notifications
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+    const source = new URLSearchParams(location.search).get('source') || ((window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true ? 'standalone' : '');
+    api('/portal/me' + (source ? '?source=' + encodeURIComponent(source) : '')).then(me => {
       document.getElementById('who').textContent = me.user.name ? `${me.user.name} · ${me.user.email}` : me.user.email;
       const cid = document.getElementById('cid'); if (cid) cid.textContent = me.user.client_id;
       if (!me.has_vps) { document.getElementById('connect').hidden = false; }
@@ -567,15 +618,16 @@ const Portal = (() => {
       const b = document.getElementById('resend'); b.disabled = true;
       try { await api('/portal/resend-verification', { method: 'POST' }); b.textContent = t('js.sent'); } catch (e) { b.textContent = I18N.errorText(e); }
     });
-    refresh(); refreshKeys(); refreshEas().catch(() => {}); refreshTickets().catch(() => {}); refreshBilling().catch(() => {}); refreshAlerts().catch(() => {}); refreshTelegram().catch(() => {}); refreshLlmKey().catch(() => {});
+    refresh(); refreshKeys(); refreshEas().catch(() => {}); refreshTickets().catch(() => {}); refreshBilling().catch(() => {}); refreshAlerts().catch(() => {}); refreshTelegram().catch(() => {}); refreshLlmKey().catch(() => {}); refreshPush().catch(() => {});
     setInterval(() => refreshAlerts().catch(() => {}), 30000);
     form(document.getElementById('llmform'), async (d, msg) => { await api('/portal/llm-key', { method: 'PUT', body: JSON.stringify(d) }); msg.className = 'msg ok'; msg.textContent = t('llm.saved'); document.getElementById('llmform').reset(); refreshLlmKey(); });
     document.getElementById('llmdelete').addEventListener('click', async () => { if (confirm(t('llm.confirmRemove'))) { await api('/portal/llm-key', { method: 'DELETE' }); refreshLlmKey(); } });
     document.getElementById('tglink').addEventListener('click', async () => {
-      try { const r = await api('/portal/telegram/link', { method: 'POST' }); window.open(r.url, '_blank', 'noopener'); let n = 0; const poll = setInterval(async () => { const s = await api('/portal/telegram'); if (s.linked || ++n > 60) { clearInterval(poll); refreshTelegram(); } }, 3000); }
+      try { const r = await api('/portal/telegram/link', { method: 'POST' }); window.open(r.url, '_blank', 'noopener'); let n = 0; const before = (await api('/portal/telegram')).chats.length; const poll = setInterval(async () => { const s = await api('/portal/telegram'); if ((s.chats || []).length > before || ++n > 60) { clearInterval(poll); refreshTelegram(); } }, 3000); }
       catch (e) { alert(I18N.errorText(e)); }
     });
     document.getElementById('tgunlink').addEventListener('click', async () => { if (confirm(t('tg.confirmUnlink'))) { await api('/portal/telegram', { method: 'DELETE' }); refreshTelegram(); } });
+    document.getElementById('pinrequired').addEventListener('change', async e => { try { await api('/portal/telegram/settings', { method: 'POST', body: JSON.stringify({ pin_required: e.target.checked }) }); } catch (err) { alert(I18N.errorText(err)); } refreshTelegram(); });
     document.getElementById('tgtest').addEventListener('click', async () => { const b = document.getElementById('tgtest'); b.disabled = true; try { await api('/portal/telegram/test', { method: 'POST' }); b.textContent = t('js.sent'); } catch (e) { b.textContent = I18N.errorText(e); } });
     form(document.getElementById('pinform'), async (d, msg) => { await api('/portal/telegram/pin', { method: 'POST', body: JSON.stringify(d) }); msg.className = 'msg ok'; msg.textContent = t('tg.pinsaved'); document.getElementById('pinform').reset(); refreshTelegram(); });
     document.getElementById('managesub').addEventListener('click', async () => {

@@ -25,6 +25,9 @@ shutil.copy(ROOT / "api" / "esp_prompt_v1.md", DOCS / "algohand-prompt-v1.txt")
 # downloads for the customer installer (site/algohand/dl/install.ps1 fetches these); the exe is added by the release step
 DL = SITE / "dl"
 DL.mkdir(exist_ok=True)
+# start-terminals.ps1 is bundled with the agent (agent/tca_agent/scripts) and refreshed on the VPS by the agent itself;
+# deploy/windows and dl carry copies of that one file
+shutil.copy(ROOT / "agent" / "tca_agent" / "scripts" / "start-terminals.ps1", ROOT / "deploy" / "windows" / "start-terminals.ps1")
 for name in ("install-agent.ps1", "run-agent.ps1", "start-terminals.ps1"):
     shutil.copy(ROOT / "deploy" / "windows" / name, DL / name)
 
@@ -135,13 +138,21 @@ if __name__ == "__main__":
     runpy.run_path(str(SITE / "langmenu.py"), run_name="__main__")      # language dropdown on every page (catalog included)
     runpy.run_path(str(SITE / "sitemap.py"))["main"]()
     print(f"catalog: {n_eas} EAs; cache stamps updated in", bust_caches(), "pages")
-    t = tile(1024)
-    t.resize((512, 512), Image.LANCZOS).save(ASSETS / "icon-512.png")
-    t.resize((192, 192), Image.LANCZOS).save(ASSETS / "icon-192.png")
-    t.resize((180, 180), Image.LANCZOS).save(ASSETS / "apple-touch-icon.png")
-    # favicon: white silhouette with a black outline (not the gradient tile) — one .ico with three sizes + a PNG
-    mono_mark(48).save(SITE / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)],
-                       append_images=[mono_mark(32), mono_mark(16)])
-    mono_mark(64).save(ASSETS / "favicon-64.png")
+    # PWA icon kit (8 Sep 2026, assets/brand/pwa: the gradient mark on the navy tile #0b1020, maskable variants with the
+    # mark inside the 80% safe zone) — copied as-is; favicons are downscaled from icon-512 so light and dark tabs both work.
+    # app.algohand.com gets the same files so the installed app never depends on the second domain.
+    KIT = ASSETS / "brand" / "pwa"
+    PORTAL = ROOT / "site" / "portal"
+    (PORTAL / "assets").mkdir(exist_ok=True)
+    for name in ("icon-192.png", "icon-512.png", "icon-192-maskable.png", "icon-512-maskable.png", "apple-touch-icon.png"):
+        shutil.copy(KIT / name, ASSETS / name)
+        shutil.copy(KIT / name, PORTAL / "assets" / name)
+    src = Image.open(KIT / "icon-512.png").convert("RGBA")
+    src.resize((64, 64), Image.LANCZOS).save(ASSETS / "favicon-64.png")
+    src.resize((32, 32), Image.LANCZOS).save(ASSETS / "favicon-32.png")
+    src.resize((48, 48), Image.LANCZOS).save(SITE / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
+    for name in ("favicon-64.png", "favicon-32.png", "logo-mark.png"):
+        shutil.copy(ASSETS / name, PORTAL / "assets" / name)
+    shutil.copy(SITE / "favicon.ico", PORTAL / "favicon.ico")
     og_image().save(ASSETS / "og.png", optimize=True)
-    print("docs:", sorted(p.name for p in DOCS.iterdir()), "| icons rendered from", MARK.name)
+    print("docs:", sorted(p.name for p in DOCS.iterdir()), "| icons from", KIT.relative_to(SITE))

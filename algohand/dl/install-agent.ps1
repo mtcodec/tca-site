@@ -71,10 +71,10 @@ $me = [Security.Principal.WindowsIdentity]::GetCurrent().Name     # e.g. VPSNAME
 Register-ScheduledTask -TaskName 'TCA-Agent' -Force -User $me -RunLevel Highest -Settings $noLimit -Trigger (New-ScheduledTaskTrigger -AtLogOn -User $me) `
   -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$agentDir\run-agent.ps1`"") | Out-Null
 Register-ScheduledTask -TaskName 'TCA-Terminals' -Force -Principal $sys -Settings (New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Minutes 10)) -Trigger (New-ScheduledTaskTrigger -AtStartup) `
-  -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$agentDir\start-terminals.ps1`"") | Out-Null
+  -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$agentDir\start-terminals.ps1`"") | Out-Null
 $logon = New-ScheduledTaskTrigger -AtLogOn -User $me
 Register-ScheduledTask -TaskName 'TCA-Terminals-Interactive' -Force -User $me -RunLevel Highest -Settings (New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Minutes 10)) -Trigger $logon `
-  -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$agentDir\start-terminals.ps1`" -Interactive") | Out-Null
+  -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$agentDir\start-terminals.ps1`" -Interactive") | Out-Null
 
 if ($AutoLogon) {
   Write-Host "==> autologon for $me (visible mode)"
