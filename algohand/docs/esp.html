@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EA Spec Protocol (ESP) — AlgoHand developer docs</title>
+<meta name="description" content="ESP: one machine-validated JSON document per Expert Advisor build describing its inputs with provenance and trust. The AlgoHand control server derives what an assistant may change from it.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  main.wrap { max-width: 980px; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 22px; font-size: 14.5px; }
+  th, td { text-align: left; padding: 8px 10px; border-top: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  pre { background: var(--bg2); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.93em; }
+  h2 { margin-top: 36px; }
+  .toc a { margin-right: 14px; }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="/" aria-label="AlgoHand"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <nav class="main" style="display:flex">
+    <a href="/docs/">API reference</a>
+    <a href="/authors">EA authors</a>
+    <a class="btn sm" href="https://app.algohand.com/">Sign in</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <section class="hero" style="grid-template-columns:1fr;padding-bottom:10px">
+    <div>
+      <div class="eyebrow">Developer docs</div>
+      <h1 style="margin-top:14px">EA Spec Protocol (ESP) 0.1</h1>
+      <p class="lead">One JSON document per Expert Advisor <b>build</b> (keyed by the file's sha256) that says what the terminal exposes and what people know about every input. Every semantic field carries provenance and a trust level; the AlgoHand control server derives what an assistant may read, change and restart from trust, never from free text.</p>
+      <p class="toc small"><a href="#why">Why</a><a href="#shape">Document shape</a><a href="#trust">Trust</a><a href="#permissions">Permissions</a><a href="#paths">Three ways in</a><a href="#api">API</a><a href="/docs/esp.schema.json">Schema (JSON)</a></p>
+    </div>
+  </section>
+
+  <section id="why">
+    <h2>Why a spec, not a document</h2>
+    <p>A compiled EA shows the terminal its inputs, defaults and nothing else. Whether <code>MaxSpread</code> is safe to change to 50, whether <code>LotSizingMethod=5</code> means "low risk", whether a restart with open positions loses the basket: that knowledge lives in manuals, in the author's source code and in customers' heads. ESP is the contract that carries it into the control server in a form a machine can check: the terminal is ground truth for structure, the spec only adds meaning, and each meaning knows who asserted it.</p>
+  </section>
+
+  <section id="shape">
+    <h2>Document shape</h2>
+<pre>{
+  "esp_version": "0.1",
+  "ea": { "name": "Gridkeeper", "file_name": "gridkeeper_v3.ex5", "sha256": "…", "ea_version": "3.2",
+          "author": "…", "platform": "MT5", "docs_url": null, "category": "grid", "description": null },
+  "generated_by": { "path": "author_source | client_manual | discovery_auto | catalog | test_run",
+                    "tool": "algohand-prompt-v1 | onboarding-ui | agent-discovery", "timestamp": "2026-09-08T12:00:00Z" },
+  "restart_behavior": { "recovers_open_positions": true, "recovery_mechanism": "reads positions by magic number on init",
+                        "safe_to_restart_with_open_positions": true, "notes": null,
+                        "provenance": { "source": "author_source", "trust": "author" } },
+  "parameters": [
+    { "key": "MaxSpread", "type": "double",
+      "terminal": { "default": 2.0, "min": null, "max": null, "current": null, "enum_labels": null },
+      "label": "Max spread", "meaning": "Maximum allowed spread in points before entries are skipped.", "unit": "points",
+      "risk_relevant": false, "safe_range": { "min": 0.5, "max": 5.0 }, "requires_restart": true, "hidden": false,
+      "provenance": { "terminal_block": "discovery",
+                      "meaning":    { "source": "author_source", "trust": "author" },
+                      "safe_range": { "source": "client_manual", "trust": "client", "entered_by": "u_…", "timestamp": "…" } } }
+  ],
+  "presets":    [ { "name": "conservative", "label": "Cautious", "values": { "RiskPercent": 0.5 },
+                    "provenance": { "source": "author_source", "trust": "author" } } ],
+  "signatures": [ { "who": "author@example.com", "role": "author", "asserted": ["parameters.MaxSpread.meaning"], "at": "…" } ]
+}</pre>
+    <p class="small muted"><code>terminal.*</code> is always filled by AlgoHand's own discovery on a terminal, never taken from an upload. MT5 inputs carry no hard min/max, so those are usually <code>null</code>; <code>safe_range</code> is the human-asserted range. Types: <code>bool</code>, <code>int</code>, <code>double</code>, <code>string</code>, <code>csv</code>, <code>enum</code>. Uploads that fail the schema are refused with the failing paths.</p>
+  </section>
+
+  <section id="trust">
+    <h2>Trust levels and provenance</h2>
+    <table>
+      <tr><th>trust</th><th>source</th></tr>
+      <tr><td><code>none</code></td><td>field empty or unknown (terminal block only)</td></tr>
+      <tr><td><code>inferred</code></td><td>a guess from the input's name and default (AlgoHand's heuristics or AI); shown as a guess, never a permission</td></tr>
+      <tr><td><code>client</code></td><td>entered by the customer in onboarding (chat, dashboard or API) and signed by them</td></tr>
+      <tr><td><code>author</code></td><td>produced from the source code by the author's own AI through the published prompt, or written by the author in the studio</td></tr>
+      <tr><td><code>verified</code></td><td>confirmed by a supervised run on a demo terminal: the reconciler observed the effect</td></tr>
+      <tr><td><code>curated</code></td><td>reviewed and signed off by AlgoHand staff</td></tr>
+    </table>
+    <p>Trust only goes up: an upload never overwrites a field asserted by a stronger source. An uploader cannot claim more than their role (a client key asserts <code>client</code> at most). <code>signatures[]</code> records who asserted what and when; a customer who signs a safe range has taken that decision for their own account.</p>
+  </section>
+
+  <section id="permissions">
+    <h2>Permissions, derived at request time</h2>
+    <table>
+      <tr><th>condition</th><th>effective permission</th></tr>
+      <tr><td>no spec, or an input with a terminal block only</td><td>read-only: status, reporting, pause/stop, remove from chart</td></tr>
+      <tr><td><code>meaning</code> at <code>client</code>+ and not <code>risk_relevant</code></td><td>writable within the known range</td></tr>
+      <tr><td><code>risk_relevant: true</code></td><td>writable only with a <code>safe_range</code> at <code>author</code>+, or a range the client signed for themselves; writes are clamped to it</td></tr>
+      <tr><td>enum without option labels</td><td>read-only until the labels are supplied</td></tr>
+      <tr><td><code>requires_restart</code> with open positions</td><td>allowed only when <code>safe_to_restart_with_open_positions</code> is asserted at <code>author</code>+</td></tr>
+      <tr><td>bool switches, comment strings, lot size of a non-risk input</td><td>writable at <code>inferred</code> trust (whitelist v1, server-side, versioned)</td></tr>
+    </table>
+    <p>Presets are offered only at <code>client</code> trust or better: the customer's own or the author's. AlgoHand never generates or recommends risk presets.</p>
+  </section>
+
+  <section id="paths">
+    <h2>Three ways in, one file</h2>
+    <ul class="checks">
+      <li><b>Author with source code.</b> Paste the published prompt into your own AI together with the source; the source never leaves your machine. The output is an ESP document at <code>author</code> trust, uploaded in the <a href="/authors">author studio</a>.</li>
+      <li><b>Closed EA, customer fills the table.</b> Discovery creates the skeleton (terminal blocks); the customer describes inputs row by row, each saved row is signed at <code>client</code> trust. Progressive and never blocking: the EA runs in limited mode at once and inputs unlock as they are described.</li>
+      <li><b>Nothing available.</b> Terminal blocks plus <code>inferred</code> hints, clearly marked as guesses. A supervised run on a demo terminal can promote fields to <code>verified</code>.</li>
+    </ul>
+    <p class="small muted">Every upload is cross-checked row by row against what the terminal showed: an input the terminal does not have, a wrong type or a wrong default is rejected per row, the rest is accepted; inputs the upload does not mention keep their terminal block. The build's sha256 must match a file the agent found on the customer's VPS or in the studio. A new build gets a new hash: unchanged inputs keep their semantics, only new or changed ones are asked again.</p>
+  </section>
+
+  <section id="api">
+    <h2>API</h2>
+    <table>
+      <tr><th>call</th><th>what</th></tr>
+      <tr><td><code>GET /v1/esp/schema</code></td><td>the JSON Schema (draft 2020-12), public; also <a href="/docs/esp.schema.json">esp.schema.json</a></td></tr>
+      <tr><td><code>GET /v1/esp/prompt</code></td><td><a href="/docs/algohand-prompt-v1.txt">algohand-prompt-v1</a>: what an author pastes into their own AI together with the source</td></tr>
+      <tr><td><code>POST /v1/esp/validate</code> <code>{"spec": …}</code></td><td>public validation → <code>{valid, errors[{path, message}]}</code></td></tr>
+      <tr><td><code>GET /v1/eas/{ea_id}/spec</code></td><td>ESP view of a catalog EA with the derived permissions</td></tr>
+      <tr><td><code>GET /v1/clients/{id}/eas/{custom_id}/spec</code></td><td>the customer's spec (stored, else derived from onboarding), permissions, progress</td></tr>
+      <tr><td><code>POST /v1/clients/{id}/eas/{custom_id}/spec</code> <code>{"spec": …, "note": …}</code></td><td>upload or update: schema → sha256 → discovery cross-check → trust merge → signature → policy</td></tr>
+    </table>
+    <p>Errors: <code>422 SPEC_INVALID</code> (schema, with paths), <code>409 SPEC_SHA_MISMATCH</code> (another build), <code>422 EA_NOT_DISCOVERED</code>. Full reference: <a href="/docs/">API docs</a>, section 10g of the README.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand and Terminal Control API are products of IT Effectiveness LLC.</span><span>MetaTrader is a trademark of MetaQuotes Ltd. Not affiliated with MetaQuotes.</span></div>
+</div></footer>
+</body>
+</html>

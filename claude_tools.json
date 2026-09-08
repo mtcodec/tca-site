@@ -14,13 +14,15 @@
           "description": "Optional comma-separated sections to include (accounts,instances,positions,orders,vps). Default: everything."
         }
       },
-      "required": ["client_id"],
+      "required": [
+        "client_id"
+      ],
       "additionalProperties": false
     }
   },
   {
     "name": "list_eas",
-    "description": "List the Expert Advisors available in the catalog with their ea_id, description, category (grid/scalper/news), risk presets (e.g. low/medium/high), allowed symbols, and whether they support a soft stop. Use it to map what the user says (\"Waka\", \"the night scalper\") to an ea_id and to show which presets exist. Does not include the parameter list; call get_ea for that. Maps to GET /v1/eas.",
+    "description": "List the Expert Advisors available in the catalog with their ea_id, description, category (grid/scalper/news), risk presets (e.g. low/medium/high), allowed symbols, and whether they support a soft stop. Use it to map what the user says (\"Tidepool\", \"the Asian-session scalper\") to an ea_id and to show which presets exist. Does not include the parameter list; call get_ea for that. Maps to GET /v1/eas.",
     "input_schema": {
       "type": "object",
       "properties": {
@@ -41,10 +43,12 @@
       "properties": {
         "ea_id": {
           "type": "string",
-          "description": "Catalog id, e.g. waka_waka, night_hunter_pro, perceptrader_ai, news_catcher_pro."
+          "description": "Catalog id, e.g. tidepool_grid, lantern_scalper_pro, lattice_ai, headline_runner."
         }
       },
-      "required": ["ea_id"],
+      "required": [
+        "ea_id"
+      ],
       "additionalProperties": false
     }
   },
@@ -54,21 +58,63 @@
     "input_schema": {
       "type": "object",
       "properties": {
-        "client_id": { "type": "string" },
-        "account_id": { "type": "string", "description": "From get_client_state (e.g. acc_9q1x7d)." },
-        "ea_id": { "type": "string", "description": "From list_eas." },
-        "preset": { "type": "string", "description": "Risk preset id from list_eas (e.g. low, medium, high). Defaults to the EA's default preset." },
-        "symbol": { "type": "string", "description": "Optional chart symbol; must be in the EA's symbols_allowed. Defaults to the EA's default." },
-        "timeframe": { "type": "string", "enum": ["M1", "M5", "M15", "M30", "H1", "H4", "D1"], "description": "Optional chart timeframe. Defaults to the EA's default." },
+        "client_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string",
+          "description": "From get_client_state of THIS client; never guess or reuse an id from another conversation."
+        },
+        "ea_id": {
+          "type": "string",
+          "description": "From list_eas."
+        },
+        "preset": {
+          "type": "string",
+          "description": "Risk preset id from list_eas (e.g. low, medium, high). Defaults to the EA's default preset."
+        },
+        "symbol": {
+          "type": "string",
+          "description": "Optional chart symbol; must be in the EA's symbols_allowed. Defaults to the EA's default."
+        },
+        "timeframe": {
+          "type": "string",
+          "enum": [
+            "M1",
+            "M5",
+            "M15",
+            "M30",
+            "H1",
+            "H4",
+            "D1"
+          ],
+          "description": "Optional chart timeframe. Defaults to the EA's default."
+        },
         "inputs": {
           "type": "object",
           "description": "Optional input overrides on top of the preset, keyed by exact input name from get_ea. Only whitelisted inputs are accepted.",
-          "additionalProperties": { "type": ["boolean", "number", "string"] }
+          "additionalProperties": {
+            "type": [
+              "boolean",
+              "number",
+              "string"
+            ]
+          }
         },
-        "dry_run": { "type": "boolean", "description": "If true, validate and return the summary/diff without starting anything." },
-        "reason": { "type": "string", "description": "The user's request in their words, for the audit trail." }
+        "dry_run": {
+          "type": "boolean",
+          "description": "If true, validate and return the summary/diff without starting anything."
+        },
+        "reason": {
+          "type": "string",
+          "description": "The user's request in their words, for the audit trail."
+        }
       },
-      "required": ["client_id", "account_id", "ea_id"],
+      "required": [
+        "client_id",
+        "account_id",
+        "ea_id"
+      ],
       "additionalProperties": false
     }
   },
@@ -78,14 +124,36 @@
     "input_schema": {
       "type": "object",
       "properties": {
-        "client_id": { "type": "string" },
-        "account_id": { "type": "string" },
-        "instance_id": { "type": "string", "description": "From get_client_state (e.g. inst_a1b2c3)." },
-        "mode": { "type": "string", "enum": ["soft", "hard"], "description": "Default soft." },
-        "dry_run": { "type": "boolean" },
-        "reason": { "type": "string" }
+        "client_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "description": "From get_client_state of THIS client; never guess or reuse an id from another conversation."
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "soft",
+            "hard"
+          ],
+          "description": "Default soft."
+        },
+        "dry_run": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        }
       },
-      "required": ["client_id", "account_id", "instance_id"],
+      "required": [
+        "client_id",
+        "account_id",
+        "instance_id"
+      ],
       "additionalProperties": false
     }
   },
@@ -95,14 +163,32 @@
     "input_schema": {
       "type": "object",
       "properties": {
-        "client_id": { "type": "string" },
-        "account_id": { "type": "string" },
-        "instance_id": { "type": "string" },
-        "preset": { "type": "string", "description": "Preset id from list_eas." },
-        "dry_run": { "type": "boolean" },
-        "reason": { "type": "string" }
+        "client_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string"
+        },
+        "preset": {
+          "type": "string",
+          "description": "Preset id from list_eas."
+        },
+        "dry_run": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        }
       },
-      "required": ["client_id", "account_id", "instance_id", "preset"],
+      "required": [
+        "client_id",
+        "account_id",
+        "instance_id",
+        "preset"
+      ],
       "additionalProperties": false
     }
   },
@@ -112,54 +198,198 @@
     "input_schema": {
       "type": "object",
       "properties": {
-        "client_id": { "type": "string" },
-        "account_id": { "type": "string" },
-        "instance_id": { "type": "string" },
+        "client_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string"
+        },
         "inputs": {
           "type": "object",
           "description": "Input name → new value. Booleans as booleans, numbers as numbers, enums as their integer index, comma-separated lists as strings.",
-          "additionalProperties": { "type": ["boolean", "number", "string"] },
+          "additionalProperties": {
+            "type": [
+              "boolean",
+              "number",
+              "string"
+            ]
+          },
           "minProperties": 1
         },
-        "dry_run": { "type": "boolean" },
-        "reason": { "type": "string" }
+        "dry_run": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        }
       },
-      "required": ["client_id", "account_id", "instance_id", "inputs"],
+      "required": [
+        "client_id",
+        "account_id",
+        "instance_id",
+        "inputs"
+      ],
       "additionalProperties": false
     }
   },
   {
     "name": "restart_ea",
-    "description": "Restart a running EA instance, optionally changing inputs at the same time (\"restart Night Hunter with MaxSpread 15\"). Without inputs it re-applies the current configuration, which is useful when an instance shows status `error`. With inputs it behaves like set_param. Asynchronous: poll with get_command. Maps to POST /v1/accounts/{account_id}/commands with type=restart_ea.",
+    "description": "Restart a running EA instance, optionally changing inputs at the same time (\"restart Lantern Scalper with MaxSpread 15\"). Without inputs it re-applies the current configuration, which is useful when an instance shows status `error`. With inputs it behaves like set_param. Asynchronous: poll with get_command. Maps to POST /v1/accounts/{account_id}/commands with type=restart_ea.",
     "input_schema": {
       "type": "object",
       "properties": {
-        "client_id": { "type": "string" },
-        "account_id": { "type": "string" },
-        "instance_id": { "type": "string" },
+        "client_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string"
+        },
         "inputs": {
           "type": "object",
           "description": "Optional input changes, same rules as set_param.",
-          "additionalProperties": { "type": ["boolean", "number", "string"] }
+          "additionalProperties": {
+            "type": [
+              "boolean",
+              "number",
+              "string"
+            ]
+          }
         },
-        "dry_run": { "type": "boolean" },
-        "reason": { "type": "string" }
+        "dry_run": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        }
       },
-      "required": ["client_id", "account_id", "instance_id"],
+      "required": [
+        "client_id",
+        "account_id",
+        "instance_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "run_backtest",
+    "description": "Run a Strategy Tester backtest of an EA on the customer's own VPS (a second, isolated MetaTrader terminal next to the live ones; below-normal priority, one core where possible, one test per VPS at a time). The customer chooses the period (from/to, dates up to today), the tick modelling (every_tick_real = most faithful, needs real tick history; every_tick; one_minute_ohlc = fast first look; open_prices = fastest, rough), the symbol, the timeframe, the preset and optional input overrides. Deposit, currency and leverage default to the live account's. CONSENT: the test loads the customer's VPS, so before the first run call with dry_run=true, show the returned `consent_text` (it states the VPS's cores and RAM) and the summary, and get an explicit yes; then call again with consent=true. Later runs still need a yes to the summary but no consent text (dry run returns requires_consent=false). Asynchronous: 202 + command_id; poll get_command with wait=30 repeatedly (runs take minutes to an hour); the final command has result.backtest (net_profit, max_drawdown_pct, profit_factor, trades, win_rate_pct, sharpe, expected_payoff, initial_deposit, history_quality_pct, duration_s) and result.report_url (full HTML report; the dashboard shows a link). Maps to POST /v1/backtests.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string",
+          "description": "The account whose VPS and terminal run the test (its login gives history and the EA licence)."
+        },
+        "ea_id": {
+          "type": "string"
+        },
+        "preset": {
+          "type": "string",
+          "description": "Risk preset id from get_ea; defaults to the EA's default preset."
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Optional exact input overrides on top of the preset (names from get_ea)."
+        },
+        "symbol": {
+          "type": "string",
+          "description": "Defaults to the EA's default symbol; must be in its allowed list."
+        },
+        "timeframe": {
+          "type": "string",
+          "enum": [
+            "M1",
+            "M5",
+            "M15",
+            "M30",
+            "H1",
+            "H4",
+            "D1"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "description": "Start date YYYY-MM-DD."
+        },
+        "to": {
+          "type": "string",
+          "description": "End date YYYY-MM-DD, not later than today."
+        },
+        "tick_model": {
+          "type": "string",
+          "enum": [
+            "every_tick_real",
+            "every_tick",
+            "one_minute_ohlc",
+            "open_prices"
+          ],
+          "description": "Default every_tick_real."
+        },
+        "deposit": {
+          "type": "number",
+          "description": "Initial deposit; defaults to the account balance."
+        },
+        "currency": {
+          "type": "string",
+          "description": "Defaults to the account currency."
+        },
+        "leverage": {
+          "type": "integer",
+          "description": "Defaults to the account leverage."
+        },
+        "consent": {
+          "type": "boolean",
+          "description": "true once the customer explicitly accepted the consent_text of the dry run."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "description": "Validate and show the plan, the warnings and the consent status without running."
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "client_id",
+        "account_id",
+        "ea_id",
+        "from",
+        "to"
+      ],
       "additionalProperties": false
     }
   },
   {
     "name": "get_command",
-    "description": "Get the status and outcome of a command created by start_ea / stop_ea / set_risk / set_param / restart_ea. Pass wait (up to 30 seconds) to block until the command finishes instead of polling. Terminal statuses: succeeded, failed, rejected, expired, cancelled. The `summary` field is a one-sentence, user-safe description of what happened; `resolved.diff` is what was applied; `result.observed` is what the terminal actually shows afterwards; `error` explains a failure. Maps to GET /v1/commands/{command_id}.",
+    "description": "Get the status and outcome of a command created by start_ea / stop_ea / set_risk / set_param / restart_ea / run_backtest. Pass wait (up to 30 seconds) to block until the command finishes instead of polling. Terminal statuses: succeeded, failed, rejected, expired, cancelled. The `summary` field is a one-sentence, user-safe description of what happened; `resolved.diff` is what was applied; `result.observed` is what the terminal actually shows afterwards; `error` explains a failure; for run_backtest, `result.backtest` holds the metrics and `result.report_url` the report. Maps to GET /v1/commands/{command_id}.",
     "input_schema": {
       "type": "object",
       "properties": {
-        "client_id": { "type": "string" },
-        "command_id": { "type": "string" },
-        "wait": { "type": "integer", "description": "Seconds to wait for completion, 0–30. Use 30." }
+        "client_id": {
+          "type": "string"
+        },
+        "command_id": {
+          "type": "string"
+        },
+        "wait": {
+          "type": "integer",
+          "description": "Seconds to wait for completion, 0–30. Use 30."
+        }
       },
-      "required": ["client_id", "command_id"],
+      "required": [
+        "client_id",
+        "command_id"
+      ],
       "additionalProperties": false
     }
   },
@@ -169,13 +399,39 @@
     "input_schema": {
       "type": "object",
       "properties": {
-        "client_id": { "type": "string" },
-        "account_id": { "type": "string" },
-        "instance_id": { "type": "string", "description": "Optional filter." },
-        "status": { "type": "string", "enum": ["queued", "dispatched", "running", "succeeded", "failed", "rejected", "expired", "cancelled"], "description": "Optional filter." },
-        "limit": { "type": "integer", "description": "1–200, default 50." }
+        "client_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "description": "Optional filter."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "queued",
+            "dispatched",
+            "running",
+            "succeeded",
+            "failed",
+            "rejected",
+            "expired",
+            "cancelled"
+          ],
+          "description": "Optional filter."
+        },
+        "limit": {
+          "type": "integer",
+          "description": "1–200, default 50."
+        }
       },
-      "required": ["client_id", "account_id"],
+      "required": [
+        "client_id",
+        "account_id"
+      ],
       "additionalProperties": false
     }
   },
@@ -185,16 +441,41 @@
     "input_schema": {
       "type": "object",
       "properties": {
-        "client_id": { "type": "string" },
-        "account_id": { "type": "string" },
-        "from": { "type": "string", "description": "ISO 8601 date-time, inclusive." },
-        "to": { "type": "string", "description": "ISO 8601 date-time, exclusive." },
-        "ea_id": { "type": "string", "description": "Optional filter." },
-        "instance_id": { "type": "string", "description": "Optional filter." },
-        "limit": { "type": "integer", "description": "1–500, default 100." },
-        "cursor": { "type": "string", "description": "From a previous page's next_cursor." }
+        "client_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string",
+          "description": "ISO 8601 date-time, inclusive."
+        },
+        "to": {
+          "type": "string",
+          "description": "ISO 8601 date-time, exclusive."
+        },
+        "ea_id": {
+          "type": "string",
+          "description": "Optional filter."
+        },
+        "instance_id": {
+          "type": "string",
+          "description": "Optional filter."
+        },
+        "limit": {
+          "type": "integer",
+          "description": "1–500, default 100."
+        },
+        "cursor": {
+          "type": "string",
+          "description": "From a previous page's next_cursor."
+        }
       },
-      "required": ["client_id", "account_id"],
+      "required": [
+        "client_id",
+        "account_id"
+      ],
       "additionalProperties": false
     }
   },
@@ -204,14 +485,37 @@
     "input_schema": {
       "type": "object",
       "properties": {
-        "client_id": { "type": "string" },
-        "account_id": { "type": "string" },
-        "source": { "type": "string", "enum": ["samples", "deals"], "description": "Default samples." },
-        "from": { "type": "string", "description": "ISO 8601 date-time. Default: 7 days before `to` (samples) or the first deal (deals)." },
-        "to": { "type": "string", "description": "ISO 8601 date-time. Default now." },
-        "step": { "type": "integer", "description": "Seconds per point (60–86400). Default fits about 400 points." }
+        "client_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "samples",
+            "deals"
+          ],
+          "description": "Default samples."
+        },
+        "from": {
+          "type": "string",
+          "description": "ISO 8601 date-time. Default: 7 days before `to` (samples) or the first deal (deals)."
+        },
+        "to": {
+          "type": "string",
+          "description": "ISO 8601 date-time. Default now."
+        },
+        "step": {
+          "type": "integer",
+          "description": "Seconds per point (60–86400). Default fits about 400 points."
+        }
       },
-      "required": ["client_id", "account_id"],
+      "required": [
+        "client_id",
+        "account_id"
+      ],
       "additionalProperties": false
     }
   },
@@ -221,13 +525,499 @@
     "input_schema": {
       "type": "object",
       "properties": {
-        "client_id": { "type": "string" },
-        "account_id": { "type": "string" },
-        "from": { "type": "string", "description": "ISO 8601 date-time. Default 30 days before `to`." },
-        "to": { "type": "string", "description": "ISO 8601 date-time. Default now." },
-        "group": { "type": "string", "enum": ["ea", "instance", "symbol", "day", "hour", "weekday"], "description": "Default ea." }
+        "client_id": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string",
+          "description": "ISO 8601 date-time. Default 30 days before `to`."
+        },
+        "to": {
+          "type": "string",
+          "description": "ISO 8601 date-time. Default now."
+        },
+        "group": {
+          "type": "string",
+          "enum": [
+            "ea",
+            "instance",
+            "symbol",
+            "day",
+            "hour",
+            "weekday"
+          ],
+          "description": "Default ea."
+        }
       },
-      "required": ["client_id", "account_id"],
+      "required": [
+        "client_id",
+        "account_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "list_my_eas",
+    "description": "The customer's OWN Expert Advisors being onboarded (status uploaded → installed → discovered → drafted → confirmed, or failed) and every .ex5 file the agent found under MQL5\\Experts on their VPS (`on_vps`, with catalog_ea_id / custom_id when known). Use it when the customer wants to add, upload or onboard an EA, or asks about an EA that is not in list_eas. A new file is uploaded by the customer in the dashboard (app.algohand.com → Your EAs) or through the API; once uploaded, the agent installs it and reads its inputs by itself and the entry moves to `drafted`. Maps to GET /v1/clients/{client_id}/eas.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "client_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "onboard_vps_ea",
+    "description": "Start onboarding an EA that is ALREADY on the customer's VPS (pick `file` and `path` from list_my_eas.on_vps): the agent reads its inputs on a throw-away chart with algo trading off, then an AI draft of the profile is prepared. Asynchronous: the response carries a command; call list_my_eas / get_ea_draft after ~30 s. Ask the customer for a link to the EA's description or manual (source_url) if they have one — it improves the draft. Maps to POST /v1/clients/{client_id}/eas with from_vps.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string",
+          "description": "File name from on_vps, e.g. GoldScalper.ex5."
+        },
+        "path": {
+          "type": "string",
+          "description": "Template path from on_vps, e.g. Experts\\Vendor\\GoldScalper.ex5."
+        },
+        "source_url": {
+          "type": "string",
+          "description": "Optional: the vendor page or manual of the EA."
+        }
+      },
+      "required": [
+        "client_id",
+        "file"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "discover_ea",
+    "description": "Read (again) the inputs of a custom EA on the customer's terminal — after the install finished, or after the file was updated. Asynchronous: returns a command_id (get_command). The EA is loaded on a throw-away chart with algo trading off and the chart is closed afterwards; it never trades during discovery. Maps to POST /v1/clients/{client_id}/eas/{custom_id}/discover.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "custom_id": {
+          "type": "string",
+          "description": "From list_my_eas (cust_…)."
+        },
+        "symbol": {
+          "type": "string",
+          "description": "Chart symbol for the discovery chart; default EURUSD."
+        },
+        "timeframe": {
+          "type": "string",
+          "enum": [
+            "M1",
+            "M5",
+            "M15",
+            "M30",
+            "H1",
+            "H4",
+            "D1"
+          ]
+        }
+      },
+      "required": [
+        "client_id",
+        "custom_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "get_ea_draft",
+    "description": "The discovered inputs (name, type, default, enum_candidate) and the draft profile of a custom EA: per input a label, description, category (risk / entry / exit / filters / news / time / display / licence / magic / other), is_risk, changeable, hidden, suggested min/max/step, enum_labels (confirmed) or enum_guess (AI guess, NOT confirmed), plus kill_switch, magic_input, symbols_allowed, default_symbol/timeframe, presets and terminal journal lines (licence errors show up here). Review it with the customer by category, risk first, in chunks of at most ten inputs; hide cosmetic inputs. Maps to GET /v1/clients/{client_id}/eas/{custom_id}.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "custom_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "client_id",
+        "custom_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "update_ea_draft",
+    "description": "Save the customer's corrections to a custom EA's draft: per input label / description / category / is_risk / changeable / hidden / requires_flat / min / max / step / allowed / enum_labels (index → option name, exactly as the customer names them, in order) / type (int|double|enum), plus kill_switch {input, off_value, on_value}, magic_input, symbols_allowed, default_symbol, default_timeframe, presets [{id, label, description, inputs}], default_preset, name, description, category, source_url. A dropdown (enum_candidate) without confirmed enum_labels stays locked; the customer can also allow only some options with `allowed`. Maps to PATCH /v1/clients/{client_id}/eas/{custom_id}/draft.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "custom_id": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "object",
+          "description": "Input name → corrections, e.g. {\"LotMode\": {\"enum_labels\": {\"0\": \"Fixed lot\", \"1\": \"Percent\"}, \"allowed\": [0, 1]}, \"RiskPercent\": {\"max\": 3}}.",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "kill_switch": {
+          "type": "object"
+        },
+        "clear_kill_switch": {
+          "type": "boolean"
+        },
+        "magic_input": {
+          "type": "string"
+        },
+        "symbols_allowed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "default_symbol": {
+          "type": "string"
+        },
+        "default_timeframe": {
+          "type": "string",
+          "enum": [
+            "M1",
+            "M5",
+            "M15",
+            "M30",
+            "H1",
+            "H4",
+            "D1"
+          ]
+        },
+        "presets": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "default_preset": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "grid",
+            "scalper",
+            "news",
+            "trend",
+            "breakout",
+            "other"
+          ]
+        },
+        "source_url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "client_id",
+        "custom_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "confirm_ea",
+    "description": "Activate a custom EA after the customer approved the draft: it joins THEIR catalog (ea_id = custom_id) and works with start_ea / set_risk / set_param within the confirmed ranges. Requires at least one symbol in symbols_allowed and discovered inputs. Restart safety stays `untested`: parameter changes while the EA has open positions are refused until AlgoHand verifies it — tell the customer. Accepts the same optional corrections as update_ea_draft. Maps to POST /v1/clients/{client_id}/eas/{custom_id}/confirm.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "custom_id": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "symbols_allowed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "default_symbol": {
+          "type": "string"
+        },
+        "default_timeframe": {
+          "type": "string"
+        },
+        "presets": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "default_preset": {
+          "type": "string"
+        },
+        "kill_switch": {
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "client_id",
+        "custom_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "create_support_ticket",
+    "description": "Open a support ticket for the customer when the problem is beyond your tools: an error you cannot explain from the data, a billing, licence or account question, a suspected bug, a complaint, or when the customer asks for a human. Not for things you can do yourself. Tell the customer what you will send and get a yes first. The support assistant answers within about a minute by e-mail and on the ticket page (`link`); a person takes over when needed. Maps to POST /v1/clients/{client_id}/support/tickets.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Short subject line."
+        },
+        "message": {
+          "type": "string",
+          "description": "The customer's question in their words plus the facts already established (account, EA, command ids, error codes, what was tried)."
+        },
+        "email": {
+          "type": "string",
+          "description": "Only when the customer has no dashboard account: where the answer goes. Ask for it in that case."
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Optional; `summary` = one paragraph summarising the conversation so far."
+        }
+      },
+      "required": [
+        "client_id",
+        "message"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "list_alerts",
+    "description": "The customer's alert rules (status, fired count, last value) and the catalog of alert kinds with their parameter names. Call before creating or changing alerts. Maps to GET /v1/clients/{client_id}/alerts.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "client_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "create_alert",
+    "description": "Create an alert rule after the customer confirmed how you understood it. Kinds and params: balance_below/balance_above/equity_below/equity_above/floating_pnl_below/floating_pnl_above {value}; drawdown_pct {pct} (equity drawdown from the peak since the rule was set); daily_loss_pct {pct}; margin_level_below {pct}; positions_above {count}; ea_off_chart {ea_id|instance_id optional}; deal_closed {min_abs_profit optional} (every closed deal); terminal_disconnected; vps_offline {vps_id optional}; command_failed; price {symbol, level, direction: above|below} (stored; works from agent 0.2.23); news_guard {before_min (30), after_min (15), impact: high|medium, currencies: 'auto' (from the EAs' symbols) | 'all' | [list], targets: 'all' | {instance_ids: [...]} | {symbols: [...]}, match (event title contains, e.g. 'Non-Farm' or 'FOMC'), action: pause|notify} — pauses the EAs (soft stop, positions keep being managed) before the news and resumes them after; notifies in Telegram at every step. account_id is needed when the customer has several accounts. Delivery: Telegram when linked, else e-mail. Maps to POST /v1/clients/{client_id}/alerts.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "balance_below",
+            "balance_above",
+            "equity_below",
+            "equity_above",
+            "floating_pnl_below",
+            "floating_pnl_above",
+            "drawdown_pct",
+            "daily_loss_pct",
+            "margin_level_below",
+            "positions_above",
+            "ea_off_chart",
+            "deal_closed",
+            "terminal_disconnected",
+            "vps_offline",
+            "command_failed",
+            "price",
+            "news_guard"
+          ]
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "text": {
+          "type": "string",
+          "description": "The rule in the customer's words, short (shown in every notification)."
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "channels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "telegram",
+              "email"
+            ]
+          }
+        },
+        "repeat": {
+          "type": "boolean",
+          "description": "true = notify again after cooldown_s while the condition holds; false (default) = once, re-armed when the condition clears."
+        },
+        "cooldown_s": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 86400
+        }
+      },
+      "required": [
+        "client_id",
+        "kind",
+        "params",
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "update_alert",
+    "description": "Pause (status=paused) or resume (status=armed) an alert, or change its text/params/channels/repeat/cooldown. Maps to PATCH /v1/clients/{client_id}/alerts/{alert_id}.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "alert_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "armed",
+            "paused"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "channels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "repeat": {
+          "type": "boolean"
+        },
+        "cooldown_s": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "client_id",
+        "alert_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "delete_alert",
+    "description": "Delete an alert rule (ask for a yes first). Maps to DELETE /v1/clients/{client_id}/alerts/{alert_id}.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "alert_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "client_id",
+        "alert_id"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "list_news",
+    "description": "Upcoming economic calendar events (title, currency, time in UTC, impact, forecast, previous) for the next `hours` (default 48), optionally filtered by currencies. Use it to answer 'what news is coming', to pick the event for a news guard, or to explain why an EA was paused. Maps to GET /v1/news.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "hours": {
+          "type": "number"
+        },
+        "impact": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "currencies": {
+          "type": "string",
+          "description": "Comma-separated, e.g. USD,EUR"
+        }
+      },
+      "required": [
+        "client_id"
+      ],
       "additionalProperties": false
     }
   }

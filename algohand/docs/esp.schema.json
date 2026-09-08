@@ -1,0 +1,870 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://algohand.com/docs/esp.schema.json",
+  "title": "AlgoHand EA Spec Protocol (ESP)",
+  "description": "One document per EA build (sha256): what the terminal exposes (terminal blocks, always from discovery) and what people know about each input, every field with provenance and a trust level. Write permissions are derived from trust.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "esp_version",
+    "ea",
+    "generated_by",
+    "parameters"
+  ],
+  "properties": {
+    "esp_version": {
+      "const": "0.1"
+    },
+    "ea": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "file_name",
+        "platform"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "file_name": {
+          "type": "string",
+          "pattern": "\\.ex5$"
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "ea_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "author": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "platform": {
+          "const": "MT5"
+        },
+        "docs_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "category": {
+          "enum": [
+            "grid",
+            "scalper",
+            "news",
+            "trend",
+            "breakout",
+            "other",
+            null
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "generated_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "tool",
+        "timestamp"
+      ],
+      "properties": {
+        "path": {
+          "enum": [
+            "author_source",
+            "client_manual",
+            "discovery_auto",
+            "catalog",
+            "test_run"
+          ]
+        },
+        "tool": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string"
+        }
+      }
+    },
+    "restart_behavior": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "recovers_open_positions": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "recovery_mechanism": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "safe_to_restart_with_open_positions": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source",
+            "trust"
+          ],
+          "properties": {
+            "source": {
+              "enum": [
+                "author_source",
+                "client_manual",
+                "discovery_auto",
+                "catalog",
+                "test_run"
+              ]
+            },
+            "trust": {
+              "enum": [
+                "none",
+                "inferred",
+                "client",
+                "author",
+                "verified",
+                "curated"
+              ]
+            },
+            "entered_by": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "timestamp": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "confidence": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                null
+              ]
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "type",
+          "terminal"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "type": {
+            "enum": [
+              "bool",
+              "int",
+              "double",
+              "string",
+              "csv",
+              "enum"
+            ]
+          },
+          "terminal": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "default": {},
+              "min": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "max": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "current": {},
+              "enum_labels": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "group": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "label": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "meaning": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "unit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "risk_relevant": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "safe_range": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "min": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "max": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "allowed": {
+                "type": [
+                  "array",
+                  "null"
+                ]
+              },
+              "step": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "requires_restart": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "enum_labels": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "hidden": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              null
+            ]
+          },
+          "provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "terminal_block": {
+                "enum": [
+                  "discovery",
+                  "set_file",
+                  "catalog",
+                  null
+                ]
+              },
+              "meaning": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source",
+                  "trust"
+                ],
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "author_source",
+                      "client_manual",
+                      "discovery_auto",
+                      "catalog",
+                      "test_run"
+                    ]
+                  },
+                  "trust": {
+                    "enum": [
+                      "none",
+                      "inferred",
+                      "client",
+                      "author",
+                      "verified",
+                      "curated"
+                    ]
+                  },
+                  "entered_by": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "confidence": {
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      null
+                    ]
+                  }
+                }
+              },
+              "unit": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source",
+                  "trust"
+                ],
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "author_source",
+                      "client_manual",
+                      "discovery_auto",
+                      "catalog",
+                      "test_run"
+                    ]
+                  },
+                  "trust": {
+                    "enum": [
+                      "none",
+                      "inferred",
+                      "client",
+                      "author",
+                      "verified",
+                      "curated"
+                    ]
+                  },
+                  "entered_by": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "confidence": {
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      null
+                    ]
+                  }
+                }
+              },
+              "risk_relevant": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source",
+                  "trust"
+                ],
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "author_source",
+                      "client_manual",
+                      "discovery_auto",
+                      "catalog",
+                      "test_run"
+                    ]
+                  },
+                  "trust": {
+                    "enum": [
+                      "none",
+                      "inferred",
+                      "client",
+                      "author",
+                      "verified",
+                      "curated"
+                    ]
+                  },
+                  "entered_by": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "confidence": {
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      null
+                    ]
+                  }
+                }
+              },
+              "safe_range": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source",
+                  "trust"
+                ],
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "author_source",
+                      "client_manual",
+                      "discovery_auto",
+                      "catalog",
+                      "test_run"
+                    ]
+                  },
+                  "trust": {
+                    "enum": [
+                      "none",
+                      "inferred",
+                      "client",
+                      "author",
+                      "verified",
+                      "curated"
+                    ]
+                  },
+                  "entered_by": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "confidence": {
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      null
+                    ]
+                  }
+                }
+              },
+              "requires_restart": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source",
+                  "trust"
+                ],
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "author_source",
+                      "client_manual",
+                      "discovery_auto",
+                      "catalog",
+                      "test_run"
+                    ]
+                  },
+                  "trust": {
+                    "enum": [
+                      "none",
+                      "inferred",
+                      "client",
+                      "author",
+                      "verified",
+                      "curated"
+                    ]
+                  },
+                  "entered_by": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "confidence": {
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      null
+                    ]
+                  }
+                }
+              },
+              "enum_labels": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source",
+                  "trust"
+                ],
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "author_source",
+                      "client_manual",
+                      "discovery_auto",
+                      "catalog",
+                      "test_run"
+                    ]
+                  },
+                  "trust": {
+                    "enum": [
+                      "none",
+                      "inferred",
+                      "client",
+                      "author",
+                      "verified",
+                      "curated"
+                    ]
+                  },
+                  "entered_by": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "confidence": {
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      null
+                    ]
+                  }
+                }
+              },
+              "hidden": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source",
+                  "trust"
+                ],
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "author_source",
+                      "client_manual",
+                      "discovery_auto",
+                      "catalog",
+                      "test_run"
+                    ]
+                  },
+                  "trust": {
+                    "enum": [
+                      "none",
+                      "inferred",
+                      "client",
+                      "author",
+                      "verified",
+                      "curated"
+                    ]
+                  },
+                  "entered_by": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "confidence": {
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      null
+                    ]
+                  }
+                }
+              },
+              "label": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source",
+                  "trust"
+                ],
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "author_source",
+                      "client_manual",
+                      "discovery_auto",
+                      "catalog",
+                      "test_run"
+                    ]
+                  },
+                  "trust": {
+                    "enum": [
+                      "none",
+                      "inferred",
+                      "client",
+                      "author",
+                      "verified",
+                      "curated"
+                    ]
+                  },
+                  "entered_by": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "timestamp": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "confidence": {
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      null
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "presets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "values"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{0,31}$"
+          },
+          "label": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "values": {
+            "type": "object"
+          },
+          "provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source",
+              "trust"
+            ],
+            "properties": {
+              "source": {
+                "enum": [
+                  "author_source",
+                  "client_manual",
+                  "discovery_auto",
+                  "catalog",
+                  "test_run"
+                ]
+              },
+              "trust": {
+                "enum": [
+                  "none",
+                  "inferred",
+                  "client",
+                  "author",
+                  "verified",
+                  "curated"
+                ]
+              },
+              "entered_by": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "timestamp": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "confidence": {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high",
+                  null
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "who",
+          "role",
+          "asserted",
+          "at"
+        ],
+        "properties": {
+          "who": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "client",
+              "author",
+              "staff",
+              "system"
+            ]
+          },
+          "asserted": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "at": {
+            "type": "string"
+          },
+          "note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

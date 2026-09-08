@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand — guía de inicio</title>
+<meta name="description" content="Conecta tu VPS de Windows a AlgoHand en cinco minutos: crea una cuenta, ejecuta un comando en el VPS, abre el chat y maneja tus Expert Advisors de MetaTrader 5.">
+<link rel="canonical" href="https://algohand.com/es/guide">
+<link rel="alternate" hreflang="en" href="https://algohand.com/guide">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/guide">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/guide">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/guide">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
+<style>
+  .guide h2 { font-size: 26px; margin-top: 44px; }
+  .guide h3 { font-size: 18px; margin-top: 26px; }
+  .guide p, .guide li { color: var(--ink2); font-size: 16px; line-height: 1.6; }
+  .guide ol, .guide ul { padding-left: 22px; margin: 10px 0; }
+  .guide li { margin: 6px 0; }
+  .guide pre { white-space: pre-wrap; word-break: break-all; }
+  .callout { border-left: 3px solid var(--brand); background: var(--bg2); padding: 12px 16px; border-radius: 0 12px 12px 0; margin: 16px 0; }
+  .callout b { color: var(--ink); }
+  .toc a { display: block; padding: 3px 0; }
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/es/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <button class="navtoggle" type="button" aria-label="Menú">Menú</button>
+  <nav class="main">
+    <a href="/es/traders">Traders</a>
+    <a href="/es/business">Empresas</a>
+    <a href="/es/authors">Autores de EA</a>
+    <a href="/es/pricing">Precios</a>
+    <a class="btn sm primary" href="https://app.algohand.com/?lang=es">Entrar</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: Español">ES<i></i></button>
+    <ul>
+      <li><a href="/guide" hreflang="en" lang="en"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/guide" hreflang="ru" lang="ru"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/guide" hreflang="es" lang="es" aria-current="true"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/es/eas">Catálogo de EA</a>
+    <a class="secondary" href="/docs/">API</a>
+  </nav>
+</div></header>
+
+<main class="wrap guide" style="max-width:860px">
+  <div class="hero" style="padding-bottom:10px">
+    <div>
+      <div class="eyebrow">Primeros pasos</div>
+      <h1 style="margin-top:14px">De un VPS vacío al <em>control por chat</em> en cinco minutos.</h1>
+      <p class="lead">AlgoHand ejecuta un pequeño agente en tu VPS de Windows junto a tus terminales de MetaTrader 5. Lo instalas con un comando; después, todo ocurre desde el panel y el chat. Sin puertos entrantes, ninguna contraseña sale de la máquina.</p>
+    </div>
+  </div>
+
+  <div class="card toc" style="margin-top:8px">
+    <b>En esta página</b>
+    <a href="#requirements">1. Qué necesitas</a>
+    <a href="#account">2. Crea tu cuenta</a>
+    <a href="#connect">3. Conecta el VPS</a>
+    <a href="#chat">4. Abre el chat y maneja tus EA</a>
+    <a href="#what-happens">5. Qué hace el agente en tu VPS</a>
+    <a href="#troubleshooting">6. Solución de problemas</a>
+    <a href="#remove">7. Quitar el agente</a>
+  </div>
+
+  <h2 id="requirements">1. Qué necesitas</h2>
+  <ul>
+    <li>Un <b>VPS de Windows</b> (Windows Server 2016 o más reciente, o Windows 10/11) con acceso de administrador por Escritorio remoto.</li>
+    <li>Uno o más <b>terminales de MetaTrader 5</b> instalados en él, cada uno autenticado en una cuenta de trading. Valen tanto las instalaciones estándar (Program Files) como las portables.</li>
+    <li>Los <b>Expert Advisors</b> con los que operas, instalados en los terminales como siempre (<code>MQL5\Experts</code>). AlgoHand nunca necesita su código fuente.</li>
+    <li>HTTPS saliente desde el VPS (viene por defecto; no se abre nada entrante).</li>
+  </ul>
+  <div class="callout"><b>Primero cuentas demo.</b> Conecta el primer día un terminal con una cuenta demo, familiarízate con el chat y después pasa a real. Operar es arriesgado; la automatización no cambia eso.</div>
+
+  <h2 id="account">2. Crea tu cuenta</h2>
+  <ol>
+    <li>Ve a <a href="https://app.algohand.com/?lang=es#register">app.algohand.com</a> y crea una cuenta con tu e-mail y una contraseña de al menos diez caracteres.</li>
+    <li>Lee y acepta los <a href="/terms">Términos del servicio</a>, la <a href="/privacy">Política de privacidad</a> y el <a href="/risk">Aviso de riesgo</a> (documentos en inglés).</li>
+    <li>Llegas al panel. Está vacío hasta que conectes un VPS.</li>
+  </ol>
+
+  <h2 id="connect">3. Conecta el VPS</h2>
+  <ol>
+    <li>En el panel haz clic en <b>Connect a VPS</b>, ponle un nombre (por ejemplo el proveedor y la ubicación) y haz clic en <b>Create activation token</b>. El panel muestra un comando de PowerShell de una línea con el token dentro.</li>
+    <li>Entra en el VPS por Escritorio remoto. Asegúrate de que tus terminales están en marcha y autenticados.</li>
+    <li>Abre <b>PowerShell como administrador</b> (clic derecho en el botón Inicio → «Windows PowerShell (administrador)» o «Terminal (administrador)»).</li>
+    <li>Pega el comando y pulsa Intro. Se ve así:</li>
+  </ol>
+  <pre class="cmd">powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr -useb https://algohand.com/dl/install.ps1 -OutFile $env:TEMP\algohand-install.ps1; &amp; $env:TEMP\algohand-install.ps1 -Token enr_XXXXXXXX"</pre>
+  <p>El instalador descarga el agente, comprueba su firma y hace una sola pregunta: ¿activar el <b>inicio de sesión automático</b>? En un VPS di que sí y escribe la contraseña de Windows del usuario actual. El instalador la verifica y la guarda en el almacén protegido LSA de Windows solo en esa máquina (el mismo que usa la herramienta Sysinternals Autologon); nunca sale del VPS. Así Windows inicia sesión por sí solo tras un reinicio y tus terminales arrancan sin que nadie se conecte por Escritorio remoto. Pulsa Intro para omitirlo; puedes activarlo más tarde (ver Solución de problemas).</p>
+  <ol start="5">
+    <li>En un minuto el VPS aparece en tu panel como <b>online</b>.</li>
+    <li>Después el agente reinicia cada terminal <b>una vez</b> para conectar su gestor. Tus EA vuelven a sus gráficos exactamente como estaban. A partir de ahí los terminales siguen en marcha y el agente solo los vigila.</li>
+  </ol>
+  <div class="callout"><b>El token sirve una sola vez.</b> Si el comando falla a medias, crea un token nuevo en el panel y ejecútalo otra vez. El token de activación caduca al usarse, así que un comando filtrado en un registro de chat no se puede reutilizar.</div>
+
+  <h2 id="chat">4. Abre el chat y maneja tus EA</h2>
+  <p>El asistente está en la parte superior de tu panel (o ábrelo en su propia pestaña con el enlace de al lado). Está identificado como tú y solo ve tu cuenta. Prueba:</p>
+  <ul>
+    <li>«¿Qué está en marcha en mi VPS?»</li>
+    <li>«Inicia Gold Scalper en XAUUSD con el preset low».</li>
+    <li>«Pon el EA de oro en riesgo medio».</li>
+    <li>«Detén todo en la cuenta 5313…»</li>
+    <li>«Muéstrame mi curva de equidad del último mes» o «P&amp;L por hora del día».</li>
+  </ul>
+  <p>Cada comando que cambia algo se te muestra primero como resumen. El asistente lo aplica solo después de que confirmes. Los cambios de parámetros reinician el EA; si el EA tiene posiciones abiertas y su reinicio seguro no está verificado, el cambio se rechaza en lugar de arriesgarse.</p>
+
+  <h2 id="what-happens">5. Qué hace el agente en tu VPS</h2>
+  <ul>
+    <li>Se ejecuta como tareas programadas bajo <code>C:\TCA</code>: un supervisor más un proceso por terminal. Los registros están en <code>C:\TCA\logs</code>.</li>
+    <li>Encuentra tus terminales de MetaTrader 5, lee su estado (cuenta, balance, equidad, posiciones abiertas, EA en gráficos) y lo envía a AlgoHand por HTTPS saliente. Nada escucha conexiones entrantes.</li>
+    <li>Instala en cada terminal un pequeño programa gestor (un servicio MQL5, o un EA en un gráfico oculto en versiones antiguas). El gestor abre y cierra gráficos y aplica plantillas; así se inician, detienen y reconfiguran los EA.</li>
+    <li>Mantiene los terminales en marcha: si un terminal se cierra o el VPS se reinicia, el agente lo vuelve a iniciar.</li>
+    <li>Nunca lee ni envía la contraseña de tu cuenta de trading. Solo trabaja con terminales que ya están autenticados.</li>
+    <li>Se actualiza a sí mismo desde versiones de AlgoHand firmadas por IT Effectiveness.</li>
+  </ul>
+
+  <h2 id="troubleshooting">6. Solución de problemas</h2>
+  <h3>El VPS no aparece en el panel</h3>
+  <p>Abre <code>C:\TCA\logs\agent.log</code>. Las últimas líneas dicen qué falló: normalmente un cortafuegos que bloquea el HTTPS saliente o un token ya usado. Crea un token nuevo y ejecuta el comando de nuevo.</p>
+  <h3>Un terminal muestra «TcaManager is not running»</h3>
+  <p>No se pudo conectar el gestor. Ocurre cuando AutoTrading está desactivado en el terminal o el terminal no está autenticado. Revisa el terminal y espera un minuto; el agente lo reintenta por sí solo.</p>
+  <h3>Omití el inicio de sesión automático y ahora lo quiero (o quiero quitarlo)</h3>
+  <p>Sin inicio de sesión automático todo funciona mientras estás conectado por Escritorio remoto, incluso con la ventana cerrada. Tras un reinicio, en cambio, los terminales y el agente esperan a que alguien inicie sesión. Actívalo más tarde con un comando en un PowerShell de administrador; pide la contraseña de Windows, la verifica y la guarda en el almacén protegido de Windows:</p>
+  <pre class="cmd">powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr -useb https://algohand.com/dl/autologon.ps1 -OutFile $env:TEMP\algohand-autologon.ps1; &amp; $env:TEMP\algohand-autologon.ps1"</pre>
+  <p>Añade <code>-Disable</code> al final para desactivarlo de nuevo.</p>
+  <h3>El chat dice que un EA es «unknown»</h3>
+  <p>AlgoHand solo maneja EA que están en su catálogo con parámetros y presets verificados. Los EA que ves en la «lista» del chat son los que puedes manejar. Los demás siguen funcionando sin tocarlos; escríbenos a <a href="mailto:support@algohand.com">support@algohand.com</a> para incorporarlos.</p>
+  <h3>Cambié un parámetro y el EA se reinició</h3>
+  <p>Es por diseño: MetaTrader no tiene forma de cambiar los parámetros de un EA sin volver a aplicarlos, y volver a aplicarlos significa reiniciar. Los EA que recogen sus propias posiciones tras un reinicio (por magic number) se marcan como de reinicio seguro; los demás reciben un aviso antes de cualquier cambio.</p>
+
+  <h2 id="remove">7. Quitar el agente</h2>
+  <p>En el panel, haz clic en <b>Disconnect this VPS</b>. El agente se detiene en su siguiente contacto y elimina su estado local. Tus terminales y EA se quedan como están. Para eliminar también los archivos, ejecuta en el VPS como administrador:</p>
+  <pre class="cmd">schtasks /Delete /TN "TCA Agent" /F; schtasks /Delete /TN "TCA Terminals" /F; Remove-Item -Recurse -Force C:\TCA</pre>
+
+  <div class="cta" style="margin:40px 0 20px"><a class="btn primary" href="https://app.algohand.com/?lang=es#register">Crear tu cuenta</a><a class="btn" href="/es/traders">Volver a la visión general</a></div>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/es/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Control por chat de Expert Advisors de MetaTrader 5. Un producto de IT Effectiveness LLC, Tbilisi, Georgia.</p></div>
+    <div><b>Producto</b><a href="/es/business">Para empresas</a><a href="/es/traders">Para traders</a><a href="/es/pricing">Precios</a><a href="/es/authors">Autores de EA</a><a href="/es/eas">Catálogo de EA</a><a href="/es/demo">Demo en vivo</a><a href="/es/guide">Guía</a></div>
+    <div><b>Desarrolladores</b><a href="/docs/">Referencia de la API</a><a href="/docs/openapi.yaml">Documento OpenAPI</a><a href="/docs/claude_tools.json">Definiciones de herramientas</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Legal</b><a href="/terms">Términos del servicio (EN)</a><a href="/privacy">Política de privacidad (EN)</a><a href="/risk">Aviso de riesgo (EN)</a><a href="/refund">Reembolsos (EN)</a><a href="https://app.algohand.com/support?lang=es">Soporte</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand y Terminal Control API son productos de IT Effectiveness LLC. Las versiones en inglés de los documentos legales son las vinculantes.</span><span>MetaTrader es una marca de MetaQuotes Ltd. Sin afiliación con MetaQuotes. Operar implica riesgo; nada de lo aquí expuesto es asesoramiento financiero.</span></div>
+</div></footer>
+
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="es" data-title="Soporte"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title.reset">AlgoHand — new password</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://algohand.com/favicon.ico" sizes="32x32">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
+<link rel="stylesheet" href="/portal.css">
+</head>
+<body class="auth">
+<main class="authbox">
+  <h2 style="font-size:24px" data-i18n="reset.h2">Set a new password</h2>
+  <form id="reset" class="lead" style="margin-top:16px">
+    <div><label data-i18n="f.newpw">New password (10+ characters)</label><input name="new_password" type="password" minlength="10" required autocomplete="new-password"></div>
+    <button class="btn primary" type="submit" data-i18n="btn.savepw">Save the password</button>
+    <div class="msg"></div>
+  </form>
+  <p class="note" style="margin-top:16px"><a href="/" data-i18n="link.back">Back to sign in</a></p>
+</main>
+<script src="/i18n.js"></script>
+<script src="/portal.js"></script>
+<script>Portal.resetPage();</script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ru" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand для бизнеса — дайте своему AI-ассистенту управление MetaTrader</title>
+<meta name="description" content="Один API, чтобы запускать, останавливать и перенастраивать советники MetaTrader 5 клиентов на их VPS. Проверка, подтверждение и сверенное выполнение встроены.">
+<link rel="canonical" href="https://algohand.com/ru/business">
+<link rel="alternate" hreflang="en" href="https://algohand.com/business">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/business">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/business">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/business">
+<meta property="og:title" content="AlgoHand для бизнеса — ваш ассистент уже говорит. Пусть действует.">
+<meta property="og:description" content="Один API, который управляет советниками MetaTrader 5 на VPS ваших клиентов. OpenAPI, инструменты Claude, MCP.">
+<meta property="og:url" content="https://algohand.com/ru/business">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap&subset=cyrillic">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/ru/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <button class="navtoggle" type="button" aria-label="Меню">Меню</button>
+  <nav class="main">
+    <a href="/ru/traders">Трейдерам</a>
+    <a href="/ru/business" aria-current="page">Бизнесу</a>
+    <a href="/ru/authors">Авторам EA</a>
+    <a href="/ru/pricing">Цены</a>
+    <a class="btn sm" href="https://app.algohand.com/?lang=ru">Войти</a>
+    <a class="btn sm primary" href="/ru/demo">Попробовать демо</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: Русский">RU<i></i></button>
+    <ul>
+      <li><a href="/business" hreflang="en" lang="en"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/business" hreflang="ru" lang="ru" aria-current="true"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/business" hreflang="es" lang="es"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/ru/eas">Каталог EA</a>
+    <a class="secondary" href="/docs/">API</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+  <div class="hero" style="padding-bottom:24px">
+    <div>
+      <div class="eyebrow">Брокерам · VPS-провайдерам · торговым платформам</div>
+      <h1 style="margin-top:14px">Ваш ассистент уже <em>говорит</em>. Пусть действует.</h1>
+      <p class="lead">Ваш AI-ассистент умеет отвечать на вопросы о торговле. AlgoHand позволяет ему ещё и безопасно управлять советниками MetaTrader клиента. Один API запускает, останавливает и перенастраивает советники на VPS клиента — с проверкой, подтверждением и сверенным выполнением.</p>
+      <div class="cta">
+        <a class="btn primary" href="#contact">Запросить песочницу</a>
+        <a class="btn" href="/docs/">Читать API</a>
+      </div>
+      <div class="trust">
+        <span>OpenAPI 3.1 + инструменты Claude + MCP</span>
+        <span>Ключи на каждого клиента</span>
+        <span>Песочница за час</span>
+      </div>
+    </div>
+    <div class="card" style="background:var(--tool)">
+      <div class="eyebrow">Одна команда от начала до конца</div>
+      <pre style="margin:10px 0 0;border:0;padding:0;background:none">POST /v1/accounts/acc_9q1x7d/commands
+{ "client_id": "ea-cust-1042",
+  "type": "set_param",
+  "params": { "instance_id": "inst_g7h8i9",
+              "inputs": { "MaximumSpread": 15 } },
+  "dry_run": true }
+
+200  summary: "MaximumSpread 7 → 15 on Gold Scalper
+              (XAUUSD) — EA will restart"
+     diff:    { MaximumSpread: { was: 7, now: 15 } }
+     restarts_ea: true · open_positions: 0
+
+… клиент говорит «да» …
+
+202  command_id: cmd_01M1JY85A07NCXYZ
+GET  /v1/commands/cmd_…?wait=30
+200  status: succeeded · reconciled: true
+     observed.inputs.MaximumSpread: 15.0</pre>
+    </div>
+  </div>
+
+  <section class="tight" id="fit">
+    <div class="grid4">
+      <div class="card"><div class="eyebrow">Для кого</div><ul class="checks"><li><b>Брокерский деск</b> — ваш ассистент поддержки действует на советниках клиентов</li><li><b>VPS-провайдер</b> — агент поставляется внутри вашего образа</li><li><b>Торговая платформа</b> — ваш AI-ассистент получает руки в MT5</li></ul></div>
+      <div class="card"><div class="eyebrow">Сроки</div><ul class="checks"><li>Ключи песочницы в течение часа</li><li>Пилот на одном образе VPS в тот же день</li><li>Ключи продакшена, когда скажете</li></ul></div>
+      <div class="card"><div class="eyebrow">Коммерческие условия</div><ul class="checks"><li>API Start 199 USD в месяц, включено 20 счетов, 6 USD за счёт сверх</li><li>Platform 599 USD в месяц, 100 счетов, 4 USD за счёт сверх, staging-ключи, MCP и чат под вашим брендом</li><li>Enterprise от 1 500 USD в месяц: SLA, DPA, варианты агента on-premise, письменный договор</li><li>Неисключительная лицензия, без передачи исходного кода. <a href="/ru/pricing#business">Подробнее</a></li></ul></div>
+      <div class="card"><div class="eyebrow">Что остаётся вашим</div><ul class="checks"><li>Ваши клиенты</li><li>Ваш дашборд и персонаж ассистента</li><li>Пароли к нам не попадают</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Что вы получаете</div>
+    <h2>Части, которые трудно построить и легко сделать неправильно</h2>
+    <div class="grid3" style="margin-top:26px">
+      <div class="card"><h3>Проверка на нашей стороне, а не в модели</h3><p>Каталог советников с разрешёнными параметрами, диапазонами, значениями перечислений и пресетами. Всё остальное сервер отклоняет с сообщением, которое модель может передать клиенту. Ваша LLM никогда не является границей безопасности.</p></div>
+      <div class="card"><h3>База знаний о безопасном перезапуске</h3><p>Каждая смена параметра перезапускает советник. Мы проверяем для каждого EA, как он восстанавливает свою корзину, и отклоняем небезопасные изменения при открытых позициях.</p></div>
+      <div class="card"><h3>Сверка</h3><p>Запрошенное, применённое и наблюдаемое состояние для каждой команды, с отметками времени и параметрами, прочитанными из работающего советника. Расхождение проваливает команду.</p></div>
+      <div class="card"><h3>Агент на VPS и менеджер</h3><p>Агент с только исходящими соединениями в вашем образе VPS, автообновляемый. Автоматическое восстановление, если терминал закрылся или машина перезагрузилась. Менеджер работает как сервис MQL5 — клиенту нечего закрыть.</p></div>
+      <div class="card"><h3>Живое состояние и история</h3><p>Счета, работающие советники с фактическими настройками, позиции и ордера по magic number, история сделок, кривая эквити и прибыль — готово для вашей отчётности.</p></div>
+      <div class="card"><h3>Мультитенантность по замыслу</h3><p>Тенант → клиент → VPS → счёт. Клиентский ключ видит только одного клиента.</p></div>
+    </div>
+    <div class="card" style="margin-top:18px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start">
+      <span class="pill">Новое</span>
+      <div><h3>Бэктесты как вызов API</h3><p><code>POST /v1/backtests</code> запускает Strategy Tester на VPS клиента в изолированном втором терминале с низким приоритетом. Период, модель тиков, символ, таймфрейм, пресет и параметры задаются в запросе. Структурированные метрики плюс полный HTML-отчёт.</p></div>
+    </div>
+  </section>
+
+  <section id="integration">
+    <div class="grid2">
+      <div>
+        <div class="eyebrow">Интеграция</div>
+        <h2>Три входа, один контракт</h2>
+        <p class="sub">Используйте тот, что подходит вашему стеку. Все три дают одни и те же операции и одну и ту же проверку.</p>
+        <ul class="checks">
+          <li><b>REST</b> — OpenAPI 3.1, асинхронные команды</li>
+          <li><b>Описания инструментов</b> — готовые схемы для Claude и других моделей с вызовом функций</li>
+          <li><b>MCP-сервер</b> — для клиентов с поддержкой MCP и внутренних инструментов</li>
+        </ul>
+        <div class="cta"><a class="btn" href="/docs/">Справочник API</a><a class="btn" href="/docs/claude_tools.json">Описания инструментов (JSON)</a></div>
+      </div>
+      <div class="tablewrap card">
+        <table>
+          <thead><tr><th>Операция</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>get_client_state</code></td><td>Всё, что принадлежит клиенту, вживую</td></tr>
+            <tr><td><code>list_eas</code> · <code>get_ea</code></td><td>Каталог с пресетами, диапазонами, точными именами параметров</td></tr>
+            <tr><td><code>start_ea</code> · <code>stop_ea</code></td><td>Добавить или убрать робота, мягкая или жёсткая остановка</td></tr>
+            <tr><td><code>set_risk</code> · <code>set_param</code> · <code>restart_ea</code></td><td>Изменить настройки, сначала пробный прогон</td></tr>
+            <tr><td><code>get_command</code></td><td>Результат с разницей, наблюдаемым состоянием, хронологией</td></tr>
+            <tr><td><code>get_account_history</code> · <code>get_pnl</code> · <code>get_equity_curve</code></td><td>Сделки, разбивки прибыли, кривые эквити и баланса</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Внедрение</div>
+    <h2>От первого вызова до клиентов в продакшене</h2>
+    <div class="steps" style="margin-top:26px">
+      <div class="step"><h3>Песочница</h3><p>Тенант с симулированным VPS и демо-счетами. Та же проверка, пробный прогон и сверка, что и в продакшене. Ключи в течение часа после запроса.</p></div>
+      <div class="step"><h3>Ваш каталог советников</h3><p>Мы подключаем каждый EA по его закрытому .ex5. Параметры обнаруживаются автоматически. Пресеты, диапазоны и безопасность перезапуска занимают короткую проверку.</p></div>
+      <div class="step"><h3>Пилотный VPS</h3><p>Установите агент на один из своих образов VPS или тестовую машину одним скриптом. Обнаружение находит терминалы; ваш ассистент начинает управлять ими в тот же день.</p></div>
+      <div class="step"><h3>Продакшен</h3><p>Ключи для клиентов выпускаются из вашего бэкенда, токены подключения на каждый VPS, мониторинг и подписанные обновления от нас. Неисключительная лицензия, цена за подключённый счёт.</p></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Начать</div>
+        <h2>Запросить песочницу</h2>
+        <p class="sub">Расскажите немного о своей платформе и о том, какие советники используют ваши клиенты. Вы получите ключи песочницы, спецификацию и схемы инструментов, а при желании — тридцатиминутный разбор.</p>
+        <p class="small muted" style="margin-top:14px">Удобнее по почте? <a href="mailto:info@algohand.com">info@algohand.com</a></p>
+      </div>
+      <form class="lead" data-lead="business" data-source="ru/business" data-thanks="Спасибо! Данные песочницы отправим в течение одного рабочего дня.">
+        <div class="row">
+          <div><label>Имя</label><input name="name" required maxlength="128" autocomplete="name"></div>
+          <div><label>Рабочий e-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
+        </div>
+        <div><label>Компания</label><input name="company" required maxlength="256" autocomplete="organization"></div>
+        <div><label>Ваша платформа и советники</label><textarea name="message" maxlength="4000" placeholder="например, брокер с собственными VPS, ~200 клиентов, 6 советников одного вендора; ассистент на Claude"></textarea></div>
+        <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Запросить доступ к песочнице</button>
+        <div class="msg"></div>
+        <div class="note">Отправляя форму, вы соглашаетесь с нашей <a href="/privacy">Политикой конфиденциальности</a> и <a href="/terms">Условиями использования</a> (на английском языке).</div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/ru/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Управление советниками MetaTrader 5 через чат. Продукт IT Effectiveness LLC, Грузия.</p></div>
+    <div><b>Продукт</b><a href="/ru/business">Для бизнеса</a><a href="/ru/traders">Трейдерам</a><a href="/ru/pricing">Цены</a><a href="/ru/authors">Авторам EA</a><a href="/ru/eas">Каталог EA</a><a href="/ru/demo">Живое демо</a><a href="/ru/guide">Инструкция</a></div>
+    <div><b>Разработчикам</b><a href="/docs/">Справочник API</a><a href="/docs/openapi.yaml">Документ OpenAPI</a><a href="/docs/claude_tools.json">Описания инструментов</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Документы</b><a href="/terms">Условия использования (EN)</a><a href="/privacy">Конфиденциальность (EN)</a><a href="/risk">Уведомление о рисках (EN)</a><a href="/refund">Возврат средств (EN)</a><a href="https://app.algohand.com/support?lang=ru">Поддержка</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand и Terminal Control API — продукты IT Effectiveness LLC. Юридически значимы английские версии документов.</span><span>MetaTrader — товарный знак MetaQuotes Ltd. Мы не связаны с MetaQuotes. Торговля сопряжена с риском; ничто здесь не является инвестиционной рекомендацией.</span></div>
+</div></footer>
+
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="ru" data-title="Поддержка"></script>
+</body>
+</html>

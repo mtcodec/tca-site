@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ru" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand живое демо — управляйте настоящими терминалами MT5 из чата</title>
+<meta name="description" content="Попробуйте AlgoHand на настоящих терминалах MetaTrader 5 и в песочнице, которая сбрасывается каждую ночь. Каждое изменение показывается заранее, подтверждается и сверяется.">
+<link rel="canonical" href="https://algohand.com/ru/demo">
+<link rel="alternate" hreflang="en" href="https://algohand.com/demo">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/demo">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/demo">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/demo">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap&subset=cyrillic">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/ru/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <button class="navtoggle" type="button" aria-label="Меню">Меню</button>
+  <nav class="main">
+    <a href="/ru/traders">Трейдерам</a>
+    <a href="/ru/business">Бизнесу</a>
+    <a href="/ru/authors">Авторам EA</a>
+    <a href="/ru/pricing">Цены</a>
+    <a class="btn sm" href="https://app.algohand.com/?lang=ru">Войти</a>
+    <a class="btn sm primary" href="/ru/demo" aria-current="page">Попробовать демо</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: Русский">RU<i></i></button>
+    <ul>
+      <li><a href="/demo" hreflang="en" lang="en"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/demo" hreflang="ru" lang="ru" aria-current="true"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/demo" hreflang="es" lang="es"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/ru/eas">Каталог EA</a>
+    <a class="secondary" href="/docs/">API</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+  <div class="hero" style="padding-bottom:24px">
+    <div>
+      <div class="eyebrow">Живое демо</div>
+      <h1 style="margin-top:14px">Настоящие терминалы. Настоящие команды. <em>Ваши вопросы.</em></h1>
+      <p class="lead">Тот же ассистент, который брокер встроил бы к себе. Он управляет настоящими терминалами MetaTrader 5 на нашем тестовом VPS (демо-счета, советники из пилотного каталога) и симулированным VPS, который сбрасывается каждую ночь. Доступ по коду, чтобы никто не перезапускал чужих роботов ради развлечения.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://chat.algohand.com">Открыть чат</a>
+        <a class="btn" href="#code">Получить код доступа</a>
+      </div>
+      <div class="trust">
+        <span>Две среды: настоящий VPS и песочница</span>
+        <span>Графики в чате</span>
+        <span>Отвечает по-русски, по-английски и по-испански</span>
+        <span>Ничего не нужно устанавливать</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Что попробовать</div>
+      <ul class="checks" style="margin-top:12px">
+        <li>«Как дела на моём счёте?»</li>
+        <li>«Какие советники сейчас работают?»</li>
+        <li>«Нарисуй кривую баланса»</li>
+        <li>«Винрейт по часам суток»</li>
+        <li>«Переключи Nordwind на NZDUSD на низкий риск» — посмотрите предпросмотр, потом скажите «да»</li>
+        <li>«Перезапусти Nightowl с MaxSpread 15»</li>
+        <li>«Останови Gridkeeper на AUDNZD» — мягкая остановка, позиции остаются под управлением</li>
+        <li>«Запусти Nordwind ещё и на GBPUSD, пресет medium»</li>
+        <li>«Протестируй Nightowl на EURUSD M5, с марта по июнь, OHLC минутных баров» — песочница отвечает симулированными метриками и отчётом</li>
+      </ul>
+      <p class="small muted" style="margin-top:14px">Ассистент отвечает на вашем языке. Каждое изменение — сначала предпросмотр, применяется после вашего «да», результат приходит с настройками, прочитанными из терминала.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="eyebrow">Среды</div>
+    <h2>Выберите ту, что отвечает на ваш вопрос</h2>
+    <div class="grid2" style="margin-top:26px">
+      <div class="card"><span class="pill">Песочница</span><h3 style="margin-top:12px">Симулированный VPS, сброс каждую ночь</h3><p>Полноценный управляющий сервер с симулированным VPS, двумя демо-счетами, тремя работающими советниками и девятью неделями истории сделок. Команды выполняются примерно за секунду. Лучший способ изучить API и чат.</p></div>
+      <div class="card"><span class="pill">Live</span><h3 style="margin-top:12px">Настоящие терминалы MT5 на нашем тестовом VPS</h3><p>Два терминала с демо-счетами и советники из пилотного каталога. Команды занимают от одной до трёх секунд, потому что настоящий терминал применяет настоящий шаблон. Именно это получают клиенты.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid2">
+      <div class="replay" data-replay="auto">
+        <div class="bar"><span>Запись · предпросмотр → подтверждение → проверено · диалог переведён</span><button type="button">Повторить</button></div>
+        <div class="log" style="min-height:320px">
+          <div class="m user">Переключи Nordwind на низкий риск</div>
+          <div class="m tool"><span class="st">✓</span> get_client_state · 2 accounts · 3 EAs running</div>
+          <div class="m tool"><span class="st">✓</span> set_risk dry_run=true · preset medium → low · diff LotSizingMethod 4 → 5 · restarts_ea: true · open positions: 0 · nothing queued</div>
+          <div class="m bot">Nordwind работает на счёте 51234567 (IC Markets), NZDUSD M15, пресет medium, открытых позиций нет.
+
+План:
+- Переключить с medium на low
+- Lot-sizing Method меняется с 4 на 5
+- Советник перезапустится, чтобы применить (позиций нет, это безопасно)
+
+Применяю?</div>
+          <div class="m user">да</div>
+          <div class="m tool"><span class="st">✓</span> set_risk · command queued 06:48:02</div>
+          <div class="m tool"><span class="st">✓</span> get_command wait=30 · succeeded 06:48:03 · reconciled: true · read back from the terminal: LotSizingMethod = 5, running, 0 positions</div>
+          <div class="m bot">Готово.
+- Запрошено: 06:48:02
+- Подтверждено: 06:48:03
+- Выполнено: 06:48:03
+
+Nordwind (NZDUSD) теперь работает на низком риске; перезапущен с Lot-sizing Method 5, значение прочитано с терминала.</div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Цикл управления</div>
+        <h2>Предпросмотр, ваше «да», затем проверка</h2>
+        <p class="sub">Каждое изменение сначала выполняется вхолостую: разница берётся с терминала, а не из запроса, и ничего не ставится в очередь, пока вы не подтвердите. После «да» команда выполняется, а результат — то, что терминал сообщил обратно: новое значение, прочитанное с графика, с точностью до секунды и отметкой reconciled.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid2">
+      <div class="replay" data-replay="auto">
+        <div class="bar"><span>Запись · графики в чате · диалог переведён</span><button type="button">Повторить</button></div>
+        <div class="log" style="min-height:320px">
+          <div class="m user">Нарисуй кривую баланса и покажи винрейт по часам суток</div>
+          <div class="m tool"><span class="st">✓</span> get_equity_curve source=deals · 259 сделок · 170 точек</div>
+          <div class="m tool"><span class="st">✓</span> get_pnl group=hour · 55 сделок · 24 интервала</div>
+          <div class="m bot">Оба графика по вашему основному счёту (баланс 10 250,40 USD).
+
+Кривая баланса (вся история): рост с 0 до 10 250,40 USD, ровный, худшая просадка 158,76 USD (1,58%) 17 июля.
+
+Винрейт по часам (последние 30 дней, время брокера): 55 сделок, 76,4% прибыльных, +234,75 USD. Самый сильный час 08:00 (13 сделок, 84,6% прибыльных); слабое место 11:00 (33% прибыльных, −39,37).
+
+Показать то же по дням недели или по советникам?</div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Разработчикам</div>
+        <h2>То же демо из вашего кода</h2>
+        <p class="sub">Чат — тонкий клиент над публичным API. С ключом песочницы вы можете вызывать те же эндпоинты из curl, из инструментов вашего ассистента или через MCP.</p>
+        <pre style="margin-top:16px">curl -H "Authorization: Bearer $KEY" \
+  "https://api.algohand.com/v1/clients/ea-cust-1042/state"
+
+curl -H "Authorization: Bearer $KEY" -X POST \
+  https://api.algohand.com/v1/accounts/acc_9q1x7d/commands \
+  -d '{"client_id":"ea-cust-1042","type":"set_risk",
+       "params":{"instance_id":"inst_d4e5f6","preset":"low"},
+       "dry_run":true}'</pre>
+        <div class="cta"><a class="btn" href="/docs/">Справочник API</a><a class="btn" href="/ru/business#contact">Запросить ключи песочницы</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="code">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Доступ</div>
+        <h2>Получить код демо</h2>
+        <p class="sub">Оставьте имя и e-mail: код для песочницы придёт на почту сразу и действует 7 дней. Коды персональные и могут быть отозваны. Хотите увидеть настоящие советники на живых терминалах? Напишите об этом в сообщении, и мы свяжемся.</p>
+        <p class="small muted" style="margin-top:14px">Код уже есть? <a href="https://chat.algohand.com">Откройте чат</a> и введите его.</p>
+      </div>
+      <form class="lead" data-lead="demo" data-source="ru/demo" data-thanks="Готово! Код уже у вас в почте (проверьте и папку «Спам»). Откройте chat.algohand.com и введите его.">
+        <div class="row">
+          <div><label>Имя</label><input name="name" required maxlength="128" autocomplete="name"></div>
+          <div><label>E-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
+        </div>
+        <div><label>Компания (необязательно)</label><input name="company" maxlength="256" autocomplete="organization"></div>
+        <div><label>Что хотите попробовать?</label><textarea name="message" maxlength="4000" placeholder="песочницу, живые терминалы или и то, и другое"></textarea></div>
+        <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Прислать код</button>
+        <div class="msg"></div>
+        <div class="note">Отправляя форму, вы соглашаетесь с нашей <a href="/privacy">Политикой конфиденциальности</a> и <a href="/terms">Условиями использования</a> (на английском языке).</div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/ru/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Управление советниками MetaTrader 5 через чат. Продукт IT Effectiveness LLC, Грузия.</p></div>
+    <div><b>Продукт</b><a href="/ru/business">Для бизнеса</a><a href="/ru/traders">Трейдерам</a><a href="/ru/pricing">Цены</a><a href="/ru/authors">Авторам EA</a><a href="/ru/eas">Каталог EA</a><a href="/ru/demo">Живое демо</a><a href="/ru/guide">Инструкция</a></div>
+    <div><b>Разработчикам</b><a href="/docs/">Справочник API</a><a href="/docs/openapi.yaml">Документ OpenAPI</a><a href="/docs/claude_tools.json">Описания инструментов</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Документы</b><a href="/terms">Условия использования (EN)</a><a href="/privacy">Конфиденциальность (EN)</a><a href="/risk">Уведомление о рисках (EN)</a><a href="/refund">Возврат средств (EN)</a><a href="https://app.algohand.com/support?lang=ru">Поддержка</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand и Terminal Control API — продукты IT Effectiveness LLC. Юридически значимы английские версии документов.</span><span>MetaTrader — товарный знак MetaQuotes Ltd. Мы не связаны с MetaQuotes. Торговля сопряжена с риском; ничто здесь не является инвестиционной рекомендацией.</span></div>
+</div></footer>
+
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="ru" data-title="Поддержка"></script>
+</body>
+</html>

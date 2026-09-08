@@ -43,7 +43,7 @@ info:
     before 1.0; paths, the command lifecycle and the shape of the dry-run
     preview (`CommandPreview`: summary, diff, requires_confirmation) will not.
   contact:
-    name: MTCodec JSC
+    name: IT Effectiveness LLC
   license:
     name: Proprietary – licensed, not sold
 
@@ -66,7 +66,18 @@ tags:
   - name: Provisioning
     description: Registering a customer's VPS and minting the one-time enrol token for the agent on it.
   - name: Backtests (v2)
-    description: Strategy Tester runs on a dedicated tester pool. Specified for v2; not available in the pilot.
+    description: Strategy Tester runs on the customer's own VPS, in an isolated second terminal, after the customer's consent.
+  - name: Embedded chat
+    description: Put the AlgoHand assistant into your own site or dashboard with a widget or an iframe; codes are minted per customer session.
+  - name: Alerts
+    description: Rules the customer sets ("tell me when the drawdown reaches 10%"), evaluated on the server, delivered to Telegram or e-mail.
+  - name: Support
+    description: |
+      Support tickets. The AlgoHand support assistant answers first (from the public knowledge base and,
+      for a signed-in customer, their live state); it hands the ticket to a person when it is unsure or
+      the topic needs one. Every answer goes to the customer by e-mail and on the ticket page.
+  - name: EA onboarding
+    description: The customer's own EAs — upload or pick a file on the VPS, the agent installs it and reads its inputs, a draft profile is reviewed in the chat and confirmed into the client's catalog.
   - name: Meta
 
 paths:
@@ -96,7 +107,7 @@ paths:
       summary: List EAs in the catalog
       description: |
         Returns the catalog visible to the caller's tenant. Use it to map a user's
-        words ("Waka", "the night scalper") to an `ea_id` and to show available
+        words ("Tidepool", "the Asian-session scalper") to an `ea_id` and to show available
         risk presets. Parameter lists are not included here; call `getEa`.
       parameters:
         - $ref: "#/components/parameters/ClientIdQueryOptional"
@@ -120,9 +131,9 @@ paths:
                 default:
                   value:
                     eas:
-                      - ea_id: waka_waka
-                        name: Waka Waka EA
-                        vendor: valerytools.com
+                      - ea_id: tidepool_grid
+                        name: Tidepool Grid
+                        vendor: quantlab.example
                         category: grid
                         description: Grid / averaging EA using Bollinger Bands and RSI for entries. Trades a list of symbols from a single chart.
                         status: approved
@@ -135,11 +146,11 @@ paths:
                           - { id: significant, label: Significant risk, description: "Vendor 'Significant Risk Set 80% annual (1.0% load)'." }
                           - { id: high, label: High risk, description: "Vendor 'High Risk Set 120% annual (1.5% load)'." }
                         default_preset: medium
-                      - ea_id: night_hunter_pro
-                        name: Night Hunter Pro
-                        vendor: valerytools.com
+                      - ea_id: lantern_scalper_pro
+                        name: Lantern Scalper Pro
+                        vendor: quantlab.example
                         category: scalper
-                        description: Night scalper. Pending orders, no grid.
+                        description: Asian-session scalper. Pending orders, no grid.
                         status: approved
                         restart_safety: verified
                         supports_soft_stop: true
@@ -173,11 +184,11 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/EaDetail" }
               examples:
-                perceptrader:
+                lattice:
                   value:
-                    ea_id: perceptrader_ai
-                    name: Perceptrader AI
-                    vendor: valerytools.com
+                    ea_id: lattice_ai
+                    name: Lattice AI
+                    vendor: quantlab.example
                     category: grid
                     description: Grid / averaging EA with a neural-network entry filter.
                     status: approved
@@ -369,8 +380,8 @@ paths:
                         stale: false
                         instances:
                           - instance_id: inst_a1b2c3
-                            ea_id: waka_waka
-                            ea_name: Waka Waka EA
+                            ea_id: tidepool_grid
+                            ea_name: Tidepool Grid
                             status: running
                             symbol: AUDNZD
                             timeframe: M15
@@ -396,8 +407,8 @@ paths:
                             profit: -31.20
                             swap: -1.10
                             magic: 184570000
-                            comment: Waka
-                            ea_id: waka_waka
+                            comment: Tidepool
+                            ea_id: tidepool_grid
                             instance_id: inst_a1b2c3
                             opened_at: "2026-09-01T22:40:03Z"
                         orders: []
@@ -592,17 +603,17 @@ paths:
             schema: { $ref: "#/components/schemas/CommandCreate" }
             examples:
               startEa:
-                summary: Add Night Hunter Pro with medium risk
+                summary: Add Lantern Scalper Pro with medium risk
                 value:
                   client_id: "ea-cust-1042"
                   type: start_ea
                   requested_by: "edgard"
-                  reason: "User asked: add Night Hunter Pro with medium risk"
+                  reason: "User asked: add Lantern Scalper Pro with medium risk"
                   params:
-                    ea_id: night_hunter_pro
+                    ea_id: lantern_scalper_pro
                     preset: medium
               stopEa:
-                summary: Stop Waka Waka (soft – no new grids, keep managing open basket)
+                summary: Stop Tidepool Grid (soft – no new grids, keep managing open basket)
                 value:
                   client_id: "ea-cust-1042"
                   type: stop_ea
@@ -611,7 +622,7 @@ paths:
                     instance_id: inst_a1b2c3
                     mode: soft
               setRisk:
-                summary: Switch Perceptrader to low risk
+                summary: Switch Lattice to low risk
                 value:
                   client_id: "ea-cust-1042"
                   type: set_risk
@@ -620,7 +631,7 @@ paths:
                     instance_id: inst_d4e5f6
                     preset: low
               setParam:
-                summary: Restart Night Hunter with MaxSpread 15
+                summary: Restart Lantern Scalper with MaxSpread 15
                 value:
                   client_id: "ea-cust-1042"
                   type: set_param
@@ -657,13 +668,13 @@ paths:
                     account_id: acc_9q1x7d
                     type: set_param
                     status: queued
-                    summary: "Set MaximumSpread 10 → 15 on Night Hunter Pro (EURUSD) — EA will restart"
+                    summary: "Set MaximumSpread 10 → 15 on Lantern Scalper Pro (EURUSD) — EA will restart"
                     requested:
                       instance_id: inst_g7h8i9
                       inputs: { MaximumSpread: 15 }
                     resolved:
-                      ea_id: night_hunter_pro
-                      ea_name: Night Hunter Pro
+                      ea_id: lantern_scalper_pro
+                      ea_name: Lantern Scalper Pro
                       instance_id: inst_g7h8i9
                       symbol: EURUSD
                       restarts_ea: true
@@ -690,10 +701,10 @@ paths:
                     valid: true
                     type: set_param
                     account_id: acc_9q1x7d
-                    summary: "Set MaximumSpread 10 → 15 on Night Hunter Pro (EURUSD) — EA will restart"
+                    summary: "Set MaximumSpread 10 → 15 on Lantern Scalper Pro (EURUSD) — EA will restart"
                     resolved:
-                      ea_id: night_hunter_pro
-                      ea_name: Night Hunter Pro
+                      ea_id: lantern_scalper_pro
+                      ea_name: Lantern Scalper Pro
                       instance_id: inst_g7h8i9
                       symbol: EURUSD
                       restarts_ea: true
@@ -738,7 +749,7 @@ paths:
                   value:
                     error:
                       code: PARAM_NOT_CHANGEABLE
-                      message: "TradeDistance is not on the list of parameters that can be changed for Perceptrader AI."
+                      message: "TradeDistance is not on the list of parameters that can be changed for Lattice AI."
                       details: { name: TradeDistance, changeable: [AllowOpeningNewGrid, MaximumSpread, MaximumTrades, "..."] }
                       retryable: false
                       hint: "Offer one of the changeable parameters instead, or explain that this one is locked."
@@ -746,7 +757,7 @@ paths:
                   value:
                     error:
                       code: RESTART_UNSAFE
-                      message: "Waka Waka EA has 3 open positions and its restart safety is not verified. Changing parameters would restart the EA and could orphan the basket."
+                      message: "Tidepool Grid has 3 open positions and its restart safety is not verified. Changing parameters would restart the EA and could orphan the basket."
                       details: { instance_id: inst_a1b2c3, open_positions: 3, restart_safety: untested }
                       retryable: false
                       hint: "Suggest waiting until the basket closes, or a soft stop."
@@ -820,13 +831,13 @@ paths:
                     account_id: acc_9q1x7d
                     type: set_param
                     status: succeeded
-                    summary: "MaximumSpread 10 → 15 applied on Night Hunter Pro (EURUSD); EA restarted and re-adopted 1 position"
+                    summary: "MaximumSpread 10 → 15 applied on Lantern Scalper Pro (EURUSD); EA restarted and re-adopted 1 position"
                     requested:
                       instance_id: inst_g7h8i9
                       inputs: { MaximumSpread: 15 }
                     resolved:
-                      ea_id: night_hunter_pro
-                      ea_name: Night Hunter Pro
+                      ea_id: lantern_scalper_pro
+                      ea_name: Lantern Scalper Pro
                       instance_id: inst_g7h8i9
                       symbol: EURUSD
                       restarts_ea: true
@@ -860,11 +871,11 @@ paths:
                     account_id: acc_9q1x7d
                     type: start_ea
                     status: failed
-                    summary: "Could not start Night Hunter Pro on EURUSD: the terminal reported that the EA file is missing"
-                    requested: { ea_id: night_hunter_pro, preset: medium }
+                    summary: "Could not start Lantern Scalper Pro on EURUSD: the terminal reported that the EA file is missing"
+                    requested: { ea_id: lantern_scalper_pro, preset: medium }
                     resolved:
-                      ea_id: night_hunter_pro
-                      ea_name: Night Hunter Pro
+                      ea_id: lantern_scalper_pro
+                      ea_name: Lantern Scalper Pro
                       instance_id: inst_g7h8i9
                       symbol: EURUSD
                       restarts_ea: false
@@ -873,11 +884,11 @@ paths:
                     result:
                       observed: { instance_status: stopped, inputs: {}, open_positions: 0, pending_orders: 0, observed_at: "2026-09-02T10:20:05Z" }
                       reconciled: false
-                      notes: ["ChartOpen succeeded, ChartApplyTemplate failed: expert 'NightHunterPro.ex5' not found in MQL5/Experts"]
+                      notes: ["ChartOpen succeeded, ChartApplyTemplate failed: expert 'LanternScalperPro.ex5' not found in MQL5/Experts"]
                     error:
                       code: EA_NOT_INSTALLED
-                      message: "Night Hunter Pro is not installed in this terminal (NightHunterPro.ex5 missing)."
-                      details: { file: NightHunterPro.ex5 }
+                      message: "Lantern Scalper Pro is not installed in this terminal (LanternScalperPro.ex5 missing)."
+                      details: { file: LanternScalperPro.ex5 }
                       retryable: false
                       hint: "Tell the user the EA needs to be installed on the VPS first."
                     timeline:
@@ -930,28 +941,36 @@ paths:
     post:
       tags: [Backtests (v2)]
       operationId: runBacktest
-      x-status: v2
-      summary: "(v2) Run a Strategy Tester backtest of an EA"
+      summary: "Run a Strategy Tester backtest of an EA on the customer's VPS"
       description: |
-        **Not available in the pilot.** Specified so that the command shape is
-        agreed early; returns `501 NOT_IMPLEMENTED` until v2.
+        Runs the MT5 Strategy Tester on the customer's own VPS, in a second,
+        isolated terminal instance next to the live terminals (below-normal
+        priority, one core where possible, one test per VPS at a time). The
+        same thing as a `run_backtest` command on the account, spelled out.
 
-        Runs the MT5 Strategy Tester headlessly on a dedicated tester pool —
-        never on the client's live VPS, because the tester saturates CPU and
-        would disturb live execution. Behaves like every other command:
-        `202` + `command_id`, then poll `GET /v1/commands/{command_id}`
-        (runs take minutes). On success `result.backtest` carries the metrics
-        and a link to the full report.
+        **Consent.** The test costs CPU and memory on the customer's machine,
+        so the first run of a client needs an explicit yes: a `dry_run` returns
+        `requires_consent` and `consent_text` (the warning, with the VPS's
+        cores and RAM); a real run without `consent: true` is refused with
+        `422 CONSENT_REQUIRED`. Once given, the consent is remembered for the
+        client.
+
+        Behaves like every other command: `202` + `command_id`, then poll
+        `GET /v1/commands/{command_id}` (runs take minutes to an hour). On
+        success `result.backtest` carries the metrics and `result.report_url`
+        the tester's full HTML report (`GET /v1/commands/{command_id}/report`).
+        The sandbox tenant returns simulated metrics (`simulated: true`).
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: "#/components/schemas/BacktestCreate" }
             examples:
-              waka:
+              tidepool:
                 value:
                   client_id: "ea-cust-1042"
-                  ea_id: waka_waka
+                  account_id: acc_9q1x7d
+                  ea_id: tidepool_grid
                   preset: medium
                   symbol: AUDNZD
                   timeframe: M15
@@ -961,23 +980,628 @@ paths:
                   currency: USD
                   leverage: 500
                   tick_model: every_tick_real
+                  consent: true
                   requested_by: edgard
       responses:
         "202":
-          description: Backtest queued on the tester pool.
+          description: Backtest queued for the agent on the customer's VPS.
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Command" }
-        "501":
-          description: Not implemented in this version.
+        "200":
+          description: Dry run — the resolved plan, the consent status and the warnings; nothing queued.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandPreview" }
+        "422":
+          description: Validation failed, consent missing (`CONSENT_REQUIRED`), agent offline.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "409":
+          description: Another backtest is still running on this VPS.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/clients/{client_id}/chat-codes:
+    post:
+      tags: [Embedded chat]
+      operationId: createChatCode
+      summary: "Issue a chat code that embeds the AlgoHand assistant for this client"
+      description: |
+        The AlgoHand chat can live inside your own site or dashboard: as a widget
+        (one `<script>` tag, a bubble in the corner) or in an iframe. Both need a
+        **chat code** for the customer: mint one from your backend when the customer
+        opens the page, pass it to the page, revoke it when they sign out (or let it
+        expire). The code carries a client-scoped key, so the chat sees this client
+        only and acts with your tenant's catalog and rules. The chat's LLM runs on
+        AlgoHand's side.
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ChatCodeCreate" }
+            example: { label: "dashboard session 8f31", display_name: "Ana", ttl_hours: 24, lang: es }
+      responses:
+        "201":
+          description: The code, the URLs and the widget snippet.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ChatCode" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/chat-codes/{code}:
+    delete:
+      tags: [Embedded chat]
+      operationId: revokeChatCode
+      summary: "Revoke a chat code (and the key behind it)"
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string } }
+        - { name: client_id, in: query, required: false, schema: { $ref: "#/components/schemas/ClientId" } }
+      responses:
+        "200":
+          description: The code with `revoked_at` set.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ChatCode" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/clients/{client_id}/eas:
+    post:
+      tags: [EA onboarding]
+      operationId: createClientEa
+      summary: "Onboard the customer's own EA: upload the .ex5, or point at one already on the VPS"
+      description: |
+        Two request shapes:
+
+        * **Upload** — the raw `.ex5` as the request body (`Content-Type: application/octet-stream`)
+          with `?filename=Name.ex5`. The file is stored encrypted on AlgoHand's side; the agent copies
+          it into `MQL5\Experts\TCA` of every terminal on the customer's VPS (`install_ea` command),
+          then reads its inputs on a throw-away chart with algo trading switched off for that chart
+          (`discover_ea`, queued automatically), and a draft profile is prepared — labels, descriptions,
+          categories, suggested ranges, presets, enum guesses (AI-assisted when configured).
+        * **Already on the VPS** — JSON `{"from_vps": {"file": "Name.ex5", "path": "Experts\\…"}}`
+          (from `on_vps` of the listing): nothing to upload, discovery is queued at once.
+
+        Watch `status` on `GET …/eas/{custom_id}`: `uploaded → installed → discovered → drafted`.
+        Then the customer reviews the draft (your assistant walks them through it: risk inputs first,
+        dropdown option names the terminal cannot reveal, ranges, presets, symbols), `PATCH …/draft`
+        stores the corrections and `POST …/confirm` activates the EA: it appears in `GET /v1/eas`
+        **for this client only** with `ea_id = custom_id` and works with every command. Its restart
+        safety starts `untested`: parameter changes while it has open positions are refused
+        (`RESTART_UNSAFE`) until AlgoHand verifies it. Design: docs/EA_ONBOARDING_V2.md.
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+        - { name: filename, in: query, required: false, schema: { type: string }, description: "Upload only: the .ex5 file name (plain characters)." }
+        - { name: source_url, in: query, required: false, schema: { type: string }, description: "Optional: the EA's vendor page or manual; improves the draft." }
+        - { name: requested_by, in: query, required: false, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema: { type: string, format: binary }
+          application/json:
+            schema: { $ref: "#/components/schemas/CustomEaFromVps" }
+            example: { from_vps: { file: "GoldScalper.ex5", path: "Experts\\Vendor\\GoldScalper.ex5" }, source_url: "https://vendor.example/gold-scalper" }
+      responses:
+        "202":
+          description: The custom EA record plus the command that was queued (`install_ea` for an upload, `discover_ea` otherwise).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CustomEaWithCommand" }
+        "400":
+          description: Not an .ex5, no `filename`, file too small.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "413":
+          description: File larger than the limit (10 MB by default).
           content:
             application/json:
               schema: { $ref: "#/components/schemas/ErrorResponse" }
         "422":
-          description: Validation failed.
+          description: No VPS connected for the client (`AGENT_OFFLINE`), no logged-in terminal (`TERMINAL_NOT_CONNECTED`).
           content:
             application/json:
               schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    get:
+      tags: [EA onboarding]
+      operationId: listClientEas
+      summary: "The customer's own EAs and every .ex5 found on their VPS"
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+      responses:
+        "200":
+          description: Custom EAs with their onboarding status, and the expert files the agent sees under `MQL5\Experts`.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CustomEaList" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/clients/{client_id}/eas/{custom_id}:
+    get:
+      tags: [EA onboarding]
+      operationId: getClientEa
+      summary: "One custom EA in full: discovered inputs, draft, journal, document once confirmed"
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+        - { name: custom_id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: The record with `parameters`, `draft`, `journal` and (confirmed) `document`.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CustomEa" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    delete:
+      tags: [EA onboarding]
+      operationId: deleteClientEa
+      summary: "Remove a custom EA (and its uploaded file when nothing else uses it)"
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+        - { name: custom_id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Removed. Running instances of the EA keep trading; they can no longer be reconfigured by chat.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { custom_id: { type: string }, deleted: { type: boolean } }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/clients/{client_id}/eas/{custom_id}/discover:
+    post:
+      tags: [EA onboarding]
+      operationId: discoverClientEa
+      summary: "Read the EA's inputs on the terminal (again)"
+      description: |
+        Queues a `discover_ea` command: the agent applies the EA on a throw-away chart with algo
+        trading off for that chart, lets the terminal save the chart's template, reads every input
+        name and default from it and closes the chart. Runs by itself after an upload; call it after
+        a new build of the file, or when the first attempt failed (see `journal` for licence errors).
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+        - { name: custom_id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/DiscoverEaBody" }
+      responses:
+        "202":
+          description: Discovery queued.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CustomEaWithCommand" }
+        "409":
+          description: Another command is still in flight for this EA.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "422":
+          description: Not installed yet, no VPS or terminal available.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/clients/{client_id}/eas/{custom_id}/draft:
+    patch:
+      tags: [EA onboarding]
+      operationId: patchClientEaDraft
+      summary: "Store the customer's corrections to the draft"
+      description: |
+        Everything is optional; only what is sent changes. Per input: `label`, `description`, `category`,
+        `is_risk`, `changeable`, `hidden`, `requires_flat`, `min`, `max`, `step`, `allowed`,
+        `enum_labels` (index → option name, exactly as the customer names them, in order) and `type`
+        (`int` | `double` | `enum` — a template cannot tell 15 from 15.0). A dropdown input
+        (`enum_candidate`) without confirmed `enum_labels` stays locked. Also `kill_switch`,
+        `magic_input`, `symbols_allowed`, `default_symbol`, `default_timeframe`, `presets`,
+        `default_preset`, `name`, `description`, `category`, `source_url`.
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+        - { name: custom_id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/EaDraftPatch" }
+            example:
+              inputs:
+                LotMode: { enum_labels: { "0": "Fixed lot", "1": "Percent of balance", "2": "Martingale" }, allowed: [0, 1] }
+                RiskPercent: { label: "Risk per trade %", max: 3 }
+              symbols_allowed: [XAUUSD]
+              default_timeframe: M5
+      responses:
+        "200":
+          description: The record with the updated draft.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CustomEa" }
+        "422":
+          description: Unknown input name (`PARAM_UNKNOWN`), inputs not discovered yet (`EA_NOT_DISCOVERED`).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/esp/schema:
+    get:
+      tags: [EAs]
+      summary: The EA Spec Protocol JSON Schema (public)
+      operationId: getEspSchema
+      security: []
+      responses:
+        '200':
+          description: JSON Schema (draft 2020-12) of an ESP document.
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+  /v1/esp/validate:
+    post:
+      tags: [EAs]
+      summary: Validate an ESP document without an account
+      operationId: validateEsp
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [spec]
+              properties:
+                spec: { type: object, additionalProperties: true }
+      responses:
+        '200':
+          description: Validation result.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid: { type: boolean }
+                  esp_version: { type: string }
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path: { type: string }
+                        message: { type: string }
+  /v1/eas/{ea_id}/spec:
+    get:
+      tags: [EAs]
+      summary: ESP view of a catalog EA with derived permissions
+      operationId: getEaSpec
+      parameters:
+        - { name: ea_id, in: path, required: true, schema: { type: string } }
+        - { name: client_id, in: query, required: false, schema: { type: string } }
+      responses:
+        '200':
+          description: spec, permissions (per parameter), progress.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EspView' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /v1/clients/{client_id}/eas/{custom_id}/spec:
+    get:
+      tags: [EAs]
+      summary: The client's spec for their own EA (stored, else derived from the draft)
+      operationId: getClientEaSpec
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { type: string } }
+        - { name: custom_id, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: spec, permissions, progress.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EspView' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    post:
+      tags: [EAs]
+      summary: Upload or update the EA spec (validated, cross-checked against discovery, trust-merged, signed)
+      operationId: putClientEaSpec
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { type: string } }
+        - { name: custom_id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [spec]
+              properties:
+                client_id: { type: string }
+                spec: { type: object, additionalProperties: true, description: An ESP document (see /v1/esp/schema). }
+                note: { type: string }
+      responses:
+        '200':
+          description: The merged spec, rejected rows, permissions and progress.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EspView' }
+        '409':
+          description: SPEC_SHA_MISMATCH — the spec describes another build.
+        '422':
+          description: SPEC_INVALID (schema errors in details.errors) or EA_NOT_DISCOVERED.
+  /v1/clients/{client_id}/eas/{custom_id}/confirm:
+    post:
+      tags: [EA onboarding]
+      operationId: confirmClientEa
+      summary: "Activate the EA in the client's catalog"
+      description: |
+        Builds the catalog document from the (patched) draft and makes the EA usable: `ea_id = custom_id`
+        in `GET /v1/eas` (this client only), `start_ea` / `set_risk` / `set_param` / `stop_ea` /
+        `run_backtest` as with any catalog EA, validated against the confirmed ranges. Needs at least
+        one symbol in `symbols_allowed` and discovered inputs. Accepts the same body as the draft patch,
+        applied first. Re-confirming after a later patch replaces the document.
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+        - { name: custom_id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/EaDraftPatch" }
+      responses:
+        "200":
+          description: Confirmed; `document` carries the catalog entry.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CustomEa" }
+        "422":
+          description: Inputs not discovered, no symbols, or the profile is not a valid catalog entry.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/clients/{client_id}/support/tickets:
+    post:
+      tags: [Support]
+      operationId: createClientSupportTicket
+      summary: "Open a support ticket for this client (chat tool, partner backend)"
+      description: |
+        The ticket is bound to the client. The answer goes to the client's dashboard e-mail; for a client
+        without a dashboard account pass `email`. Returns 202 with the ticket and a `link` to its page
+        (for a client without a dashboard account the link carries an access token: pass it on to the
+        customer, do not log it). The assistant answers within about a minute, or the ticket is escalated
+        to the team; the customer gets both by e-mail.
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SupportTicketCreate" }
+      responses:
+        "202":
+          description: Ticket opened.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SupportTicket" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    get:
+      tags: [Support]
+      operationId: listClientSupportTickets
+      summary: "This client's tickets (newest first, up to 50)"
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+      responses:
+        "200":
+          description: Tickets without messages.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tickets: { type: array, items: { $ref: "#/components/schemas/SupportTicket" } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/clients/{client_id}/alerts:
+    get:
+      tags: [Alerts]
+      operationId: listAlerts
+      summary: "The client's alert rules and the catalog of kinds"
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+      responses:
+        "200":
+          description: Rules and kinds.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  alerts: { type: array, items: { $ref: "#/components/schemas/Alert" } }
+                  kinds: { type: object, additionalProperties: { type: object, properties: { scope: { type: string }, params: { type: array, items: { type: string } }, description: { type: string } } } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      tags: [Alerts]
+      operationId: createAlert
+      summary: "Create an alert rule"
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AlertCreate" }
+      responses:
+        "201":
+          description: Created (status `armed`, or `waiting_agent` for price rules).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Alert" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /v1/clients/{client_id}/alerts/{alert_id}:
+    get:
+      tags: [Alerts]
+      operationId: getAlert
+      summary: "One rule with its last 20 notifications"
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+        - { name: alert_id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: The rule and its events.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Alert" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    patch:
+      tags: [Alerts]
+      operationId: updateAlert
+      summary: "Pause / resume / edit a rule"
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+        - { name: alert_id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status: { type: string, enum: [armed, paused] }
+                text: { type: string }
+                params: { type: object, additionalProperties: true }
+                channels: { type: array, items: { type: string, enum: [telegram, email] } }
+                repeat: { type: boolean }
+                cooldown_s: { type: integer }
+      responses:
+        "200":
+          description: Updated.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Alert" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [Alerts]
+      operationId: deleteAlert
+      summary: "Delete a rule"
+      parameters:
+        - { name: client_id, in: path, required: true, schema: { $ref: "#/components/schemas/ClientId" } }
+        - { name: alert_id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Deleted.
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/support/tickets:
+    post:
+      tags: [Support]
+      operationId: createPublicSupportTicket
+      summary: "Open a support ticket without an account (website form)"
+      description: |
+        No authentication; throttled per address; `website` is a honeypot field that must stay empty.
+        Returns 202 with the ticket and a `link` (ticket page with the visitor's access token, also sent
+        by e-mail).
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, message]
+              properties:
+                name: { type: string, maxLength: 128 }
+                email: { type: string }
+                subject: { type: string, maxLength: 256 }
+                message: { type: string, maxLength: 8000 }
+                lang: { type: string, enum: [en, ru, es] }
+                website: { type: string, description: "Honeypot — leave empty." }
+      responses:
+        "202":
+          description: Ticket opened.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SupportTicket" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+
+  /v1/support/tickets/{ticket_id}:
+    get:
+      tags: [Support]
+      operationId: getPublicSupportTicket
+      summary: "A ticket with its messages, by access token"
+      security: []
+      parameters:
+        - { name: ticket_id, in: path, required: true, schema: { type: string } }
+        - { name: c, in: query, required: true, schema: { type: string }, description: "The visitor's access token from the ticket link." }
+      responses:
+        "200":
+          description: Ticket and messages (assistant drafts for the team are never included).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SupportTicket" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /v1/support/tickets/{ticket_id}/reply:
+    post:
+      tags: [Support]
+      operationId: replyPublicSupportTicket
+      summary: "The customer adds a message"
+      description: A reply to an assistant answer is answered again (or escalated); a reply on a ticket a person handles goes to that person.
+      security: []
+      parameters:
+        - { name: ticket_id, in: path, required: true, schema: { type: string } }
+        - { name: c, in: query, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message]
+              properties:
+                message: { type: string, maxLength: 8000 }
+      responses:
+        "200":
+          description: The updated ticket with messages.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SupportTicket" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+
+  /v1/commands/{command_id}/report:
+    get:
+      tags: [Backtests (v2)]
+      operationId: getBacktestReport
+      summary: "Full HTML report of a finished backtest"
+      parameters:
+        - { name: command_id, in: path, required: true, schema: { type: string } }
+        - { name: client_id, in: query, required: false, schema: { $ref: "#/components/schemas/ClientId" } }
+      responses:
+        "200":
+          description: The Strategy Tester's report as the terminal wrote it.
+          content:
+            text/html:
+              schema: { type: string }
+        "404": { $ref: "#/components/responses/NotFound" }
         "401": { $ref: "#/components/responses/Unauthorized" }
 
 components:
@@ -1075,6 +1699,31 @@ components:
           schema: { $ref: "#/components/schemas/ErrorResponse" }
 
   schemas:
+    EspView:
+      type: object
+      properties:
+        spec: { type: object, additionalProperties: true, description: The ESP document. }
+        stored: { type: boolean }
+        rejected:
+          type: array
+          items:
+            type: object
+            properties:
+              key: { type: string }
+              reason: { type: string }
+        permissions:
+          type: object
+          properties:
+            parameters: { type: object, additionalProperties: true }
+            restart_with_open_positions: { type: boolean }
+            restart_trust: { type: string }
+            whitelist_version: { type: integer }
+        progress:
+          type: object
+          properties:
+            total: { type: integer }
+            described: { type: integer }
+            writable: { type: integer }
     # ------------------------------------------------------------------ ids
     ClientId:
       type: string
@@ -1087,7 +1736,7 @@ components:
       type: string
       pattern: "^[a-z][a-z0-9_]{1,63}$"
       description: Catalog slug. Stable; never renamed.
-      examples: [waka_waka, night_hunter_pro, perceptrader_ai, news_catcher_pro]
+      examples: [tidepool_grid, lantern_scalper_pro, lattice_ai, headline_runner]
     InstanceId:
       type: string
       pattern: "^inst_[a-z0-9]{6,}$"
@@ -1141,6 +1790,7 @@ components:
         - PARAM_TYPE_MISMATCH
         - INSTANCE_NOT_FOUND
         - INSTANCE_LIMIT
+        - MAGIC_CONFLICT
         - RESTART_UNSAFE
         - UNSUPPORTED_MODE
         - AGENT_OFFLINE
@@ -1158,7 +1808,10 @@ components:
           `client_id`), `NOT_FOUND` (404), `RATE_LIMITED` (429), `CONFLICT` (409).
         * `EA_NOT_IN_CATALOG`, `EA_NOT_APPROVED`, `SYMBOL_NOT_ALLOWED`, `PRESET_UNKNOWN`,
           `PARAM_UNKNOWN`, `PARAM_NOT_CHANGEABLE`, `PARAM_OUT_OF_RANGE`, `PARAM_TYPE_MISMATCH`,
-          `INSTANCE_NOT_FOUND`, `INSTANCE_LIMIT`, `RESTART_UNSAFE`, `UNSUPPORTED_MODE` (422) – refused before queuing.
+          `INSTANCE_NOT_FOUND`, `INSTANCE_LIMIT`, `MAGIC_CONFLICT`, `RESTART_UNSAFE`, `UNSUPPORTED_MODE` (422) – refused before queuing.
+          `MAGIC_CONFLICT`: the new copy would trade with a magic number another running EA on the account already
+          uses, so their trades could not be told apart; `details` carries `magic`, the other `instance_id`,
+          the EA's `magic_input` and whether it is `changeable` (then pass a different value in `inputs`).
         * `AGENT_OFFLINE`, `TERMINAL_NOT_CONNECTED`, `TERMINAL_AUTH_FAILED`, `TRADING_DISABLED` – refused
           before queuing (422) when the account's `status` shows the terminal could not execute (see
           `AccountStatus`); `AGENT_OFFLINE` also appears in `Command.error` of an `expired` command.
@@ -1432,7 +2085,10 @@ components:
         magic_numbers:
           type: array
           items: { type: integer }
-          description: Magic numbers observed on positions/deals attributed to this instance.
+          description: |
+            Magic numbers this instance's trades carry. Seeded from the EA's magic input (or the catalog's fixed value)
+            when the copy starts or is adopted; for EAs that derive the magic from several inputs it is learned from the
+            order comment as the first trade appears.
         started_at: { type: [string, "null"], format: date-time }
         last_command_id: { type: [string, "null"] }
         open_positions: { type: integer }
@@ -1447,6 +2103,15 @@ components:
               type: array
               items: { type: string }
               description: Recent journal lines for this EA that look like errors.
+            adopted: { type: boolean, description: The copy was found running on the chart and adopted, not started through the API. }
+            duplicate_of:
+              type: string
+              description: Present when this copy is a second chart of the same EA/symbol/settings; AlgoHand closes such a twin only when it created it itself.
+            magic_conflict:
+              type: string
+              description: |
+                Present when an adopted copy trades with the same magic number as another running instance (its id):
+                their trades cannot be told apart until one of them gets a different magic number.
     Position:
       type: object
       required: [ticket, symbol, type, volume, price_open, profit, magic]
@@ -1621,8 +2286,8 @@ components:
     # ------------------------------------------------------------------ commands
     CommandType:
       type: string
-      enum: [start_ea, stop_ea, set_risk, set_param, restart_ea, run_backtest]
-      description: "`run_backtest` is v2 (tester pool, not the client's VPS); its commands have `account_id: null`."
+      enum: [start_ea, stop_ea, set_risk, set_param, restart_ea, run_backtest, install_ea, discover_ea]
+      description: "`run_backtest` runs the Strategy Tester on the customer's VPS (see POST /v1/backtests); it has no instance. `install_ea` / `discover_ea` are queued by the EA onboarding endpoints (`/v1/clients/{client_id}/eas`), never posted to `/commands` directly."
     CommandStatus:
       type: string
       enum: [queued, dispatched, running, succeeded, failed, rejected, expired, cancelled]
@@ -1766,6 +2431,31 @@ components:
           type: array
           items: { $ref: "#/components/schemas/Diff" }
           description: Input changes that will be applied (was → now). Empty for start and hard stop; a soft stop shows the kill-switch input.
+    BacktestResolved:
+      type: object
+      description: What the server decided for a `run_backtest` command.
+      required: [ea_id, ea_name, symbol, timeframe, period, deposit, currency, leverage, tick_model, runs_on]
+      properties:
+        ea_id: { $ref: "#/components/schemas/EaId" }
+        ea_name: { type: string }
+        symbol: { type: string }
+        timeframe: { $ref: "#/components/schemas/Timeframe" }
+        preset: { type: [string, "null"] }
+        period: { type: object, properties: { from: { type: string, format: date }, to: { type: string, format: date } } }
+        deposit: { type: number }
+        currency: { type: string }
+        leverage: { type: integer }
+        tick_model: { type: string, enum: [every_tick_real, every_tick, one_minute_ohlc, open_prices] }
+        tick_model_label: { type: string }
+        inputs: { $ref: "#/components/schemas/InputMap", description: The effective inputs (preset + overrides), hidden ones removed. }
+        diff:
+          type: array
+          items: { $ref: "#/components/schemas/Diff" }
+          description: The caller's input overrides on top of the preset.
+        runs_on: { type: string, const: customer_vps }
+        host:
+          type: object
+          description: What the agent last reported about the VPS (cpus, mem_total_gb, mem_available_gb, os), for the consent warning.
     Observed:
       type: object
       description: What the agent saw on the terminal after executing.
@@ -1790,44 +2480,292 @@ components:
           oneOf:
             - $ref: "#/components/schemas/BacktestResult"
             - type: "null"
-          description: Present only for `run_backtest` commands (v2).
+          description: Present only for `run_backtest` commands.
+        report_url:
+          type: [string, "null"]
+          description: "`run_backtest` only: path of the tester's full HTML report (`GET /v1/commands/{command_id}/report`)."
 
-    # ------------------------------------------------------------------ backtests (v2)
-    BacktestCreate:
+    # ------------------------------------------------------------------ embedded chat
+    ChatCodeCreate:
       type: object
-      x-status: v2
-      required: [client_id, ea_id, symbol, timeframe, from, to, deposit]
       properties:
         client_id: { $ref: "#/components/schemas/ClientId" }
+        label: { type: string, maxLength: 128, description: Your reference (session id, user id) for the audit trail. }
+        display_name: { type: string, maxLength: 128, description: Shown in the chat as the account name. }
+        ttl_hours: { type: integer, minimum: 1, maximum: 2160, default: 24 }
+        lang: { type: string, enum: [en, ru, es], description: UI language of the chat chrome; the assistant answers in the language the customer writes anyway. }
+    ChatCode:
+      type: object
+      required: [code, client_id, url, embed_url, widget_snippet, created_at, expires_at]
+      properties:
+        code: { type: string, examples: [ah-3f9a1c2b7d4e] }
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        label: { type: [string, "null"] }
+        display_name: { type: [string, "null"] }
+        url: { type: string, format: uri, description: Full-page chat. }
+        embed_url: { type: string, format: uri, description: Chat only (no sidebar), for an iframe. }
+        widget_snippet: { type: string, description: "The `<script>` tag for the corner widget (attributes: data-code, data-lang, data-position left|right, data-title, data-color)." }
+        created_at: { type: string, format: date-time }
+        expires_at: { type: string, format: date-time }
+        revoked_at: { type: [string, "null"], format: date-time }
+
+    # ------------------------------------------------------------------ backtests (v2)
+    CustomEa:
+      type: object
+      description: "An EA the customer onboards themselves (EA onboarding). The full view (single-item GET, patch, confirm) adds `parameters`, `draft`, `journal` and, once confirmed, `document`."
+      required: [custom_id, client_id, name, file, status]
+      properties:
+        custom_id: { type: string, example: cust_ab12cd34 }
+        ea_id:
+          type: [string, "null"]
+          description: "Set once confirmed: equals `custom_id`. Use it as `ea_id` in commands."
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        name: { type: string, example: "Gold Scalper" }
+        file: { type: string, example: "GoldScalper.ex5" }
+        expert_path: { type: string, example: "Experts\\TCA\\GoldScalper.ex5" }
+        sha256: { type: [string, "null"], description: "Of the uploaded file; null for an EA found on the VPS." }
+        status:
+          type: string
+          enum: [uploaded, installed, discovered, drafted, confirmed, failed]
+        error: { type: [string, "null"] }
+        source_url: { type: [string, "null"] }
+        inputs_count: { type: integer }
+        installs:
+          type: object
+          description: "Terminal name → {ok, path | error} from the install command."
+          additionalProperties: true
+        last_command_id: { type: [string, "null"] }
+        next: { type: string, description: "What happens or is expected next, in words." }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+        parameters:
+          type: array
+          description: "Full view: every input as discovered — name, type (bool | int | double | string | csv | enum), default, enum_candidate."
+          items: { type: object, additionalProperties: true }
+        draft:
+          type: object
+          description: "Full view: the profile draft — `inputs` (name → label, description, category, is_risk, changeable, hidden, requires_flat, min, max, step, allowed, enum_labels, enum_guess, confidence, provenance), `kill_switch`, `magic_input`, `symbols_input`, `symbols_allowed`, `default_symbol`, `default_timeframe`, `presets`, `default_preset`, `source` (heuristic | ai), `notes`."
+          additionalProperties: true
+        journal:
+          type: array
+          description: "Full view: terminal log lines mentioning the EA at discovery (licence errors show up here)."
+          items: { type: string }
+        document:
+          type: object
+          description: "Full view, confirmed only: the registry-shaped catalog document the server enforces."
+          additionalProperties: true
+    CustomEaWithCommand:
+      allOf:
+        - $ref: "#/components/schemas/CustomEa"
+        - type: object
+          properties:
+            command: { $ref: "#/components/schemas/Command" }
+    OnVpsExpert:
+      type: object
+      description: "An .ex5 the agent found under MQL5\\Experts of a terminal."
+      properties:
+        file: { type: string }
+        path: { type: [string, "null"] }
+        sha256: { type: [string, "null"] }
+        size: { type: [integer, "null"] }
+        terminals: { type: array, items: { type: integer }, description: "MT5 logins of the terminals that have the file." }
+        catalog_ea_id: { type: string, description: "Present when the file is a catalog EA." }
+        custom_id: { type: string, description: "Present when the customer already onboarded it." }
+        custom_status: { type: string }
+    CustomEaList:
+      type: object
+      properties:
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        eas: { type: array, items: { $ref: "#/components/schemas/CustomEa" } }
+        on_vps: { type: array, items: { $ref: "#/components/schemas/OnVpsExpert" } }
+    AlertCreate:
+      type: object
+      required: [kind, params, text]
+      properties:
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        kind:
+          type: string
+          enum: [balance_below, balance_above, equity_below, equity_above, floating_pnl_below, floating_pnl_above, drawdown_pct, daily_loss_pct, margin_level_below, positions_above, ea_off_chart, deal_closed, terminal_disconnected, vps_offline, command_failed, price]
+        params: { type: object, additionalProperties: true, description: "value | pct | count | symbol+level+direction | ea_id | instance_id | vps_id | min_abs_profit, per kind." }
+        text: { type: string, maxLength: 256, description: "The rule in the customer's words; shown in every notification." }
+        account_id: { type: string, description: "Required when the client has several accounts (account-scoped kinds)." }
+        channels: { type: array, items: { type: string, enum: [telegram, email] } }
+        repeat: { type: boolean, default: false }
+        cooldown_s: { type: integer, default: 3600, minimum: 60, maximum: 86400 }
+        requested_by: { type: string }
+    Alert:
+      type: object
+      properties:
+        alert_id: { type: string, example: "alr_7f3a9c21" }
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        account_id: { type: string, nullable: true }
+        kind: { type: string }
+        params: { type: object, additionalProperties: true }
+        text: { type: string }
+        channels: { type: array, items: { type: string } }
+        status: { type: string, enum: [armed, fired, paused, waiting_agent] }
+        repeat: { type: boolean }
+        cooldown_s: { type: integer }
+        created_at: { type: string, format: date-time }
+        last_fired_at: { type: string, format: date-time, nullable: true }
+        fired_count: { type: integer }
+        last_value: { nullable: true }
+        description: { type: string }
+        note: { type: string, nullable: true, description: "Creation responses: e.g. Telegram not linked yet, or price rules waiting for the agent." }
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              fired_at: { type: string, format: date-time }
+              value: { type: number, nullable: true }
+              message: { type: string }
+              delivered: { type: object, additionalProperties: true }
+    SupportTicketCreate:
+      type: object
+      required: [message]
+      properties:
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        subject: { type: string, maxLength: 256 }
+        message: { type: string, maxLength: 8000, description: "The customer's question plus the facts already established." }
+        email: { type: string, description: "Required when the client has no dashboard account." }
+        name: { type: string }
+        lang: { type: string, enum: [en, ru, es], description: "Detected from the message when omitted." }
+        context:
+          type: object
+          additionalProperties: true
+          description: "Optional; `summary` = a one-paragraph summary of the conversation, shown to the team."
+    SupportMessage:
+      type: object
+      properties:
+        id: { type: integer }
+        author: { type: string, enum: [customer, assistant, team] }
+        text: { type: string }
+        draft: { type: boolean, description: "Always false in customer-facing responses." }
+        created_at: { type: string, format: date-time }
+    SupportTicket:
+      type: object
+      properties:
+        ticket_id: { type: string, example: "tkt_7f3a9c21" }
+        subject: { type: string }
+        status:
+          type: string
+          enum: [open, answered, escalated, human_answered, closed]
+          description: "`answered` = by the assistant; `escalated` = a person is looking at it; `human_answered` = the team replied."
+        lang: { type: string }
+        source: { type: string, enum: [site, portal, chat, api] }
+        name: { type: string, nullable: true }
+        email: { type: string, nullable: true, description: "Only in the team's view." }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+        closed_at: { type: string, format: date-time, nullable: true }
+        link: { type: string, description: "The ticket page (creation responses only)." }
+        messages: { type: array, items: { $ref: "#/components/schemas/SupportMessage" } }
+    CustomEaFromVps:
+      type: object
+      required: [from_vps]
+      properties:
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        from_vps:
+          type: object
+          required: [file]
+          properties:
+            file: { type: string, example: "GoldScalper.ex5" }
+            path: { type: string, example: "Experts\\Vendor\\GoldScalper.ex5" }
+        source_url: { type: string }
+        requested_by: { type: string }
+    DiscoverEaBody:
+      type: object
+      properties:
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        symbol: { type: string, description: "Chart symbol of the discovery chart; default EURUSD." }
+        timeframe: { $ref: "#/components/schemas/Timeframe" }
+        requested_by: { type: string }
+    EaDraftInput:
+      type: object
+      properties:
+        label: { type: string }
+        description: { type: string }
+        category: { type: string, enum: [risk, entry, exit, filters, news, time, display, licence, magic, other] }
+        is_risk: { type: boolean }
+        changeable: { type: boolean }
+        hidden: { type: boolean }
+        requires_flat: { type: boolean }
+        min: { type: number }
+        max: { type: number }
+        step: { type: number }
+        allowed: { type: array, items: {} }
+        enum_labels:
+          type: object
+          description: "Index (as a string) → option name, as shown in the terminal's Inputs dialog."
+          additionalProperties: { type: string }
+        type: { type: string, enum: [int, double, enum] }
+    EaPreset:
+      type: object
+      required: [id]
+      properties:
+        id: { type: string, pattern: "^[a-z][a-z0-9_]{0,31}$" }
+        label: { type: string }
+        description: { type: string }
+        inputs: { type: object, additionalProperties: true }
+    EaDraftPatch:
+      type: object
+      properties:
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        name: { type: string }
+        description: { type: string }
+        category: { type: string, enum: [grid, scalper, news, trend, breakout, other] }
+        inputs:
+          type: object
+          additionalProperties: { $ref: "#/components/schemas/EaDraftInput" }
+        kill_switch:
+          type: [object, "null"]
+          properties:
+            input: { type: string }
+            off_value: {}
+            on_value: {}
+        clear_kill_switch: { type: boolean }
+        magic_input: { type: string }
+        symbols_allowed: { type: array, items: { type: string } }
+        default_symbol: { type: string }
+        default_timeframe: { $ref: "#/components/schemas/Timeframe" }
+        presets: { type: array, items: { $ref: "#/components/schemas/EaPreset" } }
+        default_preset: { type: string }
+        source_url: { type: string }
+    BacktestCreate:
+      type: object
+      required: [account_id, ea_id, from, to]
+      properties:
+        client_id: { $ref: "#/components/schemas/ClientId" }
+        account_id: { type: string, description: The account whose terminal (and VPS) runs the test; its login gives the tester the broker history and the EA licence. }
         ea_id: { $ref: "#/components/schemas/EaId" }
         preset: { type: string, description: Risk preset; defaults to the EA's default preset. }
         inputs: { $ref: "#/components/schemas/InputMap" }
-        symbol: { type: string }
+        symbol: { type: string, description: Defaults to the EA's default symbol; must be in its allowed list. }
         timeframe: { $ref: "#/components/schemas/Timeframe" }
         from: { type: string, format: date }
-        to: { type: string, format: date }
-        deposit: { type: number }
-        currency: { type: string, default: USD }
-        leverage: { type: integer, default: 100 }
+        to: { type: string, format: date, description: Not later than today. }
+        deposit: { type: number, description: Defaults to the account's current balance. }
+        currency: { type: string, description: Defaults to the account currency. }
+        leverage: { type: integer, description: Defaults to the account leverage. }
         tick_model:
           type: string
           enum: [every_tick_real, every_tick, one_minute_ohlc, open_prices]
           default: every_tick_real
-        broker_server:
-          type: string
-          description: Tester-pool history source. Defaults to the tenant's primary broker server.
+          description: MT5 tester modelling — every tick based on real ticks (4), every tick (0), 1 minute OHLC (1), open prices only (2).
+        consent: { type: boolean, default: false, description: The customer accepted that the test runs on their VPS next to the live terminals (asked once per client). }
+        dry_run: { type: boolean, default: false }
         requested_by: { type: string, maxLength: 128 }
         reason: { type: string, maxLength: 500 }
         callback_url: { type: string, format: uri }
     BacktestResult:
       type: object
-      x-status: v2
-      required: [net_profit, max_drawdown_pct, profit_factor, trades, report_url]
+      required: [net_profit, max_drawdown_pct, trades]
       properties:
         net_profit: { type: number }
         gross_profit: { type: number }
         gross_loss: { type: number }
-        max_drawdown_pct: { type: number, description: Maximal equity drawdown, percent. }
+        max_drawdown_pct: { type: number, description: Maximal balance/equity drawdown, percent of the deposit. }
         max_drawdown_money: { type: number }
         profit_factor: { type: [number, "null"] }
         recovery_factor: { type: [number, "null"] }
@@ -1835,12 +2773,11 @@ components:
         expected_payoff: { type: number }
         trades: { type: integer }
         win_rate_pct: { type: number }
+        initial_deposit: { type: number }
         period: { type: object, properties: { from: { type: string, format: date }, to: { type: string, format: date } } }
-        report_url:
-          type: string
-          format: uri
-          description: Full HTML report, served by the API for 30 days.
         history_quality_pct: { type: [number, "null"], description: Tester's modelling quality. }
+        duration_s: { type: [number, "null"], description: How long the tester ran on the VPS. }
+        simulated: { type: boolean, description: True for sandbox results (no terminal involved). }
     TimelineEntry:
       type: object
       required: [status, at]
@@ -1854,7 +2791,7 @@ components:
       properties:
         command_id: { type: string, examples: [cmd_01J6X0Q4M9] }
         client_id: { $ref: "#/components/schemas/ClientId" }
-        account_id: { type: [string, "null"], description: "null for `run_backtest` (tester pool, not an account)." }
+        account_id: { type: [string, "null"], description: "The account (and so the VPS and terminal) the command acts on." }
         type: { $ref: "#/components/schemas/CommandType" }
         status: { $ref: "#/components/schemas/CommandStatus" }
         summary:
@@ -1867,6 +2804,7 @@ components:
         resolved:
           oneOf:
             - $ref: "#/components/schemas/Resolved"
+            - $ref: "#/components/schemas/BacktestResolved"
             - type: "null"
         result:
           oneOf:
@@ -1893,10 +2831,19 @@ components:
         type: { $ref: "#/components/schemas/CommandType" }
         account_id: { type: string }
         summary: { type: string }
-        resolved: { $ref: "#/components/schemas/Resolved" }
+        resolved:
+          oneOf:
+            - $ref: "#/components/schemas/Resolved"
+            - $ref: "#/components/schemas/BacktestResolved"
         requires_confirmation:
           type: boolean
           description: True if any changed input is flagged `requires_confirmation`, or the command restarts an EA with open positions.
+        requires_consent:
+          type: boolean
+          description: "`run_backtest` only: the client has not yet accepted that backtests run on their VPS."
+        consent_text:
+          type: string
+          description: "`run_backtest` only: the warning to show the customer, with the VPS's cores and memory."
         warnings:
           type: array
           items: { type: string }

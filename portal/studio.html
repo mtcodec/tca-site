@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title.studio">AlgoHand Author studio</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://algohand.com/favicon.ico" sizes="32x32">
+<link rel="icon" href="https://algohand.com/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
+<link rel="stylesheet" href="/portal.css">
+<style>
+  .inputs { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .inputs th, .inputs td { text-align: left; padding: 6px 6px; border-top: 1px solid var(--line); vertical-align: top; }
+  .inputs th { color: var(--ink3); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; border-top: 0; }
+  .inputs input[type=text], .inputs input[type=number], .inputs select { width: 100%; background: var(--bg3); border: 1px solid var(--line); color: var(--ink); border-radius: 8px; padding: 5px 7px; font: inherit; font-size: 13px; }
+  .inputs input[type=number] { width: 78px; }
+  .inputs .name { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; white-space: nowrap; }
+  .inputs .def { color: var(--ink3); font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+  .inputs tr.hidden-row td { opacity: .55; }
+  .tablewrap { overflow-x: auto; }
+  .presets .row3 { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 8px; margin-top: 8px; }
+  .journal { font-family: "IBM Plex Mono", monospace; font-size: 12px; white-space: pre-wrap; color: var(--ink2); background: var(--bg3); border-radius: 10px; padding: 10px 12px; max-height: 220px; overflow: auto; }
+  .timeline { display: flex; gap: 6px; flex-wrap: wrap; font-size: 12px; }
+  .timeline span { padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink3); }
+  .timeline span.on { border-color: var(--accent); color: var(--ink); }
+  .timeline span.done { color: var(--ok); border-color: var(--ok); }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="/app"><img class="logo mark" src="https://algohand.com/assets/logo-mark.png" alt="">AlgoHand</a>
+  <nav class="main" style="display:flex">
+    <span class="muted small" id="who">…</span>
+    <a class="btn sm" href="/app" data-i18n="sup.dashboard">Dashboard</a>
+    <a class="btn sm" id="logout" href="#" data-i18n="nav.logout">Sign out</a>
+    <select class="langsel"></select>
+  </nav>
+</div></header>
+
+<main class="wrap dash">
+  <section class="tight" id="list-section" style="border-top:0;padding-top:28px">
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="st.eyebrow">Author studio</div><h2 style="font-size:26px" data-i18n="st.h2">Your EAs in the AlgoHand catalog</h2></div>
+      <button class="btn primary" id="newea" type="button" data-i18n="st.upload">Upload an .ex5</button>
+    </div>
+    <p class="muted small" data-i18n="st.intro">Upload the compiled EA. AlgoHand installs it on its onboarding terminal, reads the inputs and drafts the profile; you describe what traders may change and within which ranges, name the dropdown options, set the presets, and submit. A person reviews it and publishes it in the catalog.</p>
+    <div id="disabled" class="card" hidden><span data-i18n="st.disabled">The Author studio is not open on this server yet.</span></div>
+    <form id="uploadform" class="lead card" style="margin-top:12px" hidden>
+      <div class="row">
+        <div><label data-i18n="st.f.file">Compiled EA (.ex5)</label><input name="file" type="file" accept=".ex5" required></div>
+        <div><label data-i18n="st.f.name">Product name</label><input name="name" maxlength="128" placeholder="Gold Scalper"></div>
+      </div>
+      <div class="row">
+        <div><label data-i18n="st.f.vendor">Vendor / brand</label><input name="vendor" maxlength="128"></div>
+        <div><label data-i18n="st.f.version">Version</label><input name="version" maxlength="32" placeholder="2.1"></div>
+      </div>
+      <div><label data-i18n="st.f.website">Product page (URL)</label><input name="website" maxlength="256" placeholder="https://"></div>
+      <div><label data-i18n="st.f.desc">Description for traders (2–3 sentences)</label><textarea name="description" rows="3" maxlength="1000"></textarea></div>
+      <div class="row">
+        <div><label data-i18n="st.f.licreq">Licence</label><select name="licence_required"><option value="true" data-i18n="st.lic.yes">activated per account number on my server</option><option value="false" data-i18n="st.lic.no">no licence needed</option></select></div>
+        <div><label data-i18n="st.f.licnote">How you activated it for our demo account</label><input name="licence_note" maxlength="256" placeholder="activated for account … / demo-mode build"></div>
+      </div>
+      <p class="muted small" id="demoaccounts"></p>
+      <button class="btn primary" type="submit" data-i18n="st.send">Upload and discover inputs</button>
+      <div class="msg"></div>
+    </form>
+    <div id="ealist" class="card" style="margin-top:12px"><span class="muted" data-i18n="loading">Loading…</span></div>
+  </section>
+
+  <section class="tight" id="edit-section" hidden>
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="st.edit.eyebrow">Profile</div><h2 style="font-size:26px" id="edname"></h2></div>
+      <div class="cta"><button class="btn" id="back" type="button" data-i18n="st.back">Back to the list</button></div>
+    </div>
+    <div class="timeline" id="timeline"></div>
+    <div id="edstatus" class="card small" style="margin-top:12px"></div>
+    <div id="journalbox" class="card" style="margin-top:12px" hidden><b class="small" data-i18n="st.journal">Terminal journal</b><div class="journal" id="journal"></div><div class="cta" style="margin-top:10px"><button class="btn sm" id="retry" type="button" data-i18n="st.retry">Retry discovery</button></div></div>
+
+    <form id="metaform" class="lead card" style="margin-top:12px" hidden>
+      <b class="small" data-i18n="st.meta">About the EA</b>
+      <div class="row" style="margin-top:8px">
+        <div><label data-i18n="st.f.name">Product name</label><input name="name" maxlength="128"></div>
+        <div><label data-i18n="st.f.category">Category</label><select name="category"><option value="scalper">scalper</option><option value="grid">grid</option><option value="trend">trend</option><option value="breakout">breakout</option><option value="news">news</option><option value="other">other</option></select></div>
+      </div>
+      <div><label data-i18n="st.f.desc">Description for traders (2–3 sentences)</label><textarea name="description" rows="3" maxlength="1000"></textarea></div>
+      <div class="row">
+        <div><label data-i18n="st.f.vendor">Vendor / brand</label><input name="vendor" maxlength="128"></div>
+        <div><label data-i18n="st.f.version">Version</label><input name="version" maxlength="32"></div>
+      </div>
+      <div class="row">
+        <div><label data-i18n="st.f.website">Product page (URL)</label><input name="website" maxlength="256"></div>
+        <div><label data-i18n="st.f.licreq">Licence</label><select name="licence_required"><option value="true" data-i18n="st.lic.yes">activated per account number on my server</option><option value="false" data-i18n="st.lic.no">no licence needed</option></select></div>
+      </div>
+      <div class="row">
+        <div><label data-i18n="st.f.symbols">Symbols the EA trades (comma-separated)</label><input name="symbols_allowed" maxlength="256" placeholder="XAUUSD, EURUSD"></div>
+        <div><label data-i18n="st.f.chart">Default symbol · timeframe</label><div style="display:flex;gap:8px"><input name="default_symbol" maxlength="16" placeholder="XAUUSD"><select name="default_timeframe"><option>M1</option><option>M5</option><option selected>M15</option><option>M30</option><option>H1</option><option>H4</option><option>D1</option></select></div></div>
+      </div>
+      <div class="row">
+        <div><label data-i18n="st.f.kill">"Allow new trades" input (soft stop)</label><select name="kill_switch"></select></div>
+        <div><label data-i18n="st.f.magic">Magic number input</label><select name="magic_input"></select></div>
+      </div>
+      <div class="msg"></div>
+    </form>
+
+    <div class="card" id="inputsbox" style="margin-top:12px" hidden>
+      <b class="small" data-i18n="st.inputs">Inputs</b>
+      <p class="muted small" data-i18n="st.inputs.help">Tick "chat may change" for inputs traders can adjust by chat and give them a safe range. "Risk" inputs are always confirmed by the trader before a change. For dropdowns, name the options in order: "0 = Fixed lot, 1 = Percent". Hidden inputs are not shown to traders.</p>
+      <div class="tablewrap"><table class="inputs" id="inputs"></table></div>
+    </div>
+
+    <div class="card" id="specbox" style="margin-top:12px" hidden>
+      <b class="small" data-i18n="st.spec">Spec from your AI (ESP)</b>
+      <p class="muted small" data-i18n="st.spec.help">Have the source code? Paste the <a href="https://algohand.com/docs/algohand-prompt-v1.txt" target="_blank" rel="noopener">AlgoHand prompt</a> into your own AI together with the source and paste the JSON it returns here. The source never leaves your machine. The inputs, ranges, dropdown labels and restart behaviour land in the profile at author trust; anything that does not match what the terminal showed is rejected row by row. <a href="https://algohand.com/docs/esp.html" target="_blank" rel="noopener">How the spec works</a>.</p>
+      <textarea id="spectext" rows="6" style="width:100%;font-family:'IBM Plex Mono',monospace;font-size:12px" placeholder='{"esp_version": "0.1", …}'></textarea>
+      <div class="cta" style="margin-top:8px"><button class="btn sm" id="specimport" type="button" data-i18n="st.spec.import">Import the spec</button><span class="muted small" id="specstatus"></span></div>
+      <div class="msg" id="specmsg"></div>
+    </div>
+
+    <div class="card presets" id="presetsbox" style="margin-top:12px" hidden>
+      <b class="small" data-i18n="st.presets">Risk presets</b>
+      <p class="muted small" data-i18n="st.presets.help">Each preset is a set of input values a trader can switch to by chat ("switch to low risk"). Inputs as name=value pairs, comma-separated.</p>
+      <div id="presets"></div>
+      <div class="cta" style="margin-top:8px"><button class="btn sm" id="addpreset" type="button" data-i18n="st.addpreset">Add a preset</button></div>
+    </div>
+
+    <div class="cta" style="margin-top:16px" id="editbtns" hidden>
+      <button class="btn" id="save" type="button" data-i18n="st.save">Save draft</button>
+      <button class="btn primary" id="submit" type="button" data-i18n="st.submit">Submit for review</button>
+      <button class="kill" id="delete" type="button" data-i18n="st.delete">Delete</button>
+    </div>
+    <div class="msg" id="edmsg"></div>
+  </section>
+</main>
+<footer><div class="wrap legal" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:0;padding-top:0"><span data-i18n-html="footer">© 2026 IT Effectiveness LLC</span><span><a href="mailto:authors@algohand.com">authors@algohand.com</a></span></div></footer>
+<script src="/i18n.js"></script>
+<script src="/portal.js"></script>
+<script>Portal.studioPage();</script>
+</body>
+</html>

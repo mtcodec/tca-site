@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title.auth">AlgoHand account</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://algohand.com/favicon.ico" sizes="32x32">
+<link rel="icon" href="https://algohand.com/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
+<link rel="stylesheet" href="/portal.css">
+</head>
+<body class="auth">
+<main class="authbox">
+  <a class="brand" href="https://algohand.com" style="justify-content:center;margin-bottom:22px"><img class="logo mark" src="https://algohand.com/assets/logo-mark.png" alt="">AlgoHand</a>
+  <div class="tabs" role="tablist">
+    <button type="button" class="on" data-tab="login" data-i18n="tab.login">Sign in</button>
+    <button type="button" data-tab="register" data-i18n="tab.register">Create account</button>
+  </div>
+
+  <form id="login" class="lead" autocomplete="on">
+    <div><label data-i18n="f.email">E-mail</label><input name="email" type="email" required autocomplete="email"></div>
+    <div><label data-i18n="f.password">Password</label><input name="password" type="password" required autocomplete="current-password"></div>
+    <button class="btn primary" type="submit" data-i18n="btn.login">Sign in</button>
+    <div class="msg"></div>
+    <div class="note"><a href="#forgot" id="forgotlink" data-i18n="link.forgot">Forgot the password?</a></div>
+  </form>
+
+  <form id="forgot" class="lead" hidden>
+    <p class="muted small" style="margin-bottom:12px" data-i18n="forgot.intro">Enter the e-mail of your account. We send a link that lets you set a new password; it is valid for one hour.</p>
+    <div><label data-i18n="f.email">E-mail</label><input name="email" type="email" required autocomplete="email"></div>
+    <button class="btn primary" type="submit" data-i18n="btn.sendreset">Send the reset link</button>
+    <div class="msg"></div>
+    <div class="note"><a href="#login" id="backlink" data-i18n="link.back">Back to sign in</a></div>
+  </form>
+
+  <form id="register" class="lead" autocomplete="on" hidden>
+    <div><label data-i18n="f.name">Name</label><input name="name" maxlength="128" autocomplete="name"></div>
+    <div><label data-i18n="f.email">E-mail</label><input name="email" type="email" required autocomplete="email"></div>
+    <div><label data-i18n-html="f.password10">Password <span class="muted">(10+ characters)</span></label><input name="password" type="password" minlength="10" required autocomplete="new-password"></div>
+    <div><label data-i18n="f.iam">I am</label><select name="kind"><option value="trader" data-i18n="opt.trader">a trader running EAs on my VPS</option><option value="business" data-i18n="opt.business">a broker, platform or VPS provider</option><option value="author" data-i18n="opt.author">an EA author or vendor</option></select></div>
+    <label class="check"><input type="checkbox" name="accept_terms" required><span data-i18n-html="accept">I accept the <a href="https://algohand.com/terms" target="_blank">Terms of Service</a>, the <a href="https://algohand.com/privacy" target="_blank">Privacy Policy</a> and the <a href="https://algohand.com/risk" target="_blank">Risk Disclosure</a>.</span></label>
+    <button class="btn primary" type="submit" data-i18n="btn.register">Create account</button>
+    <div class="msg"></div>
+  </form>
+  <p class="note" style="text-align:center;margin-top:18px" data-i18n-html="early">Early access · <a href="https://algohand.com/traders">what you get</a></p>
+  <p class="note" style="text-align:center;margin-top:10px"><select class="langsel"></select></p>
+</main>
+<script src="/i18n.js"></script>
+<script src="/portal.js"></script>
+<script>Portal.authPage();</script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support"></script>
+</body>
+</html>

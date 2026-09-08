@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /dl/
+Sitemap: https://algohand.com/sitemap.xml

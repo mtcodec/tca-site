@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title.ea">AlgoHand — describe your EA</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://algohand.com/favicon.ico" sizes="32x32">
+<link rel="icon" href="https://algohand.com/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
+<link rel="stylesheet" href="/portal.css">
+<style>
+  .inputs { width: 100%; min-width: 900px; border-collapse: collapse; font-size: 13.5px; }
+  .inputs th { white-space: nowrap; }
+  .inputs td:nth-child(3) { min-width: 230px; }
+  .inputs td:nth-child(6) { min-width: 170px; }
+  .inputs td:nth-child(5) label { display: block; white-space: nowrap; }
+  .inputs td:nth-child(5) label + label { margin-top: 4px; }
+  .inputs th, .inputs td { text-align: left; padding: 7px 6px; border-top: 1px solid var(--line); vertical-align: top; }
+  .inputs th { color: var(--ink3); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; border-top: 0; }
+  .inputs input[type=text], .inputs input[type=number], .inputs textarea { width: 100%; background: var(--bg3); border: 1px solid var(--line); color: var(--ink); border-radius: 8px; padding: 5px 7px; font: inherit; font-size: 13px; }
+  .inputs input[type=number] { width: 74px; }
+  .inputs textarea { font-family: "IBM Plex Mono", monospace; font-size: 12px; min-height: 54px; }
+  .inputs .name { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; white-space: nowrap; }
+  .inputs .def { color: var(--ink3); font-family: "IBM Plex Mono", monospace; font-size: 12px; white-space: nowrap; }
+  .inputs tr.flash td { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+  .inputs tr.hidden-row td { opacity: .55; }
+  .inputs .why { display: block; color: var(--ink3); font-size: 11.5px; margin-top: 3px; max-width: 150px; }
+  .tablewrap { overflow-x: auto; }
+  .bar { height: 8px; border-radius: 999px; background: var(--bg3); overflow: hidden; margin-top: 8px; }
+  .bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .3s ease; }
+  .inputs .btn.icon { padding: 6px 8px; line-height: 0; white-space: nowrap; }
+  .inputs .btn.icon svg { width: 16px; height: 16px; vertical-align: middle; }
+  #spectext { width: 100%; font-family: "IBM Plex Mono", monospace; font-size: 12px; margin-top: 8px; background: var(--bg3); border: 1px solid var(--line); color: var(--ink); border-radius: 8px; padding: 7px 9px; }
+  .cta.wrapline { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="/app"><img class="logo mark" src="https://algohand.com/assets/logo-mark.png" alt="">AlgoHand</a>
+  <nav class="main" style="display:flex">
+    <span class="muted small" id="who">…</span>
+    <a class="btn sm" href="/app" data-i18n="sup.dashboard">Dashboard</a>
+    <a class="btn sm" id="logout" href="#" data-i18n="nav.logout">Sign out</a>
+    <select class="langsel"></select>
+  </nav>
+</div></header>
+
+<main class="wrap dash">
+  <section class="tight" style="border-top:0;padding-top:28px">
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="ea.eyebrow">Your EA</div><h2 style="font-size:26px" id="eaname">…</h2></div>
+      <div class="cta"><a class="btn" href="/app#eas-section" data-i18n="ea.back">Back to the dashboard</a></div>
+    </div>
+    <p class="muted small" data-i18n="ea.intro">Describe the inputs you know from the EA's manual: what each one does and, for the risky ones, a safe range. Every row you save is signed by you and unlocks that input for changes by chat; nothing here is required to run the EA. Inputs you do not describe stay read-only.</p>
+    <div class="card" style="margin-top:12px"><b id="progress" class="small">…</b><div class="bar"><i id="progressbar"></i></div><div class="muted small" id="specnote" style="margin-top:6px"></div></div>
+    <div class="card" style="margin-top:12px" id="aibox">
+      <b class="small" data-i18n="ea.ai">Describe it with your own AI</b>
+      <p class="muted small" data-i18n="ea.ai.help">Copy the prompt, paste it into your AI (Claude, ChatGPT, …) together with the EA's manual — and the source, if you have it — then paste the JSON it returns here. The prompt already lists this EA's inputs as the terminal reported them. What matches the terminal lands in the table below, signed by you; anything that does not match is rejected row by row. You can still edit any row afterwards.</p>
+      <div class="cta wrapline"><button class="btn sm" id="copyprompt" type="button" data-i18n="ea.ai.copy">Copy the prompt</button><a class="btn sm" id="dlprompt" href="#" data-i18n="ea.ai.download">Download the prompt</a><span class="muted small" id="copystatus"></span></div>
+      <textarea id="spectext" rows="5" placeholder='{"esp_version": "0.1", …}'></textarea>
+      <div class="cta wrapline"><button class="btn sm" id="specimport" type="button" data-i18n="ea.ai.import">Import the JSON</button><label class="btn sm" for="specfile" data-i18n="ea.ai.file">… or choose the .json file</label><input type="file" id="specfile" accept=".json,application/json,text/plain" hidden></div>
+      <div class="msg" id="specmsg"></div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="tablewrap"><table class="inputs" id="rows"><thead><tr>
+        <th data-i18n="ea.col.input">Input</th><th data-i18n="ea.col.default">Default</th><th data-i18n="ea.col.meaning">What it does</th><th data-i18n="ea.col.unit">Unit</th>
+        <th data-i18n="ea.col.risk">Risk</th><th data-i18n="ea.col.range">Safe range / options</th><th data-i18n="ea.col.chat">Chat may change</th><th></th>
+      </tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="msg" id="eamsg"></div>
+  </section>
+</main>
+<script src="/i18n.js"></script>
+<script src="/portal.js"></script>
+<script>Portal.eaPage();</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+algohand-prompt-v1 — describe an Expert Advisor for AlgoHand (EA Spec Protocol 0.1)
+
+Paste everything below this line into your own AI assistant (Claude, ChatGPT, …) together with the EA's source code
+(.mq5 / .mqh) and, if you have it, the user manual. The source never leaves your machine: the output is a JSON
+document that describes the inputs, not the code. Upload the JSON in the AlgoHand Author studio — or, for an EA running
+on your own VPS, in your dashboard under Your EAs → Describe inputs (there the prompt also lists that EA's inputs).
+---------------------------------------------------------------------------------------------------------------
+
+You are describing a MetaTrader 5 Expert Advisor for the AlgoHand control server, which lets traders operate the EA
+by chat. AlgoHand decides what a trader may change from this description, so precision matters more than coverage:
+OMIT what you do not know rather than guess, and mark uncertain meanings with "confidence": "low".
+
+OUTPUT: exactly one JSON object that validates against https://algohand.com/docs/esp.schema.json (EA Spec Protocol
+0.1). No prose, no markdown fences, no comments — the first character of your answer is "{" and the last is "}".
+
+Fill it like this:
+
+- "esp_version": "0.1".
+- "ea": "name" (the product name), "file_name" (the compiled file, ends with .ex5), "sha256": null (AlgoHand fills it),
+  "ea_version" and "author" if known, "platform": "MT5", "docs_url" if there is a public manual, "category": one of
+  grid | scalper | news | trend | breakout | other, "description": one or two sentences on what the EA does.
+- "generated_by": {"path": "author_source", "tool": "algohand-prompt-v1", "timestamp": <now, ISO 8601 UTC>}.
+- "restart_behavior": what happens when the EA is removed from the chart and re-attached while it has open positions
+  (AlgoHand applies every parameter change by re-attaching the EA). Read OnInit/OnTick: does it find its positions
+  again (by magic number, by comment, by ticket list in a file)? "recovers_open_positions": true/false,
+  "recovery_mechanism": one line, "safe_to_restart_with_open_positions": true only if you are sure, "notes" for
+  conditions (e.g. "only if MagicNumber and Symbols are unchanged"), "provenance": {"source": "author_source",
+  "trust": "author"}.
+- "parameters": one entry per `input` (and `sinput`) variable, in declaration order:
+    "key": the exact variable name (case-sensitive),
+    "type": bool | int | double | string | csv (a string holding a comma-separated list) | enum (an enum-typed input),
+    "terminal": {"default": the declared default}, — AlgoHand replaces this block with what the terminal reports,
+    "label": the short name shown to traders (the input comment in the source, if any),
+    "meaning": one sentence: what it does and how it behaves at the extremes,
+    "unit": points | pips | percent | lots | money | seconds | minutes | hours | bars | null,
+    "risk_relevant": true for anything that changes position size, exposure, drawdown handling, martingale or
+      grid steps; false otherwise,
+    "safe_range": {"min": …, "max": …} only where the source or the manual makes the sane range clear; otherwise omit,
+    "requires_restart": true (leave true unless the EA reads the input live without a restart),
+    "enum_labels": for enum inputs, {"0": "label shown in the terminal", "1": …} using the enum's numeric values,
+    "hidden": true for inputs a trader should never touch by chat (licence keys, magic number, panel colours, fonts),
+    "confidence": "high" | "medium" | "low",
+    "provenance": {"meaning": P, "risk_relevant": P, "safe_range": P (if given), "enum_labels": P (if given),
+                   "hidden": P (if given)} where P = {"source": "author_source", "trust": "author"}.
+- "presets": only presets that exist in the source or the manual (named sets of input values), each
+  {"name": lowercase_id, "label": …, "description": …, "values": {"Input": value, …},
+   "provenance": {"source": "author_source", "trust": "author"}}. Do not invent presets.
+- "signatures": [].
+
+Rules:
+1. Never invent an input, a default, a range or an enum label. If the source does not show it, leave the field out.
+2. Ranges are the SAFE range for a retail trader, not the technically possible one; when in doubt, omit.
+3. Keep every "meaning" to one sentence, in English, without marketing.
+4. If two inputs interact (e.g. a lot size that is ignored when a risk percent is set), say so in both meanings.
+5. Do not include the source code, comments about the code, or anything outside the JSON object.

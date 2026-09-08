@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title.admin">AlgoHand team</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://algohand.com/favicon.ico" sizes="32x32">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
+<link rel="stylesheet" href="/portal.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="/app"><img class="logo mark" src="https://algohand.com/assets/logo-mark.png" alt="">AlgoHand</a>
+  <nav class="main" style="display:flex">
+    <span class="muted small" id="who">…</span>
+    <a class="btn sm" href="/app" data-i18n="sup.dashboard">Dashboard</a>
+    <a class="btn sm" id="logout" href="#" data-i18n="nav.logout">Sign out</a>
+    <select class="langsel"></select>
+  </nav>
+</div></header>
+<main class="wrap dash">
+  <section class="tight" style="border-top:0;padding-top:28px">
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="ad.eyebrow">Team</div><h2 style="font-size:26px" data-i18n="ad.tickets">Support tickets</h2></div>
+      <input id="search" type="search" data-i18n-ph="ad.search" placeholder="Search subject, e-mail, name" style="background:var(--bg3);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:8px 12px;font:inherit;min-width:260px">
+    </div>
+    <div id="counts" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"></div>
+    <div id="tickets" class="card"><span class="muted" data-i18n="loading">Loading…</span></div>
+  </section>
+  <section class="tight">
+    <div class="rowhead"><div><div class="eyebrow" data-i18n="ad.eyebrow">Team</div><h2 style="font-size:26px" data-i18n="ad.authors">Author submissions</h2></div></div>
+    <div id="authors" class="card"><span class="muted" data-i18n="loading">Loading…</span></div>
+  </section>
+  <section class="tight">
+    <div class="rowhead"><div><div class="eyebrow" data-i18n="ad.eyebrow">Team</div><h2 style="font-size:26px" data-i18n="ad.usage">Assistant usage, last 7 days</h2></div></div>
+    <p class="muted small" data-i18n="ad.usage.intro">Messages · model calls · input / output tokens · estimated Claude cost on our key. Customers on their own key are counted but cost us nothing. Prices are estimates from the table in the server.</p>
+    <div id="usage" class="card"><span class="muted" data-i18n="loading">Loading…</span></div>
+  </section>
+</main>
+<script src="/i18n.js"></script>
+<script src="/portal.js"></script>
+<script>Portal.adminPage();</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ru" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand — каталог EA: проверенные советники, которыми можно управлять через чат</title>
+<meta name="description" content="Советники, которые AlgoHand проверил и параметризировал: что может менять чат, пресеты риска, безопасность перезапуска и нужна ли лицензия автора.">
+<link rel="canonical" href="https://algohand.com/ru/eas">
+<link rel="alternate" hreflang="en" href="https://algohand.com/eas">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/eas">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/eas">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/eas">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap&subset=cyrillic">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/ru/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <button class="navtoggle" type="button" aria-label="Меню">Меню</button>
+  <nav class="main">
+    <a href="/ru/traders">Трейдерам</a>
+    <a href="/ru/business">Бизнесу</a>
+    <a href="/ru/authors">Авторам EA</a>
+    <a href="/ru/pricing">Цены</a>
+    <a class="btn sm" href="https://app.algohand.com/?lang=ru">Войти</a>
+    <a class="btn sm primary" href="/ru/demo">Попробовать демо</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: Русский">RU<i></i></button>
+    <ul>
+      <li><a href="/eas" hreflang="en" lang="en"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/eas" hreflang="ru" lang="ru" aria-current="true"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/eas" hreflang="es" lang="es"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/ru/eas" aria-current="page">Каталог EA</a>
+    <a class="secondary" href="/docs/">API</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <div class="hero" style="padding-bottom:10px">
+    <div>
+      <div class="eyebrow">Каталог</div>
+      <h1 style="margin-top:14px">Советники, которыми можно управлять <em>через чат</em>.</h1>
+      <p class="lead">Каждый советник здесь был установлен на тестовый терминал, его параметры считаны, пресеты риска и безопасные диапазоны просмотрены человеком, поведение при перезапуске проверено. Именно это позволяет ассистенту менять настройку, не гадая. Советники и лицензии покупаются у авторов; AlgoHand только управляет ими.</p>
+    </div>
+  </div>
+  <style>
+    .ea-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap:18px; margin-top:8px; }
+    @media (max-width: 520px) { .ea-grid { grid-template-columns: 1fr; } }
+    .ea-card table { margin-top:4px; } .ea-card td { vertical-align:top; padding-right:10px; } .ea-card td.muted { width:30%; }
+    .ea-card code { white-space:nowrap; } .ea-head { display:flex; flex-wrap:wrap; gap:6px; }
+    .ea-title { display:flex; align-items:center; gap:14px; margin-top:14px; } .ea-title h3 { margin:0; }
+    .ea-icon { width:48px; height:48px; flex:0 0 48px; border-radius:12px; background:var(--bg3); object-fit:contain; padding:5px; box-sizing:border-box; }
+    .pill.ok { background: color-mix(in srgb, var(--ok) 18%, transparent); color: var(--ok); }
+    .pill.warn { background: color-mix(in srgb, var(--warn) 18%, transparent); color: var(--warn); }
+  </style>
+  <section style="padding-top:8px">
+    <div class="ea-grid">
+    <div class="card ea-card" id="news_catcher_pro">
+      <div class="ea-head">
+        <div><span class="pill">Новости</span> <span class="pill ok">Проверен AlgoHand</span> <span class="pill warn">Нужна лицензия автора</span></div>
+      </div>
+      <div class="ea-title"><img class="ea-icon" src="/assets/eas/default-ex5.svg" alt="" width="48" height="48"><h3>News Catcher Pro</h3></div>
+      <p class="muted" style="margin:6px 0 12px">Советник на новостях с необязательной сеткой. Торгует список символов с одного графика.</p>
+      <table>
+        <tr><td class="muted">Пресеты риска</td><td><code>low</code> · <code>medium</code> · <code>high</code> · <code>vendor_grid_fixed</code></td></tr>
+        <tr><td class="muted">Можно менять через чат</td><td>32 параметров, каждый в проверенном диапазоне</td></tr>
+        <tr><td class="muted">Мягкая остановка</td><td>да</td></tr>
+        <tr><td class="muted">Символы</td><td>EURUSD, GBPUSD, EURGBP</td></tr>
+        <tr><td class="muted">График</td><td>EURUSD M5</td></tr>
+        <tr><td class="muted">Экземпляров на счёт</td><td>3</td></tr>
+        <tr><td class="muted">Безопасность перезапуска</td><td><b>условная</b> — безопасно по заявлению автора при неизменных заблокированных параметрах; наш собственный прогон на стенде впереди</td></tr>
+        <tr><td class="muted">Лицензия</td><td>Покупается у автора (активируется по номеру счёта на сервере автора). AlgoHand её не продаёт, не хостит и не включает в тариф. <a href="https://www.mql5.com/en/market/product/72587" target="_blank" rel="noopener nofollow">Страница автора&nbsp;↗</a></td></tr>
+      </table>
+    </div>
+    <div class="card ea-card" id="night_hunter_pro">
+      <div class="ea-head">
+        <div><span class="pill">Скальпер</span> <span class="pill ok">Проверен AlgoHand</span> <span class="pill warn">Нужна лицензия автора</span></div>
+      </div>
+      <div class="ea-title"><img class="ea-icon" src="/assets/eas/default-ex5.svg" alt="" width="48" height="48"><h3>Night Hunter Pro <span class="small muted">· версия 3.0</span></h3></div>
+      <p class="muted" style="margin:6px 0 12px">Ночной скальпер. Отложенные ордера, без сетки. Торгует список символов с одного графика.</p>
+      <table>
+        <tr><td class="muted">Пресеты риска</td><td><code>low</code> · <code>medium</code> · <code>high</code> · <code>risk_per_trade_5</code> · <code>vendor_best_pairs</code> · <code>vendor_all_pairs</code></td></tr>
+        <tr><td class="muted">Можно менять через чат</td><td>39 параметров, каждый в проверенном диапазоне</td></tr>
+        <tr><td class="muted">Мягкая остановка</td><td>да</td></tr>
+        <tr><td class="muted">Символы</td><td>GBPUSD, EURUSD, EURCHF, USDCAD, USDCHF, CHFJPY, AUDCAD, EURCAD, EURAUD</td></tr>
+        <tr><td class="muted">График</td><td>EURUSD M5</td></tr>
+        <tr><td class="muted">Экземпляров на счёт</td><td>3</td></tr>
+        <tr><td class="muted">Безопасность перезапуска</td><td><b>условная</b> — безопасно по заявлению автора при неизменных заблокированных параметрах; наш собственный прогон на стенде впереди</td></tr>
+        <tr><td class="muted">Лицензия</td><td>Покупается у автора (активируется по номеру счёта на сервере автора). AlgoHand её не продаёт, не хостит и не включает в тариф. <a href="https://www.mql5.com/en/market/product/68327" target="_blank" rel="noopener nofollow">Страница автора&nbsp;↗</a></td></tr>
+      </table>
+    </div>
+    <div class="card ea-card" id="perceptrader_ai">
+      <div class="ea-head">
+        <div><span class="pill">Сетка</span> <span class="pill ok">Проверен AlgoHand</span> <span class="pill warn">Нужна лицензия автора</span></div>
+      </div>
+      <div class="ea-title"><img class="ea-icon" src="/assets/eas/default-ex5.svg" alt="" width="48" height="48"><h3>Perceptrader AI</h3></div>
+      <p class="muted" style="margin:6px 0 12px">Сеточный советник с нейросетевым фильтром входов. Торгует список символов с одного графика.</p>
+      <table>
+        <tr><td class="muted">Пресеты риска</td><td><code>low</code> · <code>medium</code> · <code>significant</code> · <code>high</code> · <code>vendor_high</code> · <code>vendor_high_ai</code></td></tr>
+        <tr><td class="muted">Можно менять через чат</td><td>40 параметров, каждый в проверенном диапазоне</td></tr>
+        <tr><td class="muted">Мягкая остановка</td><td>да</td></tr>
+        <tr><td class="muted">Символы</td><td>NZDUSD, USDCAD, AUDNZD, AUDCAD, NZDCAD, GBPCHF</td></tr>
+        <tr><td class="muted">График</td><td>AUDCAD M5</td></tr>
+        <tr><td class="muted">Экземпляров на счёт</td><td>3</td></tr>
+        <tr><td class="muted">Безопасность перезапуска</td><td><b>условная</b> — безопасно по заявлению автора при неизменных заблокированных параметрах; наш собственный прогон на стенде впереди</td></tr>
+        <tr><td class="muted">Лицензия</td><td>Покупается у автора (активируется по номеру счёта на сервере автора). AlgoHand её не продаёт, не хостит и не включает в тариф. <a href="https://www.mql5.com/en/market/product/102615" target="_blank" rel="noopener nofollow">Страница автора&nbsp;↗</a></td></tr>
+      </table>
+    </div>
+    <div class="card ea-card" id="waka_waka">
+      <div class="ea-head">
+        <div><span class="pill">Сетка</span> <span class="pill ok">Проверен AlgoHand</span> <span class="pill warn">Нужна лицензия автора</span></div>
+      </div>
+      <div class="ea-title"><img class="ea-icon" src="/assets/eas/default-ex5.svg" alt="" width="48" height="48"><h3>Waka Waka EA</h3></div>
+      <p class="muted" style="margin:6px 0 12px">Сеточный советник для AUDCAD и AUDNZD. Один график M15.</p>
+      <table>
+        <tr><td class="muted">Пресеты риска</td><td><code>low</code> · <code>medium</code> · <code>significant</code> · <code>high</code> · <code>vendor_default</code> · <code>vendor_smart_tp</code></td></tr>
+        <tr><td class="muted">Можно менять через чат</td><td>33 параметров, каждый в проверенном диапазоне</td></tr>
+        <tr><td class="muted">Мягкая остановка</td><td>да</td></tr>
+        <tr><td class="muted">Символы</td><td>AUDCAD, AUDNZD, NZDCAD</td></tr>
+        <tr><td class="muted">График</td><td>AUDCAD M15</td></tr>
+        <tr><td class="muted">Экземпляров на счёт</td><td>3</td></tr>
+        <tr><td class="muted">Безопасность перезапуска</td><td><b>условная</b> — безопасно по заявлению автора при неизменных заблокированных параметрах; наш собственный прогон на стенде впереди</td></tr>
+        <tr><td class="muted">Лицензия</td><td>Покупается у автора (активируется по номеру счёта на сервере автора). AlgoHand её не продаёт, не хостит и не включает в тариф. <a href="https://www.mql5.com/en/market/product/70283" target="_blank" rel="noopener nofollow">Страница автора&nbsp;↗</a></td></tr>
+      </table>
+    </div>
+    </div>
+    <p class="small muted" style="margin-top:18px">Названия советников — товарные знаки их авторов. AlgoHand не связан с ними и не делает заявлений об их доходности; каталог описывает, чем может управлять ассистент AlgoHand и как это было проверено. Торговля сопряжена с риском.</p>
+  </section>
+  <section>
+    <div class="band">
+      <div>
+        <h2>Вашего советника здесь нет?</h2>
+        <p class="sub">Два пути: пришлите нам советники, которые вы уже используете, и мы подключим их для вас, или разместите свой продукт как автор.</p>
+        <div class="cta"><a class="btn primary" href="/ru/traders#join">Ранний доступ для трейдеров</a><a class="btn" href="/ru/authors">Авторам EA</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/ru/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Управление советниками MetaTrader 5 через чат. Продукт IT Effectiveness LLC, Грузия.</p></div>
+    <div><b>Продукт</b><a href="/ru/business">Для бизнеса</a><a href="/ru/traders">Трейдерам</a><a href="/ru/pricing">Цены</a><a href="/ru/authors">Авторам EA</a><a href="/ru/eas">Каталог EA</a><a href="/ru/demo">Живое демо</a><a href="/ru/guide">Инструкция</a></div>
+    <div><b>Разработчикам</b><a href="/docs/">Справочник API</a><a href="/docs/openapi.yaml">Документ OpenAPI</a><a href="/docs/claude_tools.json">Описания инструментов</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Документы</b><a href="/terms">Условия использования (EN)</a><a href="/privacy">Конфиденциальность (EN)</a><a href="/risk">Уведомление о рисках (EN)</a><a href="/refund">Возврат средств (EN)</a><a href="https://app.algohand.com/support?lang=ru">Поддержка</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand и Terminal Control API — продукты IT Effectiveness LLC. Юридически значимы английские версии документов.</span><span>MetaTrader — товарный знак MetaQuotes Ltd. Мы не связаны с MetaQuotes. Торговля сопряжена с риском; ничто здесь не является инвестиционной рекомендацией.</span></div>
+</div></footer>
+
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="ru" data-title="Поддержка"></script>
+</body>
+</html>

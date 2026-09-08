@@ -3,25 +3,46 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AlgoHand for business — give your AI assistant hands</title>
-<meta name="description" content="A REST/MCP API that lets a broker's or platform's AI assistant operate customers' MetaTrader 5 Expert Advisors on their VPS: start, stop, risk presets, parameters — validated server-side and verified on the terminal.">
+<title>AlgoHand for business — Give your AI assistant control of MetaTrader</title>
+<meta name="description" content="One API to start, stop and reconfigure customers' MetaTrader 5 EAs on their VPS. Validation, confirmation and verified execution built in.">
 <link rel="canonical" href="https://algohand.com/business">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234f8cff'/%3E%3Ctext x='32' y='43' font-family='Inter,Arial' font-weight='800' font-size='34' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="alternate" hreflang="en" href="https://algohand.com/business">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/business">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/business">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/business">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
 </head>
 <body>
 
 <header class="top"><div class="wrap">
-  <a class="brand" href="/"><span class="logo">A</span>AlgoHand</a>
+  <a class="brand" href="/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
   <button class="navtoggle" type="button" aria-label="Menu">Menu</button>
   <nav class="main">
-    <a href="/business" aria-current="page">For business</a>
-    <a href="/traders">For traders</a>
+    <a href="/traders">Traders</a>
+    <a href="/business" aria-current="page">Business</a>
     <a href="/authors">EA authors</a>
-    <a href="/docs/">API docs</a>
+    <a href="/pricing">Pricing</a>
+    <a class="btn sm" href="https://app.algohand.com/">Sign in</a>
     <a class="btn sm primary" href="/demo">Try the demo</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: English">EN<i></i></button>
+    <ul>
+      <li><a href="/business" hreflang="en" lang="en" aria-current="true"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/business" hreflang="ru" lang="ru"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/business" hreflang="es" lang="es"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/eas">EA catalog</a>
+    <a class="secondary" href="/docs/">API docs</a>
   </nav>
 </div></header>
 
@@ -31,9 +52,9 @@
     <div>
       <div class="eyebrow">For brokers · VPS providers · trading platforms</div>
       <h1 style="margin-top:14px">Your assistant already <em>talks</em>. Let it act.</h1>
-      <p class="lead">Your customers' EAs run on VPS machines your assistant cannot reach. AlgoHand is the missing layer: one API that starts, stops and reconfigures Expert Advisors on those machines — with the validation, confirmation and proof a regulated business needs.</p>
+      <p class="lead">Your AI assistant can answer questions about trading. AlgoHand lets it safely control the customer's MetaTrader EAs too. One API starts, stops and reconfigures EAs on the customer's VPS — with validation, confirmation and verified execution built in.</p>
       <div class="cta">
-        <a class="btn primary" href="#contact">Request the sandbox</a>
+        <a class="btn primary" href="#contact">Request a sandbox</a>
         <a class="btn" href="/docs/">Read the API</a>
       </div>
       <div class="trust">
@@ -51,8 +72,8 @@
               "inputs": { "MaximumSpread": 15 } },
   "dry_run": true }
 
-200  summary: "MaximumSpread 7 → 15 on Night Hunter Pro
-              (EURUSD) — EA will restart"
+200  summary: "MaximumSpread 7 → 15 on Gold Scalper
+              (XAUUSD) — EA will restart"
      diff:    { MaximumSpread: { was: 7, now: 15 } }
      restarts_ea: true · open_positions: 0
 
@@ -65,32 +86,41 @@ GET  /v1/commands/cmd_…?wait=30
     </div>
   </div>
 
-  <section>
-    <div class="eyebrow">What you get</div>
-    <h2>The parts that are hard to build and easy to get wrong</h2>
-    <div class="grid3" style="margin-top:26px">
-      <div class="card"><h3>Validation you do not have to trust the model for</h3><p>Catalog of EAs with whitelisted inputs, ranges, enum values and presets. The server rejects anything else with a message the model can relay. Your LLM is never the security boundary.</p></div>
-      <div class="card"><h3>Restart-safety knowledge</h3><p>Every parameter change restarts the EA. We verify per EA how it recovers its basket and refuse unsafe changes on open positions. Maintained by us as vendors ship new builds.</p></div>
-      <div class="card"><h3>Reconciliation</h3><p>Requested, resolved and observed state per command, with timestamps and the inputs read back from the running EA. A mismatch fails the command instead of reporting success.</p></div>
-      <div class="card"><h3>VPS agent and manager</h3><p>Outbound-only agent in your VPS image, auto-updating, self-healing. The manager runs as an MQL5 service — nothing a customer can close, no start-up config on the terminal.</p></div>
-      <div class="card"><h3>Live state and history</h3><p>Accounts, running EAs with effective settings, positions and orders attributed by magic number, deal history, equity curve and P&amp;L breakdowns — ready for your reporting.</p></div>
-      <div class="card"><h3>Multi-tenant by design</h3><p>Tenant → client → VPS → account. Client keys see one customer only. No shared database with us: API only, every call carries the client id.</p></div>
-    </div>
-    <div class="card" style="margin-top:18px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start">
-      <span class="pill soon">Roadmap</span>
-      <div><h3>Backtests as an API call</h3><p>A pool of dedicated Strategy Tester servers runs backtests for your customers' EAs and settings on request — queued, parsed, returned as structured results your assistant can compare and act on. Your trading VPS machines never run a tester. Specified; scheduled after the pilot.</p></div>
+  <section class="tight" id="fit">
+    <div class="grid4">
+      <div class="card"><div class="eyebrow">Who it is for</div><ul class="checks"><li><b>Broker desk</b> — your support assistant acts on customers' EAs</li><li><b>VPS provider</b> — the agent ships inside your image</li><li><b>Trading platform</b> — your AI assistant gets MT5 hands</li></ul></div>
+      <div class="card"><div class="eyebrow">Time</div><ul class="checks"><li>Sandbox keys within an hour</li><li>Pilot on one VPS image the same day</li><li>Production keys when you say so</li></ul></div>
+      <div class="card"><div class="eyebrow">Commercial shape</div><ul class="checks"><li>API Start $199 a month, 20 accounts included, $6 per extra</li><li>Platform $599 a month, 100 accounts, $4 per extra, staging keys, MCP and white-label chat</li><li>Enterprise from $1,500 a month: SLA, DPA, on-premise agent options, written agreement</li><li>Non-exclusive licence, no source-code transfer. <a href="/pricing#business">Details</a></li></ul></div>
+      <div class="card"><div class="eyebrow">What stays yours</div><ul class="checks"><li>Your customers</li><li>Your dashboard and your assistant's persona</li><li>Passwords never reach us</li></ul></div>
     </div>
   </section>
 
   <section>
+    <div class="eyebrow">What you get</div>
+    <h2>The parts that are hard to build and easy to get wrong</h2>
+    <div class="grid3" style="margin-top:26px">
+      <div class="card"><h3>Validation on our side, not in the model</h3><p>Catalog of EAs with whitelisted inputs, ranges, enum values and presets. The server rejects anything else with a message the model can relay. Your LLM is never the security boundary.</p></div>
+      <div class="card"><h3>Restart-safety knowledge</h3><p>Every parameter change restarts the EA. We verify per EA how it recovers its basket and refuse unsafe changes on open positions.</p></div>
+      <div class="card"><h3>Reconciliation</h3><p>Requested, applied and observed state per command, with timestamps and the inputs read back from the running EA. A mismatch fails the command.</p></div>
+      <div class="card"><h3>VPS agent and manager</h3><p>Outbound-only agent in your VPS image, auto-updating. Automatic recovery if a terminal closes or the machine reboots. The manager runs as an MQL5 service — nothing a customer can close.</p></div>
+      <div class="card"><h3>Live state and history</h3><p>Accounts, running EAs with effective settings, positions and orders by magic number, deal history, equity curve and P&amp;L — ready for your reporting.</p></div>
+      <div class="card"><h3>Multi-tenant by design</h3><p>Tenant → client → VPS → account. A client key sees one customer only.</p></div>
+    </div>
+    <div class="card" style="margin-top:18px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start">
+      <span class="pill">New</span>
+      <div><h3>Backtests as an API call</h3><p><code>POST /v1/backtests</code> runs the Strategy Tester on the customer's VPS in an isolated second terminal, at low priority. Period, tick model, symbol, timeframe, preset and inputs are parameters. Structured metrics plus the full HTML report.</p></div>
+    </div>
+  </section>
+
+  <section id="integration">
     <div class="grid2">
       <div>
         <div class="eyebrow">Integration</div>
         <h2>Three ways in, one contract</h2>
         <p class="sub">Use whichever fits your stack. All three expose the same operations and the same validation.</p>
         <ul class="checks">
-          <li><b>REST</b> — OpenAPI 3.1, async commands (202 + command id, long-poll the result)</li>
-          <li><b>Tool definitions</b> — ready-made schemas for Claude and other function-calling models; drop them into your assistant</li>
+          <li><b>REST</b> — OpenAPI 3.1, async commands</li>
+          <li><b>Tool definitions</b> — ready-made schemas for Claude and other function-calling models</li>
           <li><b>MCP server</b> — for MCP-capable clients and internal tooling</li>
         </ul>
         <div class="cta"><a class="btn" href="/docs/">API reference</a><a class="btn" href="/docs/claude_tools.json">Tool definitions (JSON)</a></div>
@@ -116,9 +146,9 @@ GET  /v1/commands/cmd_…?wait=30
     <h2>From first call to customers in production</h2>
     <div class="steps" style="margin-top:26px">
       <div class="step"><h3>Sandbox</h3><p>A tenant with a simulated VPS and demo accounts. Same validation, dry run and reconcile path as production. Keys within an hour of your request.</p></div>
-      <div class="step"><h3>Your EA catalog</h3><p>We onboard each EA from its closed .ex5: inputs are discovered automatically, presets and safe ranges take about ten minutes of review per EA, restart safety is tested on a demo account.</p></div>
+      <div class="step"><h3>Your EA catalog</h3><p>We onboard each EA from its closed .ex5. Inputs are discovered automatically. Presets, ranges and restart safety take a short review.</p></div>
       <div class="step"><h3>Pilot VPS</h3><p>Install the agent on one of your VPS images or a test machine with a single script. Discovery finds the terminals; your assistant starts driving them the same day.</p></div>
-      <div class="step"><h3>Production</h3><p>Per-customer keys issued from your backend, per-VPS enrolment tokens, monitoring and signed updates from us. Non-exclusive licence, per-VPS pricing.</p></div>
+      <div class="step"><h3>Production</h3><p>Per-customer keys issued from your backend, per-VPS enrolment tokens, monitoring and signed updates from us. Non-exclusive licence, pricing per connected account.</p></div>
     </div>
   </section>
 
@@ -128,18 +158,19 @@ GET  /v1/commands/cmd_…?wait=30
         <div class="eyebrow">Get started</div>
         <h2>Request the sandbox</h2>
         <p class="sub">Tell us a little about your platform and which EAs your customers run. You get sandbox keys, the spec and the tool schemas, and a thirty-minute walkthrough if you want one.</p>
-        <p class="small muted" style="margin-top:14px">Prefer e-mail? <a href="mailto:info@mtcodec.com">info@mtcodec.com</a></p>
+        <p class="small muted" style="margin-top:14px">Prefer email? <a href="mailto:info@algohand.com">info@algohand.com</a></p>
       </div>
       <form class="lead" data-lead="business" data-thanks="Thanks! We will send the sandbox details within one business day.">
         <div class="row">
           <div><label>Name</label><input name="name" required maxlength="128" autocomplete="name"></div>
-          <div><label>Work e-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
+          <div><label>Work email</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
         </div>
         <div><label>Company</label><input name="company" required maxlength="256" autocomplete="organization"></div>
         <div><label>Your platform and EAs</label><textarea name="message" maxlength="4000" placeholder="e.g. broker with own VPS, ~200 customers, 6 EAs from one vendor; assistant built on Claude"></textarea></div>
-        <div class="hp"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+        <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
         <button class="btn primary" type="submit">Request sandbox access</button>
         <div class="msg"></div>
+        <div class="note">By sending this form you agree to our <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms of Service</a>.</div>
       </form>
     </div>
   </section>
@@ -148,14 +179,15 @@ GET  /v1/commands/cmd_…?wait=30
 
 <footer><div class="wrap">
   <div class="cols">
-    <div><a class="brand" href="/" style="font-size:16px"><span class="logo" style="width:26px;height:26px;font-size:13px;border-radius:7px">A</span>AlgoHand</a><p style="margin-top:10px;max-width:28em">Chat-driven control for MetaTrader 5 Expert Advisors. A product of MTCodec JSC, Georgia.</p></div>
-    <div><b>Product</b><a href="/business">For business</a><a href="/traders">For traders</a><a href="/authors">EA authors</a><a href="/demo">Live demo</a></div>
-    <div><b>Developers</b><a href="/docs/">API reference</a><a href="/docs/openapi.yaml">OpenAPI document</a><a href="/docs/claude_tools.json">Tool definitions</a><a href="https://tca.mtcodec.com">Terminal Control API</a></div>
-    <div><b>Company</b><a href="https://www.mtcodec.com">MTCodec</a><a href="mailto:info@mtcodec.com">info@mtcodec.com</a></div>
+    <div><a class="brand" href="/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Chat-driven control for MetaTrader 5 Expert Advisors. A product of IT Effectiveness LLC, Tbilisi, Georgia.</p></div>
+    <div><b>Product</b><a href="/business">For business</a><a href="/traders">For traders</a><a href="/pricing">Pricing</a><a href="/authors">EA authors</a><a href="/eas">EA catalog</a><a href="/demo">Live demo</a></div>
+    <div><b>Developers</b><a href="/docs/">API reference</a><a href="/docs/openapi.yaml">OpenAPI document</a><a href="/docs/claude_tools.json">Tool definitions</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Legal</b><a href="/terms">Terms of Service</a><a href="/privacy">Privacy Policy</a><a href="/risk">Risk Disclosure</a><a href="/refund">Refund Policy</a><a href="https://app.algohand.com/support">Support</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
   </div>
-  <div class="legal"><span>© 2026 MTCodec JSC. AlgoHand and Terminal Control API are products of MTCodec.</span><span>MetaTrader is a trademark of MetaQuotes Ltd. Not affiliated with MetaQuotes. Trading involves risk; nothing here is financial advice.</span></div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand and Terminal Control API are products of IT Effectiveness LLC.</span><span>MetaTrader is a trademark of MetaQuotes Ltd. Not affiliated with MetaQuotes. Trading involves risk; nothing here is financial advice.</span></div>
 </div></footer>
 
-<script src="/assets/site.js"></script>
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="en" data-title="Support"></script>
 </body>
 </html>

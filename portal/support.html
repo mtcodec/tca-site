@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title.support">AlgoHand support</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://algohand.com/favicon.ico" sizes="32x32">
+<link rel="icon" href="https://algohand.com/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
+<link rel="stylesheet" href="/portal.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="https://algohand.com"><img class="logo mark" src="https://algohand.com/assets/logo-mark.png" alt="">AlgoHand</a>
+  <nav class="main" style="display:flex">
+    <a class="btn sm" id="dashlink" href="/app" data-i18n="sup.dashboard" hidden>Dashboard</a>
+    <a class="btn sm" id="signinlink" href="/" data-i18n="tab.login">Sign in</a>
+    <select class="langsel"></select>
+  </nav>
+</div></header>
+
+<main class="wrap dash" style="max-width:860px">
+  <section class="tight" id="new" style="border-top:0;padding-top:28px" hidden>
+    <div class="eyebrow" data-i18n="sup.eyebrow">Support</div>
+    <h2 style="font-size:26px" data-i18n="sup.h2new">Ask a question</h2>
+    <p class="muted small" data-i18n="sup.intronew">No account needed. The assistant answers most questions within a minute, by e-mail and on the ticket page; when a person is needed, the ticket goes to the team and their answer comes by e-mail.</p>
+    <form id="newticket" class="lead" style="margin-top:12px">
+      <div class="row" id="whorow"><div><label data-i18n="f.name">Name</label><input name="name" maxlength="128" autocomplete="name"></div><div><label data-i18n="f.email">E-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div></div>
+      <div><label data-i18n="f.subject">Subject</label><input name="subject" maxlength="256"></div>
+      <div><label data-i18n="f.message">Your question</label><textarea name="message" rows="6" required minlength="5" maxlength="8000"></textarea></div>
+      <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+      <button class="btn primary" type="submit" data-i18n="btn.send">Send</button>
+      <div class="msg"></div>
+    </form>
+    <div id="sentbox" class="card" style="margin-top:16px" hidden></div>
+  </section>
+
+  <section class="tight" id="thread" style="border-top:0;padding-top:28px" hidden>
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="sup.eyebrow">Support</div><h2 id="subject" style="font-size:26px"></h2></div>
+      <span class="status" id="tstatus"></span>
+    </div>
+    <div id="tmeta" class="muted small"></div>
+    <div id="admininfo" class="card small" style="margin-top:12px" hidden></div>
+    <div id="messages"></div>
+    <form id="replyform" class="lead" style="margin-top:18px">
+      <div><label data-i18n="sup.reply">Reply</label><textarea name="message" rows="5" required maxlength="8000" data-i18n-ph="sup.replyph"></textarea></div>
+      <div class="cta">
+        <button class="btn primary" type="submit" data-i18n="btn.send">Send</button>
+        <button class="btn" type="button" id="sendclose" data-i18n="sup.replyclose" hidden>Send and close</button>
+        <button class="kill" type="button" id="closebtn" data-i18n="sup.close" hidden>Close without reply</button>
+      </div>
+      <div class="msg"></div>
+    </form>
+    <p class="muted small" id="closednote" style="margin-top:10px" data-i18n="sup.closednote" hidden>This ticket is closed. A reply reopens it.</p>
+  </section>
+
+  <section class="tight" id="notfound" style="border-top:0;padding-top:28px" hidden>
+    <div class="eyebrow" data-i18n="sup.eyebrow">Support</div>
+    <h2 style="font-size:26px" data-i18n="sup.notfound">Ticket not found</h2>
+    <p class="muted" data-i18n="sup.notfoundtext">The link is wrong or expired, or you are not signed in with the account that opened the ticket.</p>
+    <p class="cta"><a class="btn" href="/" data-i18n="tab.login">Sign in</a><a class="btn" href="/support" data-i18n="sup.newlink">Open a new ticket</a></p>
+  </section>
+</main>
+<footer><div class="wrap legal" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:0;padding-top:0"><span data-i18n-html="footer">© 2026 IT Effectiveness LLC · <a href="https://algohand.com/terms">Terms</a> · <a href="https://algohand.com/privacy">Privacy</a> · <a href="https://algohand.com/risk">Risk</a></span><span><a href="mailto:support@algohand.com">support@algohand.com</a></span></div></footer>
+<script src="/i18n.js"></script>
+<script src="/portal.js"></script>
+<script>Portal.supportPage();</script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support"></script>
+</body>
+</html>

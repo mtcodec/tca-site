@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title.verify">AlgoHand — confirm e-mail</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
+<link rel="stylesheet" href="/portal.css">
+</head>
+<body class="auth">
+<main class="authbox">
+  <h2 style="font-size:24px" data-i18n="verify.h2">Confirming your e-mail…</h2>
+  <p id="out" class="muted" style="margin-top:12px" data-i18n="verify.wait">One moment.</p>
+  <p style="margin-top:18px"><a class="btn primary" href="/app" data-i18n="btn.dashboard">Go to the dashboard</a></p>
+</main>
+<script src="/i18n.js"></script>
+<script>
+  const t = new URLSearchParams(location.search).get('token') || '';
+  const out = document.getElementById('out');
+  out.removeAttribute('data-i18n');
+  fetch('/portal/verify?token=' + encodeURIComponent(t), { credentials: 'same-origin' }).then(async r => {
+    const j = await r.json().catch(() => ({}));
+    out.textContent = r.ok ? I18N.t('verify.ok') : I18N.errorText(j.error && { code: j.error.code, message: j.error.message }) || I18N.t('verify.bad');
+  }).catch(() => { out.textContent = I18N.t('verify.offline'); });
+</script>
+</body>
+</html>

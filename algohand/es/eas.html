@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand — catálogo de EA: Expert Advisors verificados que puedes manejar por chat</title>
+<meta name="description" content="Los Expert Advisors que AlgoHand ha revisado y parametrizado: qué puede cambiar el chat, presets de riesgo, reinicio seguro y si hace falta la licencia del autor.">
+<link rel="canonical" href="https://algohand.com/es/eas">
+<link rel="alternate" hreflang="en" href="https://algohand.com/eas">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/eas">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/eas">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/eas">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/es/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <button class="navtoggle" type="button" aria-label="Menú">Menú</button>
+  <nav class="main">
+    <a href="/es/traders">Traders</a>
+    <a href="/es/business">Empresas</a>
+    <a href="/es/authors">Autores de EA</a>
+    <a href="/es/pricing">Precios</a>
+    <a class="btn sm" href="https://app.algohand.com/?lang=es">Entrar</a>
+    <a class="btn sm primary" href="/es/demo">Probar la demo</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: Español">ES<i></i></button>
+    <ul>
+      <li><a href="/eas" hreflang="en" lang="en"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/eas" hreflang="ru" lang="ru"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/eas" hreflang="es" lang="es" aria-current="true"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/es/eas" aria-current="page">Catálogo de EA</a>
+    <a class="secondary" href="/docs/">API</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <div class="hero" style="padding-bottom:10px">
+    <div>
+      <div class="eyebrow">Catálogo</div>
+      <h1 style="margin-top:14px">Expert Advisors que puedes manejar <em>por chat</em>.</h1>
+      <p class="lead">Cada EA de esta lista se instaló en un terminal de pruebas, sus parámetros se descubrieron, una persona revisó sus presets de riesgo y rangos seguros, y se comprobó su comportamiento al reiniciar. Eso es lo que permite al asistente cambiar un ajuste sin adivinar. Los EA y sus licencias se compran a sus autores; AlgoHand solo los maneja.</p>
+    </div>
+  </div>
+  <style>
+    .ea-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap:18px; margin-top:8px; }
+    @media (max-width: 520px) { .ea-grid { grid-template-columns: 1fr; } }
+    .ea-card table { margin-top:4px; } .ea-card td { vertical-align:top; padding-right:10px; } .ea-card td.muted { width:30%; }
+    .ea-card code { white-space:nowrap; } .ea-head { display:flex; flex-wrap:wrap; gap:6px; }
+    .ea-title { display:flex; align-items:center; gap:14px; margin-top:14px; } .ea-title h3 { margin:0; }
+    .ea-icon { width:48px; height:48px; flex:0 0 48px; border-radius:12px; background:var(--bg3); object-fit:contain; padding:5px; box-sizing:border-box; }
+    .pill.ok { background: color-mix(in srgb, var(--ok) 18%, transparent); color: var(--ok); }
+    .pill.warn { background: color-mix(in srgb, var(--warn) 18%, transparent); color: var(--warn); }
+  </style>
+  <section style="padding-top:8px">
+    <div class="ea-grid">
+    <div class="card ea-card" id="news_catcher_pro">
+      <div class="ea-head">
+        <div><span class="pill">Noticias</span> <span class="pill ok">Revisado por AlgoHand</span> <span class="pill warn">Requiere licencia del autor</span></div>
+      </div>
+      <div class="ea-title"><img class="ea-icon" src="/assets/eas/default-ex5.svg" alt="" width="48" height="48"><h3>News Catcher Pro</h3></div>
+      <p class="muted" style="margin:6px 0 12px">EA de noticias con grid opcional. Opera una lista de símbolos desde un solo gráfico.</p>
+      <table>
+        <tr><td class="muted">Presets de riesgo</td><td><code>low</code> · <code>medium</code> · <code>high</code> · <code>vendor_grid_fixed</code></td></tr>
+        <tr><td class="muted">Modificable por chat</td><td>32 parámetros, cada uno dentro de un rango revisado</td></tr>
+        <tr><td class="muted">Parada suave</td><td>sí</td></tr>
+        <tr><td class="muted">Símbolos</td><td>EURUSD, GBPUSD, EURGBP</td></tr>
+        <tr><td class="muted">Gráfico</td><td>EURUSD M5</td></tr>
+        <tr><td class="muted">Instancias por cuenta</td><td>3</td></tr>
+        <tr><td class="muted">Reinicio seguro</td><td><b>condicional</b> — seguro según el autor mientras los parámetros bloqueados no cambien; nuestra propia prueba está pendiente</td></tr>
+        <tr><td class="muted">Licencia</td><td>Se compra al autor (se activa por número de cuenta en el servidor del autor). AlgoHand no la vende, ni la aloja, ni la incluye. <a href="https://www.mql5.com/en/market/product/72587" target="_blank" rel="noopener nofollow">Página del autor&nbsp;↗</a></td></tr>
+      </table>
+    </div>
+    <div class="card ea-card" id="night_hunter_pro">
+      <div class="ea-head">
+        <div><span class="pill">Scalper</span> <span class="pill ok">Revisado por AlgoHand</span> <span class="pill warn">Requiere licencia del autor</span></div>
+      </div>
+      <div class="ea-title"><img class="ea-icon" src="/assets/eas/default-ex5.svg" alt="" width="48" height="48"><h3>Night Hunter Pro <span class="small muted">· versión 3.0</span></h3></div>
+      <p class="muted" style="margin:6px 0 12px">Scalper nocturno. Órdenes pendientes, sin grid. Opera una lista de símbolos desde un solo gráfico.</p>
+      <table>
+        <tr><td class="muted">Presets de riesgo</td><td><code>low</code> · <code>medium</code> · <code>high</code> · <code>risk_per_trade_5</code> · <code>vendor_best_pairs</code> · <code>vendor_all_pairs</code></td></tr>
+        <tr><td class="muted">Modificable por chat</td><td>39 parámetros, cada uno dentro de un rango revisado</td></tr>
+        <tr><td class="muted">Parada suave</td><td>sí</td></tr>
+        <tr><td class="muted">Símbolos</td><td>GBPUSD, EURUSD, EURCHF, USDCAD, USDCHF, CHFJPY, AUDCAD, EURCAD, EURAUD</td></tr>
+        <tr><td class="muted">Gráfico</td><td>EURUSD M5</td></tr>
+        <tr><td class="muted">Instancias por cuenta</td><td>3</td></tr>
+        <tr><td class="muted">Reinicio seguro</td><td><b>condicional</b> — seguro según el autor mientras los parámetros bloqueados no cambien; nuestra propia prueba está pendiente</td></tr>
+        <tr><td class="muted">Licencia</td><td>Se compra al autor (se activa por número de cuenta en el servidor del autor). AlgoHand no la vende, ni la aloja, ni la incluye. <a href="https://www.mql5.com/en/market/product/68327" target="_blank" rel="noopener nofollow">Página del autor&nbsp;↗</a></td></tr>
+      </table>
+    </div>
+    <div class="card ea-card" id="perceptrader_ai">
+      <div class="ea-head">
+        <div><span class="pill">Grid</span> <span class="pill ok">Revisado por AlgoHand</span> <span class="pill warn">Requiere licencia del autor</span></div>
+      </div>
+      <div class="ea-title"><img class="ea-icon" src="/assets/eas/default-ex5.svg" alt="" width="48" height="48"><h3>Perceptrader AI</h3></div>
+      <p class="muted" style="margin:6px 0 12px">EA de grid con filtro de entradas por red neuronal. Opera una lista de símbolos desde un solo gráfico.</p>
+      <table>
+        <tr><td class="muted">Presets de riesgo</td><td><code>low</code> · <code>medium</code> · <code>significant</code> · <code>high</code> · <code>vendor_high</code> · <code>vendor_high_ai</code></td></tr>
+        <tr><td class="muted">Modificable por chat</td><td>40 parámetros, cada uno dentro de un rango revisado</td></tr>
+        <tr><td class="muted">Parada suave</td><td>sí</td></tr>
+        <tr><td class="muted">Símbolos</td><td>NZDUSD, USDCAD, AUDNZD, AUDCAD, NZDCAD, GBPCHF</td></tr>
+        <tr><td class="muted">Gráfico</td><td>AUDCAD M5</td></tr>
+        <tr><td class="muted">Instancias por cuenta</td><td>3</td></tr>
+        <tr><td class="muted">Reinicio seguro</td><td><b>condicional</b> — seguro según el autor mientras los parámetros bloqueados no cambien; nuestra propia prueba está pendiente</td></tr>
+        <tr><td class="muted">Licencia</td><td>Se compra al autor (se activa por número de cuenta en el servidor del autor). AlgoHand no la vende, ni la aloja, ni la incluye. <a href="https://www.mql5.com/en/market/product/102615" target="_blank" rel="noopener nofollow">Página del autor&nbsp;↗</a></td></tr>
+      </table>
+    </div>
+    <div class="card ea-card" id="waka_waka">
+      <div class="ea-head">
+        <div><span class="pill">Grid</span> <span class="pill ok">Revisado por AlgoHand</span> <span class="pill warn">Requiere licencia del autor</span></div>
+      </div>
+      <div class="ea-title"><img class="ea-icon" src="/assets/eas/default-ex5.svg" alt="" width="48" height="48"><h3>Waka Waka EA</h3></div>
+      <p class="muted" style="margin:6px 0 12px">EA de grid para AUDCAD y AUDNZD. Un solo gráfico M15.</p>
+      <table>
+        <tr><td class="muted">Presets de riesgo</td><td><code>low</code> · <code>medium</code> · <code>significant</code> · <code>high</code> · <code>vendor_default</code> · <code>vendor_smart_tp</code></td></tr>
+        <tr><td class="muted">Modificable por chat</td><td>33 parámetros, cada uno dentro de un rango revisado</td></tr>
+        <tr><td class="muted">Parada suave</td><td>sí</td></tr>
+        <tr><td class="muted">Símbolos</td><td>AUDCAD, AUDNZD, NZDCAD</td></tr>
+        <tr><td class="muted">Gráfico</td><td>AUDCAD M15</td></tr>
+        <tr><td class="muted">Instancias por cuenta</td><td>3</td></tr>
+        <tr><td class="muted">Reinicio seguro</td><td><b>condicional</b> — seguro según el autor mientras los parámetros bloqueados no cambien; nuestra propia prueba está pendiente</td></tr>
+        <tr><td class="muted">Licencia</td><td>Se compra al autor (se activa por número de cuenta en el servidor del autor). AlgoHand no la vende, ni la aloja, ni la incluye. <a href="https://www.mql5.com/en/market/product/70283" target="_blank" rel="noopener nofollow">Página del autor&nbsp;↗</a></td></tr>
+      </table>
+    </div>
+    </div>
+    <p class="small muted" style="margin-top:18px">Los nombres de los Expert Advisors son marcas de sus respectivos autores. AlgoHand no está afiliado a ellos ni afirma nada sobre su rendimiento; el catálogo indica qué puede manejar el asistente de AlgoHand y cómo se verificó. Operar implica riesgo.</p>
+  </section>
+  <section>
+    <div class="band">
+      <div>
+        <h2>¿Tu EA no está aquí?</h2>
+        <p class="sub">Dos caminos: envíanos los EA que ya usas y los incorporamos por ti, o publica tu propio producto como autor.</p>
+        <div class="cta"><a class="btn primary" href="/es/traders#join">Acceso anticipado para traders</a><a class="btn" href="/es/authors">Para autores de EA</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/es/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Control por chat de Expert Advisors de MetaTrader 5. Un producto de IT Effectiveness LLC, Tbilisi, Georgia.</p></div>
+    <div><b>Producto</b><a href="/es/business">Para empresas</a><a href="/es/traders">Para traders</a><a href="/es/pricing">Precios</a><a href="/es/authors">Autores de EA</a><a href="/es/eas">Catálogo de EA</a><a href="/es/demo">Demo en vivo</a><a href="/es/guide">Guía</a></div>
+    <div><b>Desarrolladores</b><a href="/docs/">Referencia de la API</a><a href="/docs/openapi.yaml">Documento OpenAPI</a><a href="/docs/claude_tools.json">Definiciones de herramientas</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Legal</b><a href="/terms">Términos del servicio (EN)</a><a href="/privacy">Política de privacidad (EN)</a><a href="/risk">Aviso de riesgo (EN)</a><a href="/refund">Reembolsos (EN)</a><a href="https://app.algohand.com/support?lang=es">Soporte</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand y Terminal Control API son productos de IT Effectiveness LLC. Las versiones en inglés de los documentos legales son las vinculantes.</span><span>MetaTrader es una marca de MetaQuotes Ltd. Sin afiliación con MetaQuotes. Operar implica riesgo; nada de lo aquí expuesto es asesoramiento financiero.</span></div>
+</div></footer>
+
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="es" data-title="Soporte"></script>
+</body>
+</html>

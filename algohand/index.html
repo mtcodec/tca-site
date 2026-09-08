@@ -3,29 +3,50 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AlgoHand — talk to your trading robots</title>
-<meta name="description" content="AlgoHand runs your MetaTrader 5 Expert Advisors by chat: start, stop, change risk, see how they do — on your VPS, with every change validated and verified. For brokers, platforms and traders.">
+<title>AlgoHand — Control MetaTrader EAs by Chat</title>
+<meta name="description" content="Control your MetaTrader 5 Expert Advisors by chat on your own VPS. Start, pause, change risk, backtest — without RDP. Preview, confirm, execute, verify.">
 <link rel="canonical" href="https://algohand.com/">
-<meta property="og:title" content="AlgoHand — your trading robots, in good hands">
-<meta property="og:description" content="Run MetaTrader 5 Expert Advisors by chat, safely. API for platforms, chat for traders.">
+<meta property="og:title" content="AlgoHand — Control MetaTrader EAs by Chat">
+<meta property="og:description" content="Control MetaTrader 5 Expert Advisors by chat — without RDP.">
 <meta property="og:url" content="https://algohand.com/">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234f8cff'/%3E%3Ctext x='32' y='43' font-family='Inter,Arial' font-weight='800' font-size='34' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="alternate" hreflang="en" href="https://algohand.com/">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
 </head>
 <body>
 
 <header class="top"><div class="wrap">
-  <a class="brand" href="/"><span class="logo">A</span>AlgoHand</a>
+  <a class="brand" href="/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
   <button class="navtoggle" type="button" aria-label="Menu">Menu</button>
   <nav class="main">
-    <a href="/business">For business</a>
-    <a href="/traders">For traders</a>
+    <a href="/traders">Traders</a>
+    <a href="/business">Business</a>
     <a href="/authors">EA authors</a>
-    <a href="/docs/">API docs</a>
+    <a href="/pricing">Pricing</a>
+    <a class="btn sm" href="https://app.algohand.com/">Sign in</a>
     <a class="btn sm primary" href="/demo">Try the demo</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: English">EN<i></i></button>
+    <ul>
+      <li><a href="/" hreflang="en" lang="en" aria-current="true"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/" hreflang="ru" lang="ru"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/" hreflang="es" lang="es"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/eas">EA catalog</a>
+    <a class="secondary" href="/docs/">API docs</a>
   </nav>
 </div></header>
 
@@ -34,134 +55,144 @@
   <div class="hero">
     <div>
       <div class="eyebrow">MetaTrader 5 · Expert Advisors · your VPS</div>
-      <h1 style="margin-top:14px">Your trading robots, <em>in good hands.</em></h1>
-      <p class="lead">AlgoHand lets you run MetaTrader 5 Expert Advisors by talking to them: start, stop, switch risk, change a setting, ask how they did. Every change is checked before it happens and verified after — on your own VPS.</p>
+      <h1 style="margin-top:14px">Control your trading robots <em>by chat.</em></h1>
+      <p class="lead">Start or pause an EA. Change risk. Adjust a setting. Check performance. Run a backtest. <b>From your phone, without opening RDP.</b></p>
+      <p class="lead">AlgoHand executes every command on your own VPS, shows you exactly what will change, and verifies the result in MetaTrader.</p>
+      <p class="brandline">Your trading robots, in good hands.</p>
       <div class="cta">
-        <a class="btn primary" href="/demo">Try the live demo</a>
-        <a class="btn" href="/business">For brokers &amp; platforms</a>
-        <a class="btn" href="/traders">For traders</a>
+        <a class="btn primary" href="/demo">Try the demo</a>
+        <a class="btn" href="/business">For Businesses</a>
       </div>
       <div class="trust">
-        <span>Runs on your VPS</span>
-        <span>No passwords leave the terminal</span>
-        <span>Every change confirmed and verified</span>
+        <span>Works with your existing EAs</span>
+        <span>No trading passwords stored</span>
+        <span>Nothing changes without your confirmation</span>
+        <span>Every command verified in MT5</span>
       </div>
     </div>
 
-    <div class="replay" data-replay="auto" aria-label="Recorded transcript of a real session">
-      <div class="bar"><span>Recorded session · <b>3 Sep 2026</b> · demo account</span><button type="button">Replay</button></div>
-      <div class="log">
-        <div class="m user">How is my account doing?</div>
-        <div class="m tool"><span class="st">✓</span> get_client_state · <span class="rq">200</span> · 2 accounts, 5 EA instances, VPS online</div>
-        <div class="m bot"><b>Account 53133703</b> (Alpari-MT5-Demo, EUR): balance €5,000.00, equity €5,000.00, no open positions.
-1 EA running: <b>Night Hunter Pro</b> — EURUSD M5, preset medium, MaximumSpread 7.
-This is information about your account, not financial advice.</div>
-        <div class="m user">Restart Night Hunter with MaxSpread 15</div>
-        <div class="m tool"><span class="st">✓</span> get_ea night_hunter_pro · 92 inputs · "MaxSpread" resolves to <b>MaximumSpread</b> (0.5–50)</div>
-        <div class="m tool"><span class="st">✓</span> restart_ea <span class="rq">dry_run</span> · MaximumSpread 7 → 15 on Night Hunter Pro (EURUSD) — EA will restart</div>
-        <div class="m bot">Here's the dry run for <b>Night Hunter Pro</b> (EURUSD M5):
-• <b>MaximumSpread: 7.0 → 15.0 pips</b>
-• The EA will restart — 0 open positions, 0 pending orders, nothing at risk.
-Shall I apply it?</div>
-        <div class="m user">yes, go ahead</div>
-        <div class="m tool"><span class="st">✓</span> restart_ea · <span class="rq">202</span> queued · cmd_01M1JY85A07NCXYZ</div>
-        <div class="m tool"><span class="st">✓</span> get_command wait=30 · succeeded · reconciled: true · read back MaximumSpread=15.0</div>
-        <div class="m bot">Done ✅
-<div class="tl"><span>Requested <b>06:10:41</b></span><span>Confirmed <b>06:10:42</b></span><span>Happened <b>06:10:43</b></span></div><b>MaximumSpread 7 → 15 applied on Night Hunter Pro; EA restarted.</b>
-The terminal confirms it back: MaximumSpread = 15.0, everything else unchanged.</div>
+    <div class="replay v2" data-replay="auto" aria-label="Recorded transcript of a session">
+      <div class="progress" aria-hidden="true"></div>
+      <div class="bar">
+        <div class="avatar" aria-hidden="true">AH</div>
+        <div class="who"><b>AlgoHand</b><span><i></i>connected · VPS ••••4471 · 2 terminals</span></div>
+        <button type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 1.5v3h-3"/></svg>Replay</button>
       </div>
+      <div class="log">
+        <div class="note">Recorded session · demo setup · account details changed</div>
+        <div class="m user">How did last week go?</div>
+        <div class="chip done"><span class="st"><span>✓</span></span><span class="tag">done</span><span>get_pnl · group=ea · 7 days · <b>41 deals</b></span></div>
+        <div class="m bot"><p class="lead-line">Week of 31 Aug – 6 Sep · account ••••4471 · USD</p><p class="big"><span class="pos">+612.40</span> <span class="pos" style="font-size:14px;font-weight:600">+2.1%</span></p><div class="rows"><div class="row"><span class="nm">Gold Scalper</span><b class="pos">+488.10</b><small>26 trades · 73% winners</small></div><div class="row"><span class="nm">BTC Grid</span><b class="pos">+124.30</b><small>15 trades · 67% winners</small></div></div><p class="meta">Max drawdown <b>1.4%</b> · Information, not advice.</p></div>
+        <div class="m user">NFP is at 14:30. Pause Gold Scalper and switch BTC Grid to low risk until Monday.</div>
+        <div class="chip preview"><span class="tag">dry run</span><span>stop_ea · <b>Gold Scalper</b> (XAUUSD M5) · soft stop · 0 open positions</span></div>
+        <div class="chip preview"><span class="tag">dry run</span><span>set_risk · <b>BTC Grid</b> (BTCUSD M15) · medium → low · 3 inputs · EA restarts · 2 open positions, recovery verified</span></div>
+        <div class="m bot"><p>Two changes:</p><div class="chg"><b>Gold Scalper</b><span>soft stop — no new trades; nothing open right now.</span></div><div class="chg"><b>BTC Grid <span class="arrow">medium → low</span></b><span>risk per trade 2% → 1%, max grid orders 8 → 5. The EA restarts and picks its 2 positions up by magic number.</span></div></div>
+        <div class="qr" aria-hidden="true"><span data-yes>Apply both</span><span class="ghost">Only Gold Scalper</span><span class="ghost">Cancel</span></div>
+        <div class="m user">Apply both</div>
+        <div class="chip done" data-run="1100"><span class="st"><span>✓</span></span><span class="tag">done</span><span>stop_ea · 13:52:41 · set_risk · 13:52:44 · <b>verified in MT5</b></span></div>
+        <div class="m bot"><p><b>Gold Scalper paused, BTC Grid on low; both positions still managed.</b></p><div class="vsteps"><div class="vs"><i></i><em>Requested</em><b>13:52:39</b></div><div class="vs"><i></i><em>Confirmed</em><b>13:52:40</b></div><div class="vs"><i></i><em>Happened</em><b>13:52:44</b></div><div class="vs"><i></i><em>Verified</em><b>13:52:44</b></div></div><p>Want a reminder on Monday to switch back? And a 6-month backtest of Gold Scalper on the low preset, real ticks?</p></div>
+        <div class="m user">Both.</div>
+        <div class="chip done" data-run="1400"><span class="st"><span>✓</span></span><span class="tag">done</span><span>run_backtest · XAUUSD M5 · Mar–Aug 2026 · real ticks · on your VPS · <b>4 min 12 s</b></span></div>
+        <div class="m bot"><p class="lead-line">Backtest · Gold Scalper · XAUUSD M5 · 1 Mar – 31 Aug 2026 · preset low · real ticks</p><div class="rows"><div class="row"><span class="lbl">Net profit</span><b class="pos">+1,842.60 · +18.4%</b></div><div class="row"><span class="lbl">Max drawdown</span><b>4.9%</b></div><div class="row"><span class="lbl">Profit factor</span><b>1.62</b></div><div class="row"><span class="lbl">Trades</span><b>143 · 71% winners</b></div></div><p class="meta">Full report in your dashboard. Reminder set for Monday 08:00.</p></div>
+      </div>
+      <div class="footer-note"><span>Every command: preview → <b>your yes</b> → execute → verified in MT5</span><span><b>1–3 s</b></span></div>
     </div>
   </div>
+  <div class="proof">4 EAs in the pilot catalog · real MT5 terminals in the pilot · outbound-only agent · 1–3 s to verify</div>
 
-  <section id="who">
-    <div class="eyebrow">Who it is for</div>
-    <h2>One engine, two front doors</h2>
-    <p class="sub">The same control layer serves a broker's AI assistant and a single trader's chat. You choose the door.</p>
-    <div class="grid2" style="margin-top:26px">
-      <div class="card audience">
-        <span class="pill">Business</span>
-        <h3 style="margin-top:12px">Brokers, VPS providers, trading platforms</h3>
-        <p>Give your own AI assistant hands. A REST/MCP API with tool definitions for any function-calling model, server-side validation, a sandbox, and per-customer keys. You keep the dashboard, the persona and the customer.</p>
-        <ul>
-          <li>Integrate in a day: OpenAPI 3.1, Claude tool schemas, MCP server</li>
-          <li>Your EA catalog onboarded with presets and parameter ranges</li>
-          <li>Agent inside your VPS image — zero clicks for the customer</li>
-        </ul>
-        <a class="btn primary" href="/business">See the integration</a>
+  <section id="rdp">
+    <div class="grid2" style="align-items:center">
+      <div>
+        <div class="eyebrow">Without RDP</div>
+        <h2>Stop managing MT5 through a tiny remote desktop.</h2>
+        <p class="sub">No RDP. No squinting at a terminal on a phone. One message, a preview, your yes.</p>
+        <div class="asks inline">
+        <div class="m user">Pause Gold Scalper.</div>
+        <div class="m user">Lower risk on all EURUSD EAs.</div>
+        <div class="m user">Which robot lost money today?</div>
+          <p class="thatsit">That's it.</p>
+        </div>
       </div>
-      <div class="card audience">
-        <span class="pill">Private</span>
-        <h3 style="margin-top:12px">Traders who run EAs on a VPS</h3>
-        <p>Stop logging in over RDP to flip a switch. Ask in chat what your robots are doing, pause one, lower the risk before the news, restart with a new setting — from your phone, with a confirmation before anything changes.</p>
-        <ul>
-          <li>One installer on your VPS, then it just works</li>
-          <li>Works with the EAs you already own</li>
-          <li>Equity, P&amp;L and win rate per robot, as charts</li>
-        </ul>
-        <a class="btn primary" href="/traders">Join the early access</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="how">
-    <div class="eyebrow">How it works</div>
-    <h2>Say it. AlgoHand does it. The terminal confirms it.</h2>
-    <p class="sub">The chat never touches the terminal directly. Every request goes through validation, is executed by a small agent on the VPS, and is checked against what the terminal actually shows afterwards.</p>
-    <div class="steps" style="margin-top:26px">
-      <div class="step"><h3>Install once</h3><p>A tiny agent on the VPS finds your MT5 terminals, attaches a manager service and reports back. Outbound HTTPS only, no open ports, no RDP dependency.</p></div>
-      <div class="step"><h3>Ask</h3><p>"Which robots are running?", "Switch Waka Waka to low risk", "Show my balance curve." The assistant resolves names, presets and exact parameter names from the catalog.</p></div>
-      <div class="step"><h3>Confirm</h3><p>You see the dry run: what changes, from what to what, whether the EA restarts and what is at risk. Nothing is queued until you say yes.</p></div>
-      <div class="step"><h3>Verified</h3><p>The agent applies the change and reads the settings back from the running EA. Requested, applied and observed must match — a mismatch is a failed command, never a silent success.</p></div>
-    </div>
-    <div class="stats">
-      <div class="stat"><b>1–3 s</b><span>from command to confirmed result</span></div>
-      <div class="stat"><b>0</b><span>inbound ports on the VPS</span></div>
-      <div class="stat"><b>0</b><span>passwords stored — we attach to logged-in terminals</span></div>
-      <div class="stat"><b>90 days</b><span>of equity samples, full deal history</span></div>
+      <div class="compare"><figure><svg viewBox="0 0 150 300" width="150" height="300" role="img" aria-hidden="true"><rect x="1" y="1" width="148" height="298" rx="22" fill="var(--bg3)" stroke="var(--line)"/><rect x="8" y="12" width="134" height="276" rx="12" fill="var(--bg)"/><rect x="57.0" y="5" width="36" height="4" rx="2" fill="var(--line)"/><rect x="8" y="12" width="134" height="7" rx="6" fill="var(--bg3)"/><rect x="11" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="20" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="29" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="38" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="47" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="56" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="65" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="74" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="83" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="92" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="101" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="110" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="119" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="128" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="8" y="20" width="30" height="176" fill="var(--bg2)"/><rect x="10" y="24" width="19" height="1.6" fill="var(--ink3)"/><rect x="10" y="30" width="16" height="1.6" fill="var(--ink3)"/><rect x="10" y="36" width="20" height="1.6" fill="var(--ink3)"/><rect x="10" y="42" width="24" height="1.6" fill="var(--ink3)"/><rect x="10" y="48" width="14" height="1.6" fill="var(--ink3)"/><rect x="10" y="54" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="60" width="22" height="1.6" fill="var(--ink3)"/><rect x="10" y="66" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="72" width="19" height="1.6" fill="var(--ink3)"/><rect x="10" y="78" width="23" height="1.6" fill="var(--ink3)"/><rect x="10" y="84" width="14" height="1.6" fill="var(--ink3)"/><rect x="10" y="90" width="22" height="1.6" fill="var(--ink3)"/><rect x="10" y="96" width="17" height="1.6" fill="var(--ink3)"/><rect x="10" y="102" width="14" height="1.6" fill="var(--ink3)"/><rect x="10" y="108" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="114" width="20" height="1.6" fill="var(--ink3)"/><rect x="10" y="120" width="20" height="1.6" fill="var(--ink3)"/><rect x="10" y="126" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="132" width="17" height="1.6" fill="var(--ink3)"/><rect x="10" y="138" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="144" width="22" height="1.6" fill="var(--ink3)"/><rect x="10" y="150" width="20" height="1.6" fill="var(--ink3)"/><rect x="10" y="156" width="14" height="1.6" fill="var(--ink3)"/><rect x="10" y="162" width="23" height="1.6" fill="var(--ink3)"/><rect x="10" y="168" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="174" width="17" height="1.6" fill="var(--ink3)"/><rect x="10" y="180" width="24" height="1.6" fill="var(--ink3)"/><rect x="10" y="186" width="24" height="1.6" fill="var(--ink3)"/><rect x="39" y="20" width="103" height="176" fill="var(--bg2)"/><line x1="39" y1="30" x2="142" y2="30" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="54" x2="142" y2="54" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="78" x2="142" y2="78" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="102" x2="142" y2="102" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="126" x2="142" y2="126" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="150" x2="142" y2="150" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="174" x2="142" y2="174" stroke="var(--line)" stroke-width=".4"/><line x1="43.0" y1="109" x2="43.0" y2="119" stroke="var(--bad)" stroke-width=".7"/><rect x="41.6" y="110" width="2.8" height="4" fill="var(--bad)"/><line x1="47.2" y1="110" x2="47.2" y2="119" stroke="var(--bad)" stroke-width=".7"/><rect x="45.800000000000004" y="114" width="2.8" height="4" fill="var(--bad)"/><line x1="51.400000000000006" y1="110" x2="51.400000000000006" y2="123" stroke="var(--ok)" stroke-width=".7"/><rect x="50.00000000000001" y="111" width="2.8" height="7" fill="var(--ok)"/><line x1="55.60000000000001" y1="109" x2="55.60000000000001" y2="127" stroke="var(--bad)" stroke-width=".7"/><rect x="54.20000000000001" y="111" width="2.8" height="13" fill="var(--bad)"/><line x1="59.80000000000001" y1="121" x2="59.80000000000001" y2="129" stroke="var(--ok)" stroke-width=".7"/><rect x="58.40000000000001" y="123" width="2.8" height="1.2" fill="var(--ok)"/><line x1="64.00000000000001" y1="107" x2="64.00000000000001" y2="126" stroke="var(--ok)" stroke-width=".7"/><rect x="62.600000000000016" y="112" width="2.8" height="11" fill="var(--ok)"/><line x1="68.20000000000002" y1="106" x2="68.20000000000002" y2="117" stroke="var(--bad)" stroke-width=".7"/><rect x="66.80000000000001" y="112" width="2.8" height="3" fill="var(--bad)"/><line x1="72.40000000000002" y1="99" x2="72.40000000000002" y2="120" stroke="var(--ok)" stroke-width=".7"/><rect x="71.00000000000001" y="104" width="2.8" height="11" fill="var(--ok)"/><line x1="76.60000000000002" y1="102" x2="76.60000000000002" y2="113" stroke="var(--bad)" stroke-width=".7"/><rect x="75.20000000000002" y="104" width="2.8" height="6" fill="var(--bad)"/><line x1="80.80000000000003" y1="94" x2="80.80000000000003" y2="116" stroke="var(--ok)" stroke-width=".7"/><rect x="79.40000000000002" y="99" width="2.8" height="11" fill="var(--ok)"/><line x1="85.00000000000003" y1="82" x2="85.00000000000003" y2="100" stroke="var(--ok)" stroke-width=".7"/><rect x="83.60000000000002" y="87" width="2.8" height="12" fill="var(--ok)"/><line x1="89.20000000000003" y1="85" x2="89.20000000000003" y2="96" stroke="var(--bad)" stroke-width=".7"/><rect x="87.80000000000003" y="87" width="2.8" height="5" fill="var(--bad)"/><line x1="93.40000000000003" y1="87" x2="93.40000000000003" y2="103" stroke="var(--bad)" stroke-width=".7"/><rect x="92.00000000000003" y="92" width="2.8" height="7" fill="var(--bad)"/><line x1="97.60000000000004" y1="96" x2="97.60000000000004" y2="113" stroke="var(--bad)" stroke-width=".7"/><rect x="96.20000000000003" y="99" width="2.8" height="10" fill="var(--bad)"/><line x1="101.80000000000004" y1="105" x2="101.80000000000004" y2="116" stroke="var(--bad)" stroke-width=".7"/><rect x="100.40000000000003" y="109" width="2.8" height="4" fill="var(--bad)"/><line x1="106.00000000000004" y1="106" x2="106.00000000000004" y2="115" stroke="var(--ok)" stroke-width=".7"/><rect x="104.60000000000004" y="108" width="2.8" height="5" fill="var(--ok)"/><line x1="110.20000000000005" y1="106" x2="110.20000000000005" y2="117" stroke="var(--bad)" stroke-width=".7"/><rect x="108.80000000000004" y="108" width="2.8" height="8" fill="var(--bad)"/><line x1="114.40000000000005" y1="113" x2="114.40000000000005" y2="125" stroke="var(--bad)" stroke-width=".7"/><rect x="113.00000000000004" y="116" width="2.8" height="4" fill="var(--bad)"/><line x1="118.60000000000005" y1="117" x2="118.60000000000005" y2="127" stroke="var(--bad)" stroke-width=".7"/><rect x="117.20000000000005" y="120" width="2.8" height="1.2" fill="var(--bad)"/><line x1="122.80000000000005" y1="118" x2="122.80000000000005" y2="126" stroke="var(--ok)" stroke-width=".7"/><rect x="121.40000000000005" y="121" width="2.8" height="1.2" fill="var(--ok)"/><line x1="127.00000000000006" y1="108" x2="127.00000000000006" y2="126" stroke="var(--ok)" stroke-width=".7"/><rect x="125.60000000000005" y="109" width="2.8" height="12" fill="var(--ok)"/><line x1="131.20000000000005" y1="106" x2="131.20000000000005" y2="112" stroke="var(--ok)" stroke-width=".7"/><rect x="129.80000000000004" y="108" width="2.8" height="1.2" fill="var(--ok)"/><line x1="135.40000000000003" y1="94" x2="135.40000000000003" y2="112" stroke="var(--ok)" stroke-width=".7"/><rect x="134.00000000000003" y="98" width="2.8" height="10" fill="var(--ok)"/><rect x="8" y="197" width="134" height="91" rx="0" fill="var(--bg2)"/><rect x="11" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="33" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="55" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="77" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="99" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="121" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="11" y="207.0" width="8" height="1.6" fill="var(--ink3)"/><rect x="33" y="207.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="55" y="207.0" width="16" height="1.6" fill="var(--ink3)"/><rect x="77" y="207.0" width="17" height="1.6" fill="var(--ink3)"/><rect x="99" y="207.0" width="13" height="1.6" fill="var(--ink3)"/><rect x="121" y="207.0" width="13" height="1.6" fill="var(--ink3)"/><rect x="11" y="213.5" width="13" height="1.6" fill="var(--ink3)"/><rect x="33" y="213.5" width="17" height="1.6" fill="var(--ink3)"/><rect x="55" y="213.5" width="15" height="1.6" fill="var(--ink3)"/><rect x="77" y="213.5" width="17" height="1.6" fill="var(--ink3)"/><rect x="99" y="213.5" width="15" height="1.6" fill="var(--ink3)"/><rect x="121" y="213.5" width="9" height="1.6" fill="var(--ink3)"/><rect x="11" y="220.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="33" y="220.0" width="12" height="1.6" fill="var(--ink3)"/><rect x="55" y="220.0" width="15" height="1.6" fill="var(--ink3)"/><rect x="77" y="220.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="99" y="220.0" width="8" height="1.6" fill="var(--ink3)"/><rect x="121" y="220.0" width="12" height="1.6" fill="var(--ink3)"/><rect x="11" y="226.5" width="17" height="1.6" fill="var(--ink3)"/><rect x="33" y="226.5" width="15" height="1.6" fill="var(--ink3)"/><rect x="55" y="226.5" width="12" height="1.6" fill="var(--ink3)"/><rect x="77" y="226.5" width="14" height="1.6" fill="var(--ink3)"/><rect x="99" y="226.5" width="13" height="1.6" fill="var(--ink3)"/><rect x="121" y="226.5" width="8" height="1.6" fill="var(--ink3)"/><rect x="11" y="233.0" width="15" height="1.6" fill="var(--ink3)"/><rect x="33" y="233.0" width="13" height="1.6" fill="var(--ink3)"/><rect x="55" y="233.0" width="10" height="1.6" fill="var(--ink3)"/><rect x="77" y="233.0" width="17" height="1.6" fill="var(--ink3)"/><rect x="99" y="233.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="121" y="233.0" width="15" height="1.6" fill="var(--ink3)"/><rect x="11" y="239.5" width="8" height="1.6" fill="var(--ink3)"/><rect x="33" y="239.5" width="11" height="1.6" fill="var(--ink3)"/><rect x="55" y="239.5" width="12" height="1.6" fill="var(--ink3)"/><rect x="77" y="239.5" width="10" height="1.6" fill="var(--ink3)"/><rect x="99" y="239.5" width="11" height="1.6" fill="var(--ink3)"/><rect x="121" y="239.5" width="14" height="1.6" fill="var(--ink3)"/><rect x="11" y="246.0" width="14" height="1.6" fill="var(--ink3)"/><rect x="33" y="246.0" width="15" height="1.6" fill="var(--ink3)"/><rect x="55" y="246.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="77" y="246.0" width="10" height="1.6" fill="var(--ink3)"/><rect x="99" y="246.0" width="15" height="1.6" fill="var(--ink3)"/><rect x="121" y="246.0" width="14" height="1.6" fill="var(--ink3)"/><rect x="11" y="252.5" width="16" height="1.6" fill="var(--ink3)"/><rect x="33" y="252.5" width="12" height="1.6" fill="var(--ink3)"/><rect x="55" y="252.5" width="10" height="1.6" fill="var(--ink3)"/><rect x="77" y="252.5" width="14" height="1.6" fill="var(--ink3)"/><rect x="99" y="252.5" width="16" height="1.6" fill="var(--ink3)"/><rect x="121" y="252.5" width="12" height="1.6" fill="var(--ink3)"/><rect x="11" y="259.0" width="14" height="1.6" fill="var(--ink3)"/><rect x="33" y="259.0" width="13" height="1.6" fill="var(--ink3)"/><rect x="55" y="259.0" width="14" height="1.6" fill="var(--ink3)"/><rect x="77" y="259.0" width="11" height="1.6" fill="var(--ink3)"/><rect x="99" y="259.0" width="10" height="1.6" fill="var(--ink3)"/><rect x="121" y="259.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="11" y="265.5" width="10" height="1.6" fill="var(--ink3)"/><rect x="33" y="265.5" width="10" height="1.6" fill="var(--ink3)"/><rect x="55" y="265.5" width="11" height="1.6" fill="var(--ink3)"/><rect x="77" y="265.5" width="11" height="1.6" fill="var(--ink3)"/><rect x="99" y="265.5" width="8" height="1.6" fill="var(--ink3)"/><rect x="121" y="265.5" width="15" height="1.6" fill="var(--ink3)"/><rect x="11" y="272.0" width="17" height="1.6" fill="var(--ink3)"/><rect x="33" y="272.0" width="10" height="1.6" fill="var(--ink3)"/><rect x="55" y="272.0" width="12" height="1.6" fill="var(--ink3)"/><rect x="77" y="272.0" width="12" height="1.6" fill="var(--ink3)"/><rect x="99" y="272.0" width="8" height="1.6" fill="var(--ink3)"/><rect x="121" y="272.0" width="10" height="1.6" fill="var(--ink3)"/><rect x="11" y="278.5" width="14" height="1.6" fill="var(--ink3)"/><rect x="33" y="278.5" width="16" height="1.6" fill="var(--ink3)"/><rect x="55" y="278.5" width="13" height="1.6" fill="var(--ink3)"/><rect x="77" y="278.5" width="17" height="1.6" fill="var(--ink3)"/><rect x="99" y="278.5" width="17" height="1.6" fill="var(--ink3)"/><rect x="121" y="278.5" width="13" height="1.6" fill="var(--ink3)"/><path d="M96 150 l0 14 l3.5-3 l2.5 6 l2-1 l-2.5-6 l4.5-.5 z" fill="#fff" stroke="#000" stroke-width=".6"/></svg><figcaption>RDP on a phone</figcaption></figure><span class="vs" aria-hidden="true">→</span><figure><svg viewBox="0 0 150 300" width="150" height="300" role="img" aria-hidden="true"><rect x="1" y="1" width="148" height="298" rx="22" fill="var(--bg3)" stroke="var(--line)"/><rect x="8" y="12" width="134" height="276" rx="12" fill="var(--bg)"/><rect x="57.0" y="5" width="36" height="4" rx="2" fill="var(--line)"/><rect x="50.0" y="30.0" width="86.0" height="17.5" rx="7" fill="var(--chat-user)"/><text x="55.0" y="41.0" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">Pause Gold Scalper.</text><rect x="16" y="55.5" width="106.0" height="27.0" rx="7" fill="var(--chat-bot)" stroke="var(--line)" stroke-width=".8"/><text x="21" y="66.5" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">Preview: soft stop,</text><text x="21" y="76.0" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">0 open positions. Apply?</text><rect x="114.0" y="90.5" width="22.0" height="17.5" rx="7" fill="var(--chat-user)"/><text x="119.0" y="101.5" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">yes</text><rect x="16" y="116.0" width="98.0" height="17.5" rx="7" fill="var(--chat-bot)" stroke="var(--line)" stroke-width=".8"/><text x="21" y="127.0" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">Done ✓ verified in MT5</text><rect x="16" y="264" width="118" height="16" rx="8" fill="var(--bg2)" stroke="var(--line)" stroke-width=".8"/><text x="24" y="275" font-size="7" font-family="Inter, sans-serif" fill="var(--ink3)">…</text></svg><figcaption>One message</figcaption></figure></div>
     </div>
   </section>
 
   <section id="features">
     <div class="eyebrow">What you can do</div>
-    <h2>Everything you would do over RDP — without RDP</h2>
-    <div class="grid3" style="margin-top:26px">
-      <div class="card"><div class="ic">▶</div><h3>Start and stop</h3><p>Start an EA on the right chart with a risk preset; stop it softly (it keeps managing its open trades) or hard. Positions are never closed behind your back.</p></div>
-      <div class="card"><div class="ic">⚖</div><h3>Risk presets</h3><p>Low, medium, high — defined per EA by the author or by us, applied as a whole. No guessing which of 90 inputs means "risk".</p></div>
-      <div class="card"><div class="ic">⚙</div><h3>Safe parameter changes</h3><p>Only whitelisted inputs, only inside their ranges, with the exact name looked up for you. "MaxSpread" becomes MaximumSpread, 15 is checked against 0.5–50.</p></div>
-      <div class="card"><div class="ic">◉</div><h3>Live state</h3><p>Balance, equity, floating P&amp;L, every running EA with its effective settings, open positions and pending orders — attributed to the robot that made them.</p></div>
-      <div class="card"><div class="ic">📈</div><h3>Charts and P&amp;L</h3><p>Equity curve with drawdown, balance history over the whole account, profit, win rate and drawdown by EA, symbol, day, hour or weekday — drawn right in the chat.</p></div>
-      <div class="card"><div class="ic">🛡</div><h3>Restart safety</h3><p>Changing a setting restarts the EA. Grid and basket EAs are verified to recover their trades first; until then, changes with open positions are refused, not gambled.</p></div>
-      <div class="card"><div class="ic">⟳</div><h3>Self-healing VPS</h3><p>Terminal closed, chart removed, VPS rebooted, broker disconnected — the agent notices, restarts what is needed and tells you what happened, in plain words.</p></div>
-      <div class="card"><div class="ic">≡</div><h3>Audit trail</h3><p>Every command with who asked, what was requested, what was applied and what the terminal showed, with timestamps. Good for you, required for regulated partners.</p></div>
-      <div class="card"><div class="ic">＋</div><h3>Adoption</h3><p>EAs you already run by hand show up as managed instances with their real settings, untouched. Nothing to re-create.</p></div>
+    <h2>What you can do from chat</h2>
+    <p class="sub">Everything you used to do over RDP — without RDP.</p>
+    <div class="grid4" style="margin-top:26px">
+      <div class="card"><div class="ic">▶</div><h3>Start and stop</h3><p>Start an EA on the right chart with a risk preset. Soft-stop it so it keeps managing open trades, or hard-stop it. Positions are never closed behind your back.</p></div>
+      <div class="card"><div class="ic">⚖</div><h3>Change risk</h3><p>Low, medium, high — defined per EA. Applied as a set. No hunting through 90 inputs for “the risk one.”</p></div>
+      <div class="card"><div class="ic">⚙</div><h3>Adjust a setting</h3><p>Only allowed inputs, only inside their ranges. “MaxSpread 15” is resolved to the exact input name and checked before anything runs.</p></div>
+      <div class="card"><div class="ic">◉</div><h3>See live state</h3><p>Balance, equity, floating P&amp;L, every running EA with its effective settings, open positions and pending orders — attributed to the robot that made them.</p></div>
+      <div class="card"><div class="ic">📈</div><h3>Charts and P&amp;L</h3><p>Equity curve, profit and win rate by EA, symbol, day, hour or weekday. Drawn in the chat.</p></div>
+      <div class="card"><div class="ic">⏱</div><h3>Backtest</h3><p>Run the Strategy Tester on your VPS in a second terminal, at low priority, while live robots keep trading. Compare presets, then apply the winner with the same confirmation flow.</p></div>
+      <div class="card"><div class="ic">⟳</div><h3>Keep the setup running</h3><p>Terminal closed? VPS rebooted? MT5 disconnected? AlgoHand detects it, restores what it can, and tells you exactly what happened.</p></div>
+      <div class="card"><div class="ic">≡</div><h3>Audit trail</h3><p>Who asked, what was requested, what was applied, what MT5 showed — with timestamps.</p></div>
     </div>
+  </section>
+
+  <section id="how">
+    <div class="eyebrow">How it works</div>
+    <h2>Ask. Preview. Confirm. Execute. Verify.</h2>
+    <p class="sub">Nothing happens behind your back.</p>
+    <div class="steps five" style="margin-top:26px">
+      <div class="step"><h3>Ask</h3><p>“Pause Gold Scalper.” “Set EURUSD Trend risk to 0.5%.” “How did last week go?”</p></div>
+      <div class="step"><h3>Preview</h3><p>AlgoHand resolves the exact change: which EA, which inputs, from what to what, whether the EA restarts, whether open positions are safe.</p></div>
+      <div class="step"><h3>Confirm</h3><p>You see the dry run. Nothing is sent to MT5 until you say yes.</p></div>
+      <div class="step"><h3>Execute</h3><p>A small agent on your VPS applies the change to your logged-in terminals.</p></div>
+      <div class="step"><h3>Verify</h3><p>AlgoHand reads the settings back from the running EA. Requested, applied and observed must match — or the command fails.</p></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>1–3 s</b><span>from command to confirmed result</span></div>
+      <div class="stat"><b>0</b><span>inbound ports on the VPS</span></div>
+      <div class="stat"><b>0</b><span>passwords stored</span></div>
+      <div class="stat"><b>90 days</b><span>of equity samples</span></div>
+    </div>
+  </section>
+
+  <section id="compat" class="compat">
+    <div class="eyebrow">Compatibility</div>
+    <h2>Keep your EAs. Keep your broker. Keep your VPS.</h2>
+    <p class="sub">AlgoHand works with the MetaTrader 5 setup you already use. We do not replace your robots, your broker or your machine. We give you a safer way to control them.</p>
   </section>
 
   <section id="security">
     <div class="band">
       <div>
-        <div class="eyebrow">Security</div>
-        <h2>The AI is never the security boundary</h2>
-        <p class="sub">Whatever the model sends, our server validates again. Whatever the terminal is asked, it is asked through a signed, pinned, outbound-only channel.</p>
-        <ul class="checks">
-          <li>Server-side whitelist of EAs, symbols, inputs and ranges for every tenant</li>
-          <li>No trading or investor passwords — the agent works with already logged-in terminals</li>
-          <li>Per-VPS credentials bound to the machine; TLS pinned to our own certificate authority</li>
-          <li>Signed auto-updates; a decommissioned VPS loses access instantly</li>
-          <li>Per-customer API keys for platforms: a key sees one customer, never another</li>
+        <div class="eyebrow">Safety</div>
+        <h2>You approve it. MT5 confirms it.</h2>
+        <p class="sub">AlgoHand operates your robots. It does not place trades and it does not act without confirmation. Performance figures in chat are information, not advice.</p>
+        <p class="small muted" style="margin-top:14px">Architecture, key handling and certificate pinning: see <a href="/business">Business</a> and the <a href="/docs/">API docs</a>.</p>
+      </div>
+      <div class="card">
+        <ul class="checks big" style="margin:0">
+          <li>Every change is previewed.</li>
+          <li>You approve it.</li>
+          <li>AlgoHand executes it on your VPS.</li>
+          <li>MT5 confirms it.</li>
+          <li>You can see the audit trail.</li>
         </ul>
       </div>
-      <div class="card" style="background:var(--tool)">
-        <div class="eyebrow">Under the hood</div>
-        <pre style="margin:10px 0 0;border:0;padding:0;background:none">chat / dashboard  →  AlgoHand API
-                     validate · dry run · queue
-                          ↓ outbound HTTPS, pinned
-                     agent on the VPS
-                          ↓ file protocol
-                     manager service in MT5
-                          ↓
-                     charts · EAs · read-back
-                     requested = applied = observed ✓</pre>
+    </div>
+  </section>
+
+  <section id="who">
+    <div class="eyebrow">Who it is for</div>
+    <h2>Who is AlgoHand for?</h2>
+    <div class="grid2" style="margin-top:26px">
+      <div class="card audience">
+        <span class="pill">Traders</span>
+        <h3 style="margin-top:12px">I trade with EAs</h3>
+        <p>Control your robots without opening RDP. From your phone: start, pause, change risk, check P&amp;L, run a backtest.</p>
+        <a class="btn primary" href="/traders">For Traders</a>
+      </div>
+      <div class="card audience">
+        <span class="pill">Business</span>
+        <h3 style="margin-top:12px">I run a trading platform</h3>
+        <p>Add safe EA control to your AI assistant through one API. Start, stop and reconfigure customers' EAs on their VPS — with validation and verified execution.</p>
+        <a class="btn primary" href="/business">For Businesses</a>
       </div>
     </div>
   </section>
@@ -169,88 +200,63 @@ The terminal confirms it back: MaximumSpread = 15.0, everything else unchanged.<
   <section id="backtests">
     <div class="band">
       <div>
-        <span class="pill soon">Roadmap</span>
-        <h2 style="margin-top:12px">Backtests by chat, on a tester pool that never blocks your VPS</h2>
-        <p class="sub">"Would MaxSpread 15 have done better over the last year?" AlgoHand will run the Strategy Tester for you on dedicated fast servers — a pool of MetaTrader testers that takes requests from every customer, queues them, and returns the report to the chat with the numbers that matter: net profit, drawdown, profit factor, trades. Compare presets side by side before you touch a live robot; the pool grows with demand, your trading VPS stays untouched.</p>
+        <div class="eyebrow">Backtests</div>
+        <h2>Backtests by chat, on your own VPS</h2>
+        <p class="sub">“Would the low preset have done better last year?” Ask. The Strategy Tester runs in a second terminal on your VPS at low priority. Your live robots keep trading. Compare two settings, then apply the winner the usual way: preview, confirm, verify.</p>
+        <ul class="checks">
+          <li>Any period, symbol and timeframe</li>
+          <li>Real ticks, every tick, 1-minute OHLC or open prices</li>
+          <li>Your EA licence and your broker's history stay on the machine</li>
+          <li>Metrics in the chat; full report one click away</li>
+        </ul>
       </div>
       <div class="card" style="background:var(--tool)">
-        <div class="eyebrow">How a request will flow</div>
-        <pre style="margin:10px 0 0;border:0;padding:0;background:none">chat: "backtest Night Hunter, medium vs low,
-       EURUSD M5, Jan–Aug 2026"
-  → AlgoHand queues 2 runs
-  → tester pool (dedicated servers, closed .ex5)
-  → reports parsed, side by side in the chat
-  → "apply the low preset?" — dry run, yes, done</pre>
-      </div>
-    </div>
-  </section>
-
-  <section id="authors">
-    <div class="grid2">
-      <div>
-        <span class="pill soon">Coming</span>
-        <h2 style="margin-top:12px">EA authors: list your robot where it gets used</h2>
-        <p class="sub">Add your Expert Advisor to the AlgoHand catalog with your own description, presets and parameter notes. Traders pick it from a list and run it by chat; you get a verified restart-safety badge and a new distribution channel. Closed .ex5 only — we never ask for source code.</p>
-        <div class="cta"><a class="btn" href="/authors">Tell us about your EA</a></div>
-      </div>
-      <div class="card">
-        <h3>What a listing looks like</h3>
-        <table style="margin-top:10px">
-          <tr><td class="muted">Night Hunter Pro</td><td>EURUSD, GBPUSD · M5 · night scalper</td></tr>
-          <tr><td class="muted">Presets</td><td>low · medium · high (author-defined)</td></tr>
-          <tr><td class="muted">Changeable</td><td>MaximumSpread 0.5–50 · LotSizingMethod · TradeComment</td></tr>
-          <tr><td class="muted">Restart safety</td><td><span style="color:var(--ok)">verified</span> · recovers by magic number</td></tr>
-        </table>
+        <div class="eyebrow">How a request flows</div>
+        <pre style="margin:10px 0 0;border:0;padding:0;background:none">chat: "backtest Gold Scalper, medium vs low,
+       XAUUSD M5, Jan–Aug 2026, real ticks"
+  → you accept the "runs on your VPS" note, once
+  → a second terminal runs the tester, low priority
+  → two runs side by side in the chat
+  → "apply the low preset?" — preview, yes, verified</pre>
       </div>
     </div>
   </section>
 
   <section id="demo">
-    <div class="band">
+    <div class="band" style="grid-template-columns:1fr">
       <div>
         <div class="eyebrow">Try it</div>
-        <h2>Drive real terminals from a chat, today</h2>
-        <p class="sub">The live demo runs on real MetaTrader 5 terminals with demo accounts, and on a simulated VPS that resets every night. Ask for an access code and you can start, stop and reconfigure EAs within a minute.</p>
-        <div class="cta"><a class="btn primary" href="/demo">Get a demo code</a><a class="btn" href="https://chat.algohand.com">Open the chat</a></div>
+        <h2>Drive real terminals from a chat.</h2>
+        <p class="sub">A simulated VPS with demo accounts and example EAs that resets every night. Get a code by email and you are driving EAs within a minute; or create an account and connect your own VPS, 14 days free.</p>
+        <div class="cta"><a class="btn primary" href="/demo">Try the demo</a><a class="btn" href="https://app.algohand.com/#register">Start free</a></div>
       </div>
-      <form class="lead" data-lead="demo" data-thanks="Thanks! Your access code is on its way — usually within a few hours.">
-        <div class="row">
-          <div><label>Name</label><input name="name" required maxlength="128" autocomplete="name"></div>
-          <div><label>E-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
-        </div>
-        <div><label>Company (optional)</label><input name="company" maxlength="256" autocomplete="organization"></div>
-        <div><label>What would you like to try?</label><textarea name="message" maxlength="4000" placeholder="e.g. our own EAs on a demo account, or the sandbox first"></textarea></div>
-        <div class="hp"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
-        <button class="btn primary" type="submit">Request access</button>
-        <div class="msg"></div>
-        <div class="note">No spam, no newsletter. We answer personally.</div>
-      </form>
     </div>
   </section>
 
   <section id="faq" class="faq">
     <div class="eyebrow">Questions</div>
     <h2 style="margin-bottom:18px">Straight answers</h2>
-    <details><summary>Does AlgoHand need my account password?</summary><p>No. The agent attaches to terminals that are already logged in on your VPS and talks to them through the MetaTrader file system. Trading and investor passwords never leave the terminal and are never stored by us.</p></details>
-    <details><summary>Which brokers and EAs does it work with?</summary><p>Any MetaTrader 5 broker. Any EA that is in the catalog — the ones we onboarded, the ones your platform onboards, and soon the ones authors list themselves. EAs you already run are adopted as they are; changing their settings by chat needs a short onboarding so that names, ranges and presets are known.</p></details>
-    <details><summary>Where does it run?</summary><p>On your Windows VPS, next to your terminals, as a small service that only makes outbound HTTPS calls. There is no cloud copy of your terminal and no inbound port. Our control server keeps state, validation rules and history.</p></details>
-    <details><summary>Can the AI trade on its own?</summary><p>No. AlgoHand operates your robots; it does not place trades and it does not act without confirmation. Every change starts as a dry run that you approve. Performance information in the chat is information, not advice.</p></details>
-    <details><summary>What happens if the VPS reboots or a terminal crashes?</summary><p>The agent starts with Windows, relaunches terminals, re-attaches the manager and re-applies settings that a restore dropped. You get a plain-language status ("terminal restarted by the agent, back in a minute") instead of a mystery.</p></details>
-    <details><summary>Pricing?</summary><p>Business: per VPS per month, non-exclusive licence, no source code transfer. Private: a monthly subscription per VPS during early access. Ask us for the current numbers.</p></details>
+    <details><summary>Does AlgoHand need my account password?</summary><p>No. The agent attaches to terminals that are already logged in on your VPS. Trading and investor passwords never leave the terminal and are never stored by us.</p></details>
+    <details><summary>Which brokers and EAs does it work with?</summary><p>Any MetaTrader 5 broker. The EAs you already run show up as they are. Changing settings by chat needs a short onboarding so names, ranges and restart behaviour are known.</p></details>
+    <details><summary>Where does it run?</summary><p>On your Windows VPS, next to your terminals. Outbound HTTPS only. No cloud copy of your terminal. No inbound port.</p></details>
+    <details><summary>Can the AI trade on its own?</summary><p>No. AlgoHand operates the robots you chose. It does not place trades and it does not act without your confirmation.</p></details>
+    <details><summary>What if the VPS reboots or a terminal closes?</summary><p>AlgoHand detects it, restores what it can, and tells you what happened in plain language — instead of a silent failure.</p></details>
+    <details><summary>How much does it cost?</summary><p>Private traders: Starter $19 a month for one account, Trader $39 for three, Desk $79 for eight; 15% off when paid yearly; extra accounts from $8. Unlimited EAs on every account, price locked for a year, monthly plans cancel any month, 14-day free trial. Business: API Start $199 a month with 20 accounts, Platform $599 with 100, Enterprise from $1,500 by agreement; non-exclusive licence, no source-code transfer.</p></details>
   </section>
 
 </main>
 
 <footer><div class="wrap">
   <div class="cols">
-    <div><a class="brand" href="/" style="font-size:16px"><span class="logo" style="width:26px;height:26px;font-size:13px;border-radius:7px">A</span>AlgoHand</a><p style="margin-top:10px;max-width:28em">Chat-driven control for MetaTrader 5 Expert Advisors. A product of MTCodec JSC, Georgia.</p></div>
-    <div><b>Product</b><a href="/business">For business</a><a href="/traders">For traders</a><a href="/authors">EA authors</a><a href="/demo">Live demo</a></div>
-    <div><b>Developers</b><a href="/docs/">API reference</a><a href="/docs/openapi.yaml">OpenAPI document</a><a href="/docs/claude_tools.json">Tool definitions</a><a href="https://tca.mtcodec.com">Terminal Control API</a></div>
-    <div><b>Company</b><a href="https://www.mtcodec.com">MTCodec</a><a href="mailto:info@mtcodec.com">info@mtcodec.com</a></div>
+    <div><a class="brand" href="/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Chat-driven control for MetaTrader 5 Expert Advisors. A product of IT Effectiveness LLC, Tbilisi, Georgia.</p></div>
+    <div><b>Product</b><a href="/business">For business</a><a href="/traders">For traders</a><a href="/pricing">Pricing</a><a href="/authors">EA authors</a><a href="/eas">EA catalog</a><a href="/demo">Live demo</a></div>
+    <div><b>Developers</b><a href="/docs/">API reference</a><a href="/docs/openapi.yaml">OpenAPI document</a><a href="/docs/claude_tools.json">Tool definitions</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Legal</b><a href="/terms">Terms of Service</a><a href="/privacy">Privacy Policy</a><a href="/risk">Risk Disclosure</a><a href="/refund">Refund Policy</a><a href="https://app.algohand.com/support">Support</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
   </div>
-  <div class="legal"><span>© 2026 MTCodec JSC. AlgoHand and Terminal Control API are products of MTCodec.</span><span>MetaTrader is a trademark of MetaQuotes Ltd. Not affiliated with MetaQuotes. Trading involves risk; nothing here is financial advice.</span></div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand and Terminal Control API are products of IT Effectiveness LLC.</span><span>MetaTrader is a trademark of MetaQuotes Ltd. Not affiliated with MetaQuotes. Trading involves risk; nothing here is financial advice.</span></div>
 </div></footer>
 
-<script src="/assets/site.js"></script>
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="en" data-title="Support"></script>
 </body>
 </html>

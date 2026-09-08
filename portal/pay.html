@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title.pay">AlgoHand checkout</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://algohand.com/favicon.ico" sizes="32x32">
+<link rel="icon" href="https://algohand.com/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
+<link rel="stylesheet" href="/portal.css">
+</head>
+<body class="auth">
+<main class="authbox">
+  <div class="brand" style="margin-bottom:14px"><img class="logo mark" src="https://algohand.com/assets/logo-mark.png" alt="">AlgoHand</div>
+  <h2 style="font-size:24px" data-i18n="pay.h2">Checkout</h2>
+  <p class="muted" id="paymsg" data-i18n="pay.wait" style="margin-top:10px">Opening the secure Paddle checkout…</p>
+  <p class="note" style="margin-top:16px"><a href="/app" data-i18n="pay.back">Back to the dashboard</a></p>
+</main>
+<!-- Paddle's default payment link: Paddle sends customers here with ?_ptxn=<transaction id> (invoices, portal, e-mails);
+     Paddle.js opens that transaction's checkout by itself once initialised. The client-side token comes from the server. -->
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script src="/i18n.js"></script>
+<script>
+(async () => {
+  const msg = document.getElementById('paymsg');
+  try {
+    const r = await fetch('/portal/billing/config', { credentials: 'same-origin' });
+    const cfg = await r.json();
+    if (!cfg.client_token) { msg.textContent = I18N.t('pay.unavailable'); return; }
+    if (cfg.environment === 'sandbox') Paddle.Environment.set('sandbox');
+    Paddle.Initialize({ token: cfg.client_token, checkout: { settings: { displayMode: 'overlay', theme: 'dark', locale: I18N.lang, successUrl: 'https://app.algohand.com/app?paid=1' } },
+                        eventCallback: e => { if (e.name === 'checkout.completed') msg.textContent = I18N.t('pay.done'); } });
+    if (!new URLSearchParams(location.search).get('_ptxn')) msg.textContent = I18N.t('pay.nothing');
+  } catch (e) { msg.textContent = I18N.t('pay.unavailable'); }
+})();
+</script>
+</body>
+</html>

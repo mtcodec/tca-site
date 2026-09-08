@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ru" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand — управление советниками MetaTrader через чат</title>
+<meta name="description" content="Управляйте советниками MetaTrader 5 через чат на своём VPS. Запуск, пауза, смена риска, бэктесты — без RDP. Предпросмотр, подтверждение, выполнение, сверка.">
+<link rel="canonical" href="https://algohand.com/ru/">
+<link rel="alternate" hreflang="en" href="https://algohand.com/">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/">
+<meta property="og:title" content="AlgoHand — управление советниками MetaTrader через чат">
+<meta property="og:description" content="Управляйте советниками MetaTrader 5 через чат — без RDP.">
+<meta property="og:url" content="https://algohand.com/ru/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap&subset=cyrillic">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/ru/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <button class="navtoggle" type="button" aria-label="Меню">Меню</button>
+  <nav class="main">
+    <a href="/ru/traders">Трейдерам</a>
+    <a href="/ru/business">Бизнесу</a>
+    <a href="/ru/authors">Авторам EA</a>
+    <a href="/ru/pricing">Цены</a>
+    <a class="btn sm" href="https://app.algohand.com/?lang=ru">Войти</a>
+    <a class="btn sm primary" href="/ru/demo">Попробовать демо</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: Русский">RU<i></i></button>
+    <ul>
+      <li><a href="/" hreflang="en" lang="en"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/" hreflang="ru" lang="ru" aria-current="true"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/" hreflang="es" lang="es"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/ru/eas">Каталог EA</a>
+    <a class="secondary" href="/docs/">API</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow">MetaTrader 5 · советники · ваш VPS</div>
+      <h1 style="margin-top:14px">Управляйте торговыми роботами <em>через чат.</em></h1>
+      <p class="lead">Запустить или поставить советник на паузу. Сменить риск. Изменить параметр. Посмотреть результаты. Прогнать бэктест. <b>С телефона, не открывая RDP.</b></p>
+      <p class="lead">AlgoHand выполняет каждую команду на вашем VPS, показывает, что именно изменится, и сверяет результат в MetaTrader.</p>
+      <p class="brandline">Ваши торговые роботы в надёжных руках.</p>
+      <div class="cta">
+        <a class="btn primary" href="/ru/demo">Попробовать демо</a>
+        <a class="btn" href="/ru/business">Для бизнеса</a>
+      </div>
+      <div class="trust">
+        <span>Работает с вашими советниками</span>
+        <span>Торговые пароли не хранятся</span>
+        <span>Ничего не меняется без вашего подтверждения</span>
+        <span>Каждая команда сверена в MT5</span>
+      </div>
+    </div>
+
+    <div class="replay v2" data-replay="auto" aria-label="Запись сессии">
+      <div class="progress" aria-hidden="true"></div>
+      <div class="bar">
+        <div class="avatar" aria-hidden="true">AH</div>
+        <div class="who"><b>AlgoHand</b><span><i></i>подключено · VPS ••••4471 · 2 терминала</span></div>
+        <button type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 1.5v3h-3"/></svg>Повторить</button>
+      </div>
+      <div class="log">
+        <div class="note">Запись сессии · демо-набор · данные счёта изменены, диалог переведён</div>
+        <div class="m user">Как прошла прошлая неделя?</div>
+        <div class="chip done"><span class="st"><span>✓</span></span><span class="tag">готово</span><span>get_pnl · group=ea · 7 дней · <b>41 сделка</b></span></div>
+        <div class="m bot"><p class="lead-line">Неделя 31 августа – 6 сентября · счёт ••••4471 · USD</p><p class="big"><span class="pos">+612,40</span> <span class="pos" style="font-size:14px;font-weight:600">+2,1%</span></p><div class="rows"><div class="row"><span class="nm">Gold Scalper</span><b class="pos">+488,10</b><small>26 сделок · 73% прибыльных</small></div><div class="row"><span class="nm">BTC Grid</span><b class="pos">+124,30</b><small>15 сделок · 67% прибыльных</small></div></div><p class="meta">Максимальная просадка <b>1,4%</b> · Это информация, а не рекомендация.</p></div>
+        <div class="m user">В 14:30 NFP. Поставь Gold Scalper на паузу и переключи BTC Grid на низкий риск до понедельника.</div>
+        <div class="chip preview"><span class="tag">предпросмотр</span><span>stop_ea · <b>Gold Scalper</b> (XAUUSD M5) · мягкая остановка · открытых позиций 0</span></div>
+        <div class="chip preview"><span class="tag">предпросмотр</span><span>set_risk · <b>BTC Grid</b> (BTCUSD M15) · medium → low · 3 параметра · перезапуск · 2 открытые позиции, восстановление проверено</span></div>
+        <div class="m bot"><p>Два изменения:</p><div class="chg"><b>Gold Scalper</b><span>мягкая остановка — новых сделок нет, открытых сейчас тоже нет.</span></div><div class="chg"><b>BTC Grid <span class="arrow">medium → low</span></b><span>риск на сделку 2% → 1%, макс. ордеров в сетке 8 → 5. Советник перезапустится и подхватит свои 2 позиции по magic number.</span></div></div>
+        <div class="qr" aria-hidden="true"><span data-yes>Применить оба</span><span class="ghost">Только Gold Scalper</span><span class="ghost">Отмена</span></div>
+        <div class="m user">Применить оба</div>
+        <div class="chip done" data-run="1100"><span class="st"><span>✓</span></span><span class="tag">готово</span><span>stop_ea · 13:52:41 · set_risk · 13:52:44 · <b>сверено в MT5</b></span></div>
+        <div class="m bot"><p><b>Gold Scalper на паузе, BTC Grid на low; обе позиции по-прежнему под управлением.</b></p><div class="vsteps"><div class="vs"><i></i><em>Запрошено</em><b>13:52:39</b></div><div class="vs"><i></i><em>Подтверждено</em><b>13:52:40</b></div><div class="vs"><i></i><em>Выполнено</em><b>13:52:44</b></div><div class="vs"><i></i><em>Сверено</em><b>13:52:44</b></div></div><p>Напомнить в понедельник переключить обратно? И прогнать бэктест Gold Scalper на пресете low за 6 месяцев, реальные тики?</p></div>
+        <div class="m user">И то, и другое.</div>
+        <div class="chip done" data-run="1400"><span class="st"><span>✓</span></span><span class="tag">готово</span><span>run_backtest · XAUUSD M5 · март–август 2026 · реальные тики · на вашем VPS · <b>4 мин 12 с</b></span></div>
+        <div class="m bot"><p class="lead-line">Бэктест · Gold Scalper · XAUUSD M5 · 1 марта – 31 августа 2026 · пресет low · реальные тики</p><div class="rows"><div class="row"><span class="lbl">Чистая прибыль</span><b class="pos">+1 842,60 · +18,4%</b></div><div class="row"><span class="lbl">Максимальная просадка</span><b>4,9%</b></div><div class="row"><span class="lbl">Профит-фактор</span><b>1,62</b></div><div class="row"><span class="lbl">Сделок</span><b>143 · 71% прибыльных</b></div></div><p class="meta">Полный отчёт в вашем кабинете. Напоминание поставлено на понедельник, 08:00.</p></div>
+      </div>
+      <div class="footer-note"><span>Каждая команда: предпросмотр → <b>ваше «да»</b> → выполнение → сверка в MT5</span><span><b>1–3 с</b></span></div>
+    </div>
+  </div>
+  <div class="proof">4 EA в пилотном каталоге · настоящие терминалы MT5 в пилоте · агент только с исходящими соединениями · 1–3 с до сверки</div>
+
+  <section id="rdp">
+    <div class="grid2" style="align-items:center">
+      <div>
+        <div class="eyebrow">Без RDP</div>
+        <h2>Хватит управлять MT5 через крошечный удалённый рабочий стол.</h2>
+        <p class="sub">Без RDP. Без разглядывания терминала на телефоне. Одно сообщение, предпросмотр, ваше «да».</p>
+        <div class="asks inline">
+        <div class="m user">Поставь Gold Scalper на паузу.</div>
+        <div class="m user">Снизь риск на всех советниках EURUSD.</div>
+        <div class="m user">Какой робот сегодня в минусе?</div>
+          <p class="thatsit">Вот и всё.</p>
+        </div>
+      </div>
+      <div class="compare"><figure><svg viewBox="0 0 150 300" width="150" height="300" role="img" aria-hidden="true"><rect x="1" y="1" width="148" height="298" rx="22" fill="var(--bg3)" stroke="var(--line)"/><rect x="8" y="12" width="134" height="276" rx="12" fill="var(--bg)"/><rect x="57.0" y="5" width="36" height="4" rx="2" fill="var(--line)"/><rect x="8" y="12" width="134" height="7" rx="6" fill="var(--bg3)"/><rect x="11" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="20" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="29" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="38" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="47" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="56" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="65" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="74" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="83" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="92" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="101" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="110" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="119" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="128" y="14" width="6" height="3" rx=".5" fill="var(--ink3)"/><rect x="8" y="20" width="30" height="176" fill="var(--bg2)"/><rect x="10" y="24" width="19" height="1.6" fill="var(--ink3)"/><rect x="10" y="30" width="16" height="1.6" fill="var(--ink3)"/><rect x="10" y="36" width="20" height="1.6" fill="var(--ink3)"/><rect x="10" y="42" width="24" height="1.6" fill="var(--ink3)"/><rect x="10" y="48" width="14" height="1.6" fill="var(--ink3)"/><rect x="10" y="54" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="60" width="22" height="1.6" fill="var(--ink3)"/><rect x="10" y="66" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="72" width="19" height="1.6" fill="var(--ink3)"/><rect x="10" y="78" width="23" height="1.6" fill="var(--ink3)"/><rect x="10" y="84" width="14" height="1.6" fill="var(--ink3)"/><rect x="10" y="90" width="22" height="1.6" fill="var(--ink3)"/><rect x="10" y="96" width="17" height="1.6" fill="var(--ink3)"/><rect x="10" y="102" width="14" height="1.6" fill="var(--ink3)"/><rect x="10" y="108" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="114" width="20" height="1.6" fill="var(--ink3)"/><rect x="10" y="120" width="20" height="1.6" fill="var(--ink3)"/><rect x="10" y="126" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="132" width="17" height="1.6" fill="var(--ink3)"/><rect x="10" y="138" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="144" width="22" height="1.6" fill="var(--ink3)"/><rect x="10" y="150" width="20" height="1.6" fill="var(--ink3)"/><rect x="10" y="156" width="14" height="1.6" fill="var(--ink3)"/><rect x="10" y="162" width="23" height="1.6" fill="var(--ink3)"/><rect x="10" y="168" width="15" height="1.6" fill="var(--ink3)"/><rect x="10" y="174" width="17" height="1.6" fill="var(--ink3)"/><rect x="10" y="180" width="24" height="1.6" fill="var(--ink3)"/><rect x="10" y="186" width="24" height="1.6" fill="var(--ink3)"/><rect x="39" y="20" width="103" height="176" fill="var(--bg2)"/><line x1="39" y1="30" x2="142" y2="30" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="54" x2="142" y2="54" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="78" x2="142" y2="78" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="102" x2="142" y2="102" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="126" x2="142" y2="126" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="150" x2="142" y2="150" stroke="var(--line)" stroke-width=".4"/><line x1="39" y1="174" x2="142" y2="174" stroke="var(--line)" stroke-width=".4"/><line x1="43.0" y1="109" x2="43.0" y2="119" stroke="var(--bad)" stroke-width=".7"/><rect x="41.6" y="110" width="2.8" height="4" fill="var(--bad)"/><line x1="47.2" y1="110" x2="47.2" y2="119" stroke="var(--bad)" stroke-width=".7"/><rect x="45.800000000000004" y="114" width="2.8" height="4" fill="var(--bad)"/><line x1="51.400000000000006" y1="110" x2="51.400000000000006" y2="123" stroke="var(--ok)" stroke-width=".7"/><rect x="50.00000000000001" y="111" width="2.8" height="7" fill="var(--ok)"/><line x1="55.60000000000001" y1="109" x2="55.60000000000001" y2="127" stroke="var(--bad)" stroke-width=".7"/><rect x="54.20000000000001" y="111" width="2.8" height="13" fill="var(--bad)"/><line x1="59.80000000000001" y1="121" x2="59.80000000000001" y2="129" stroke="var(--ok)" stroke-width=".7"/><rect x="58.40000000000001" y="123" width="2.8" height="1.2" fill="var(--ok)"/><line x1="64.00000000000001" y1="107" x2="64.00000000000001" y2="126" stroke="var(--ok)" stroke-width=".7"/><rect x="62.600000000000016" y="112" width="2.8" height="11" fill="var(--ok)"/><line x1="68.20000000000002" y1="106" x2="68.20000000000002" y2="117" stroke="var(--bad)" stroke-width=".7"/><rect x="66.80000000000001" y="112" width="2.8" height="3" fill="var(--bad)"/><line x1="72.40000000000002" y1="99" x2="72.40000000000002" y2="120" stroke="var(--ok)" stroke-width=".7"/><rect x="71.00000000000001" y="104" width="2.8" height="11" fill="var(--ok)"/><line x1="76.60000000000002" y1="102" x2="76.60000000000002" y2="113" stroke="var(--bad)" stroke-width=".7"/><rect x="75.20000000000002" y="104" width="2.8" height="6" fill="var(--bad)"/><line x1="80.80000000000003" y1="94" x2="80.80000000000003" y2="116" stroke="var(--ok)" stroke-width=".7"/><rect x="79.40000000000002" y="99" width="2.8" height="11" fill="var(--ok)"/><line x1="85.00000000000003" y1="82" x2="85.00000000000003" y2="100" stroke="var(--ok)" stroke-width=".7"/><rect x="83.60000000000002" y="87" width="2.8" height="12" fill="var(--ok)"/><line x1="89.20000000000003" y1="85" x2="89.20000000000003" y2="96" stroke="var(--bad)" stroke-width=".7"/><rect x="87.80000000000003" y="87" width="2.8" height="5" fill="var(--bad)"/><line x1="93.40000000000003" y1="87" x2="93.40000000000003" y2="103" stroke="var(--bad)" stroke-width=".7"/><rect x="92.00000000000003" y="92" width="2.8" height="7" fill="var(--bad)"/><line x1="97.60000000000004" y1="96" x2="97.60000000000004" y2="113" stroke="var(--bad)" stroke-width=".7"/><rect x="96.20000000000003" y="99" width="2.8" height="10" fill="var(--bad)"/><line x1="101.80000000000004" y1="105" x2="101.80000000000004" y2="116" stroke="var(--bad)" stroke-width=".7"/><rect x="100.40000000000003" y="109" width="2.8" height="4" fill="var(--bad)"/><line x1="106.00000000000004" y1="106" x2="106.00000000000004" y2="115" stroke="var(--ok)" stroke-width=".7"/><rect x="104.60000000000004" y="108" width="2.8" height="5" fill="var(--ok)"/><line x1="110.20000000000005" y1="106" x2="110.20000000000005" y2="117" stroke="var(--bad)" stroke-width=".7"/><rect x="108.80000000000004" y="108" width="2.8" height="8" fill="var(--bad)"/><line x1="114.40000000000005" y1="113" x2="114.40000000000005" y2="125" stroke="var(--bad)" stroke-width=".7"/><rect x="113.00000000000004" y="116" width="2.8" height="4" fill="var(--bad)"/><line x1="118.60000000000005" y1="117" x2="118.60000000000005" y2="127" stroke="var(--bad)" stroke-width=".7"/><rect x="117.20000000000005" y="120" width="2.8" height="1.2" fill="var(--bad)"/><line x1="122.80000000000005" y1="118" x2="122.80000000000005" y2="126" stroke="var(--ok)" stroke-width=".7"/><rect x="121.40000000000005" y="121" width="2.8" height="1.2" fill="var(--ok)"/><line x1="127.00000000000006" y1="108" x2="127.00000000000006" y2="126" stroke="var(--ok)" stroke-width=".7"/><rect x="125.60000000000005" y="109" width="2.8" height="12" fill="var(--ok)"/><line x1="131.20000000000005" y1="106" x2="131.20000000000005" y2="112" stroke="var(--ok)" stroke-width=".7"/><rect x="129.80000000000004" y="108" width="2.8" height="1.2" fill="var(--ok)"/><line x1="135.40000000000003" y1="94" x2="135.40000000000003" y2="112" stroke="var(--ok)" stroke-width=".7"/><rect x="134.00000000000003" y="98" width="2.8" height="10" fill="var(--ok)"/><rect x="8" y="197" width="134" height="91" rx="0" fill="var(--bg2)"/><rect x="11" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="33" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="55" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="77" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="99" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="121" y="199" width="18" height="4" rx=".6" fill="var(--bg3)"/><rect x="11" y="207.0" width="8" height="1.6" fill="var(--ink3)"/><rect x="33" y="207.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="55" y="207.0" width="16" height="1.6" fill="var(--ink3)"/><rect x="77" y="207.0" width="17" height="1.6" fill="var(--ink3)"/><rect x="99" y="207.0" width="13" height="1.6" fill="var(--ink3)"/><rect x="121" y="207.0" width="13" height="1.6" fill="var(--ink3)"/><rect x="11" y="213.5" width="13" height="1.6" fill="var(--ink3)"/><rect x="33" y="213.5" width="17" height="1.6" fill="var(--ink3)"/><rect x="55" y="213.5" width="15" height="1.6" fill="var(--ink3)"/><rect x="77" y="213.5" width="17" height="1.6" fill="var(--ink3)"/><rect x="99" y="213.5" width="15" height="1.6" fill="var(--ink3)"/><rect x="121" y="213.5" width="9" height="1.6" fill="var(--ink3)"/><rect x="11" y="220.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="33" y="220.0" width="12" height="1.6" fill="var(--ink3)"/><rect x="55" y="220.0" width="15" height="1.6" fill="var(--ink3)"/><rect x="77" y="220.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="99" y="220.0" width="8" height="1.6" fill="var(--ink3)"/><rect x="121" y="220.0" width="12" height="1.6" fill="var(--ink3)"/><rect x="11" y="226.5" width="17" height="1.6" fill="var(--ink3)"/><rect x="33" y="226.5" width="15" height="1.6" fill="var(--ink3)"/><rect x="55" y="226.5" width="12" height="1.6" fill="var(--ink3)"/><rect x="77" y="226.5" width="14" height="1.6" fill="var(--ink3)"/><rect x="99" y="226.5" width="13" height="1.6" fill="var(--ink3)"/><rect x="121" y="226.5" width="8" height="1.6" fill="var(--ink3)"/><rect x="11" y="233.0" width="15" height="1.6" fill="var(--ink3)"/><rect x="33" y="233.0" width="13" height="1.6" fill="var(--ink3)"/><rect x="55" y="233.0" width="10" height="1.6" fill="var(--ink3)"/><rect x="77" y="233.0" width="17" height="1.6" fill="var(--ink3)"/><rect x="99" y="233.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="121" y="233.0" width="15" height="1.6" fill="var(--ink3)"/><rect x="11" y="239.5" width="8" height="1.6" fill="var(--ink3)"/><rect x="33" y="239.5" width="11" height="1.6" fill="var(--ink3)"/><rect x="55" y="239.5" width="12" height="1.6" fill="var(--ink3)"/><rect x="77" y="239.5" width="10" height="1.6" fill="var(--ink3)"/><rect x="99" y="239.5" width="11" height="1.6" fill="var(--ink3)"/><rect x="121" y="239.5" width="14" height="1.6" fill="var(--ink3)"/><rect x="11" y="246.0" width="14" height="1.6" fill="var(--ink3)"/><rect x="33" y="246.0" width="15" height="1.6" fill="var(--ink3)"/><rect x="55" y="246.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="77" y="246.0" width="10" height="1.6" fill="var(--ink3)"/><rect x="99" y="246.0" width="15" height="1.6" fill="var(--ink3)"/><rect x="121" y="246.0" width="14" height="1.6" fill="var(--ink3)"/><rect x="11" y="252.5" width="16" height="1.6" fill="var(--ink3)"/><rect x="33" y="252.5" width="12" height="1.6" fill="var(--ink3)"/><rect x="55" y="252.5" width="10" height="1.6" fill="var(--ink3)"/><rect x="77" y="252.5" width="14" height="1.6" fill="var(--ink3)"/><rect x="99" y="252.5" width="16" height="1.6" fill="var(--ink3)"/><rect x="121" y="252.5" width="12" height="1.6" fill="var(--ink3)"/><rect x="11" y="259.0" width="14" height="1.6" fill="var(--ink3)"/><rect x="33" y="259.0" width="13" height="1.6" fill="var(--ink3)"/><rect x="55" y="259.0" width="14" height="1.6" fill="var(--ink3)"/><rect x="77" y="259.0" width="11" height="1.6" fill="var(--ink3)"/><rect x="99" y="259.0" width="10" height="1.6" fill="var(--ink3)"/><rect x="121" y="259.0" width="9" height="1.6" fill="var(--ink3)"/><rect x="11" y="265.5" width="10" height="1.6" fill="var(--ink3)"/><rect x="33" y="265.5" width="10" height="1.6" fill="var(--ink3)"/><rect x="55" y="265.5" width="11" height="1.6" fill="var(--ink3)"/><rect x="77" y="265.5" width="11" height="1.6" fill="var(--ink3)"/><rect x="99" y="265.5" width="8" height="1.6" fill="var(--ink3)"/><rect x="121" y="265.5" width="15" height="1.6" fill="var(--ink3)"/><rect x="11" y="272.0" width="17" height="1.6" fill="var(--ink3)"/><rect x="33" y="272.0" width="10" height="1.6" fill="var(--ink3)"/><rect x="55" y="272.0" width="12" height="1.6" fill="var(--ink3)"/><rect x="77" y="272.0" width="12" height="1.6" fill="var(--ink3)"/><rect x="99" y="272.0" width="8" height="1.6" fill="var(--ink3)"/><rect x="121" y="272.0" width="10" height="1.6" fill="var(--ink3)"/><rect x="11" y="278.5" width="14" height="1.6" fill="var(--ink3)"/><rect x="33" y="278.5" width="16" height="1.6" fill="var(--ink3)"/><rect x="55" y="278.5" width="13" height="1.6" fill="var(--ink3)"/><rect x="77" y="278.5" width="17" height="1.6" fill="var(--ink3)"/><rect x="99" y="278.5" width="17" height="1.6" fill="var(--ink3)"/><rect x="121" y="278.5" width="13" height="1.6" fill="var(--ink3)"/><path d="M96 150 l0 14 l3.5-3 l2.5 6 l2-1 l-2.5-6 l4.5-.5 z" fill="#fff" stroke="#000" stroke-width=".6"/></svg><figcaption>RDP на телефоне</figcaption></figure><span class="vs" aria-hidden="true">→</span><figure><svg viewBox="0 0 150 300" width="150" height="300" role="img" aria-hidden="true"><rect x="1" y="1" width="148" height="298" rx="22" fill="var(--bg3)" stroke="var(--line)"/><rect x="8" y="12" width="134" height="276" rx="12" fill="var(--bg)"/><rect x="57.0" y="5" width="36" height="4" rx="2" fill="var(--line)"/><rect x="46.0" y="30.0" width="90.0" height="27.0" rx="7" fill="var(--chat-user)"/><text x="51.0" y="41.0" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">Поставь Gold Scalper</text><text x="51.0" y="50.5" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">на паузу.</text><rect x="16" y="65.0" width="94.0" height="36.5" rx="7" fill="var(--chat-bot)" stroke="var(--line)" stroke-width=".8"/><text x="21" y="76.0" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">Предпросмотр: мягкая</text><text x="21" y="85.5" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">остановка, 0 позиций.</text><text x="21" y="95.0" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">Применить?</text><rect x="118.0" y="109.5" width="18.0" height="17.5" rx="7" fill="var(--chat-user)"/><text x="123.0" y="120.5" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">да</text><rect x="16" y="135.0" width="98.0" height="17.5" rx="7" fill="var(--chat-bot)" stroke="var(--line)" stroke-width=".8"/><text x="21" y="146.0" font-size="7" font-family="Inter, sans-serif" fill="var(--ink)">Готово ✓ сверено в MT5</text><rect x="16" y="264" width="118" height="16" rx="8" fill="var(--bg2)" stroke="var(--line)" stroke-width=".8"/><text x="24" y="275" font-size="7" font-family="Inter, sans-serif" fill="var(--ink3)">…</text></svg><figcaption>Одно сообщение</figcaption></figure></div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="eyebrow">Что можно делать</div>
+    <h2>Что можно делать из чата</h2>
+    <p class="sub">Всё, что вы делали через RDP — без RDP.</p>
+    <div class="grid4" style="margin-top:26px">
+      <div class="card"><div class="ic">▶</div><h3>Запуск и остановка</h3><p>Запустите советник на нужном графике с пресетом риска. Остановите мягко, чтобы он довёл открытые сделки, или жёстко. Позиции никогда не закрываются у вас за спиной.</p></div>
+      <div class="card"><div class="ic">⚖</div><h3>Смена риска</h3><p>Низкий, средний, высокий — заданы для каждого советника. Применяются целиком. Не нужно искать среди 90 параметров «тот, что про риск».</p></div>
+      <div class="card"><div class="ic">⚙</div><h3>Изменение параметра</h3><p>Только разрешённые параметры, только в своих диапазонах. «MaxSpread 15» превращается в точное имя параметра и проверяется до того, как что-то запустится.</p></div>
+      <div class="card"><div class="ic">◉</div><h3>Живое состояние</h3><p>Баланс, средства, плавающая прибыль, каждый работающий советник с фактическими настройками, открытые позиции и отложенные ордера — с привязкой к роботу, который их создал.</p></div>
+      <div class="card"><div class="ic">📈</div><h3>Графики и прибыль</h3><p>Кривая эквити, прибыль и винрейт по советникам, символам, дням, часам и дням недели. Прямо в чате.</p></div>
+      <div class="card"><div class="ic">⏱</div><h3>Бэктест</h3><p>Strategy Tester на вашем VPS во втором терминале, с низким приоритетом, пока живые роботы продолжают торговать. Сравните пресеты и примените лучший с тем же подтверждением.</p></div>
+      <div class="card"><div class="ic">⟳</div><h3>Всё продолжает работать</h3><p>Терминал закрыт? VPS перезагрузился? MT5 отключился? AlgoHand замечает, восстанавливает что может и точно рассказывает, что произошло.</p></div>
+      <div class="card"><div class="ic">≡</div><h3>Журнал действий</h3><p>Кто просил, что запрошено, что применено, что показал MT5 — с отметками времени.</p></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="eyebrow">Как это работает</div>
+    <h2>Спросите. Посмотрите. Подтвердите. Выполнено. Сверено.</h2>
+    <p class="sub">Ничего не происходит у вас за спиной.</p>
+    <div class="steps five" style="margin-top:26px">
+      <div class="step"><h3>Спросите</h3><p>«Поставь Gold Scalper на паузу». «Поставь EURUSD Trend риск 0,5%». «Как прошла неделя?»</p></div>
+      <div class="step"><h3>Предпросмотр</h3><p>AlgoHand определяет точное изменение: какой советник, какие параметры, с какого значения на какое, будет ли перезапуск, безопасно ли для открытых позиций.</p></div>
+      <div class="step"><h3>Подтвердите</h3><p>Вы видите пробный прогон. В MT5 ничего не отправляется, пока вы не скажете «да».</p></div>
+      <div class="step"><h3>Выполнение</h3><p>Небольшой агент на вашем VPS применяет изменение в залогиненных терминалах.</p></div>
+      <div class="step"><h3>Сверка</h3><p>AlgoHand читает настройки обратно из работающего советника. Запрошенное, применённое и наблюдаемое должны совпасть — иначе команда считается неудачной.</p></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>1–3 с</b><span>от команды до подтверждённого результата</span></div>
+      <div class="stat"><b>0</b><span>входящих портов на VPS</span></div>
+      <div class="stat"><b>0</b><span>сохранённых паролей</span></div>
+      <div class="stat"><b>90 дней</b><span>замеров эквити</span></div>
+    </div>
+  </section>
+
+  <section id="compat" class="compat">
+    <div class="eyebrow">Совместимость</div>
+    <h2>Советники — ваши. Брокер — ваш. VPS — ваш.</h2>
+    <p class="sub">AlgoHand работает с той установкой MetaTrader 5, которая у вас уже есть. Мы не заменяем ваших роботов, брокера или машину. Мы даём более безопасный способ ими управлять.</p>
+  </section>
+
+  <section id="security">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Безопасность</div>
+        <h2>Вы одобряете. MT5 подтверждает.</h2>
+        <p class="sub">AlgoHand управляет вашими роботами. Он не открывает сделки и не действует без подтверждения. Цифры результатов в чате — информация, а не рекомендация.</p>
+        <p class="small muted" style="margin-top:14px">Архитектура, ключи и закрепление сертификатов: см. <a href="/ru/business">Для бизнеса</a> и <a href="/docs/">документацию API</a>.</p>
+      </div>
+      <div class="card">
+        <ul class="checks big" style="margin:0">
+          <li>Каждое изменение показывается заранее.</li>
+          <li>Вы его одобряете.</li>
+          <li>AlgoHand выполняет его на вашем VPS.</li>
+          <li>MT5 подтверждает.</li>
+          <li>Журнал действий всегда под рукой.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="who">
+    <div class="eyebrow">Для кого</div>
+    <h2>Для кого AlgoHand?</h2>
+    <div class="grid2" style="margin-top:26px">
+      <div class="card audience">
+        <span class="pill">Трейдерам</span>
+        <h3 style="margin-top:12px">Я торгую советниками</h3>
+        <p>Управляйте роботами, не открывая RDP. С телефона: запуск, пауза, смена риска, прибыль, бэктест.</p>
+        <a class="btn primary" href="/ru/traders">Трейдерам</a>
+      </div>
+      <div class="card audience">
+        <span class="pill">Бизнесу</span>
+        <h3 style="margin-top:12px">У меня торговая платформа</h3>
+        <p>Добавьте своему AI-ассистенту безопасное управление советниками через один API. Запуск, остановка и перенастройка советников клиентов на их VPS — с проверкой и сверенным выполнением.</p>
+        <a class="btn primary" href="/ru/business">Для бизнеса</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="backtests">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Бэктесты</div>
+        <h2>Бэктесты через чат, на вашем VPS</h2>
+        <p class="sub">«А пресет low за прошлый год вышел бы лучше?» Спросите. Strategy Tester запустится во втором терминале на вашем VPS с низким приоритетом. Живые роботы продолжают торговать. Сравните две настройки и примените лучшую как обычно: предпросмотр, подтверждение, сверка.</p>
+        <ul class="checks">
+          <li>Любой период, символ и таймфрейм</li>
+          <li>Реальные тики, каждый тик, OHLC минутных баров или цены открытия</li>
+          <li>Лицензия советника и история брокера не покидают машину</li>
+          <li>Метрики в чате; полный отчёт в одном клике</li>
+        </ul>
+      </div>
+      <div class="card" style="background:var(--tool)">
+        <div class="eyebrow">Как идёт запрос</div>
+        <pre style="margin:10px 0 0;border:0;padding:0;background:none">чат: «протестируй Gold Scalper, medium и low,
+      XAUUSD M5, янв–авг 2026, реальные тики»
+  → один раз принимаете «работает на вашем VPS»
+  → второй терминал, тестер с низким приоритетом
+  → два прогона рядом в чате
+  → «применить пресет low?» — предпросмотр, да, сверено</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo">
+    <div class="band" style="grid-template-columns:1fr">
+      <div>
+        <div class="eyebrow">Попробуйте</div>
+        <h2>Управляйте настоящими терминалами из чата.</h2>
+        <p class="sub">Настоящие терминалы MetaTrader 5 с демо-счетами плюс симулированный VPS, который сбрасывается каждую ночь. Запросите код — и через минуту вы управляете советниками.</p>
+        <div class="cta"><a class="btn primary" href="/ru/demo">Попробовать демо</a><a class="btn" href="https://app.algohand.com/?lang=ru#register">Начать бесплатно</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <div class="eyebrow">Вопросы</div>
+    <h2 style="margin-bottom:18px">Прямые ответы</h2>
+    <details><summary>Нужен ли AlgoHand пароль от моего счёта?</summary><p>Нет. Агент подключается к терминалам, которые уже залогинены на вашем VPS. Торговые и инвесторские пароли никогда не покидают терминал и не хранятся у нас.</p></details>
+    <details><summary>С какими брокерами и советниками это работает?</summary><p>С любым брокером MetaTrader 5. Советники, которые у вас уже работают, появляются как есть. Чтобы менять настройки через чат, нужно короткое подключение, чтобы имена, диапазоны и поведение при перезапуске были известны.</p></details>
+    <details><summary>Где это работает?</summary><p>На вашем Windows VPS, рядом с терминалами. Только исходящий HTTPS. Нет облачной копии терминала. Нет входящего порта.</p></details>
+    <details><summary>Может ли AI торговать сам?</summary><p>Нет. AlgoHand управляет роботами, которых выбрали вы. Он не открывает сделки и не действует без вашего подтверждения.</p></details>
+    <details><summary>Что, если VPS перезагрузится или терминал закроется?</summary><p>AlgoHand замечает это, восстанавливает что может и понятным языком рассказывает, что произошло — вместо тихого сбоя.</p></details>
+    <details><summary>Сколько это стоит?</summary><p>Частным трейдерам: Starter 19 USD в месяц за один счёт, Trader 39 USD за три, Desk 79 USD за восемь; при оплате за год на 15% дешевле; дополнительные счета от 8 USD. Советников на каждом счёте без ограничений, цена фиксируется на год, помесячную подписку можно отменить в любой месяц, 14 дней бесплатно. Бизнес: API Start 199 USD в месяц с 20 счетами, Platform 599 USD со 100, Enterprise от 1 500 USD по договору; неисключительная лицензия, без передачи исходного кода.</p></details>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/ru/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Управление советниками MetaTrader 5 через чат. Продукт IT Effectiveness LLC, Грузия.</p></div>
+    <div><b>Продукт</b><a href="/ru/business">Для бизнеса</a><a href="/ru/traders">Трейдерам</a><a href="/ru/pricing">Цены</a><a href="/ru/authors">Авторам EA</a><a href="/ru/eas">Каталог EA</a><a href="/ru/demo">Живое демо</a><a href="/ru/guide">Инструкция</a></div>
+    <div><b>Разработчикам</b><a href="/docs/">Справочник API</a><a href="/docs/openapi.yaml">Документ OpenAPI</a><a href="/docs/claude_tools.json">Описания инструментов</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Документы</b><a href="/terms">Условия использования (EN)</a><a href="/privacy">Конфиденциальность (EN)</a><a href="/risk">Уведомление о рисках (EN)</a><a href="/refund">Возврат средств (EN)</a><a href="https://app.algohand.com/support?lang=ru">Поддержка</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand и Terminal Control API — продукты IT Effectiveness LLC. Юридически значимы английские версии документов.</span><span>MetaTrader — товарный знак MetaQuotes Ltd. Мы не связаны с MetaQuotes. Торговля сопряжена с риском; ничто здесь не является инвестиционной рекомендацией.</span></div>
+</div></footer>
+
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="ru" data-title="Поддержка"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand — инструкция по началу работы</title>
+<meta name="description" content="Подключите свой Windows VPS к AlgoHand за пять минут: создайте аккаунт, выполните одну команду на VPS, откройте чат и управляйте своими советниками MetaTrader 5.">
+<link rel="canonical" href="https://algohand.com/ru/guide">
+<link rel="alternate" hreflang="en" href="https://algohand.com/guide">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/guide">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/guide">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/guide">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap&subset=cyrillic">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
+<style>
+  .guide h2 { font-size: 26px; margin-top: 44px; }
+  .guide h3 { font-size: 18px; margin-top: 26px; }
+  .guide p, .guide li { color: var(--ink2); font-size: 16px; line-height: 1.6; }
+  .guide ol, .guide ul { padding-left: 22px; margin: 10px 0; }
+  .guide li { margin: 6px 0; }
+  .guide pre { white-space: pre-wrap; word-break: break-all; }
+  .callout { border-left: 3px solid var(--brand); background: var(--bg2); padding: 12px 16px; border-radius: 0 12px 12px 0; margin: 16px 0; }
+  .callout b { color: var(--ink); }
+  .toc a { display: block; padding: 3px 0; }
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/ru/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <button class="navtoggle" type="button" aria-label="Меню">Меню</button>
+  <nav class="main">
+    <a href="/ru/traders">Трейдерам</a>
+    <a href="/ru/business">Бизнесу</a>
+    <a href="/ru/authors">Авторам EA</a>
+    <a href="/ru/pricing">Цены</a>
+    <a class="btn sm primary" href="https://app.algohand.com/?lang=ru">Войти</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: Русский">RU<i></i></button>
+    <ul>
+      <li><a href="/guide" hreflang="en" lang="en"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/guide" hreflang="ru" lang="ru" aria-current="true"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/guide" hreflang="es" lang="es"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/ru/eas">Каталог EA</a>
+    <a class="secondary" href="/docs/">API</a>
+  </nav>
+</div></header>
+
+<main class="wrap guide" style="max-width:860px">
+  <div class="hero" style="padding-bottom:10px">
+    <div>
+      <div class="eyebrow">Начало работы</div>
+      <h1 style="margin-top:14px">От пустого VPS до <em>управления из чата</em> за пять минут.</h1>
+      <p class="lead">AlgoHand запускает небольшой агент на вашем Windows VPS рядом с терминалами MetaTrader 5. Вы устанавливаете его одной командой; дальше всё происходит из кабинета и чата. Никаких входящих портов, пароли не покидают машину.</p>
+    </div>
+  </div>
+
+  <div class="card toc" style="margin-top:8px">
+    <b>На этой странице</b>
+    <a href="#requirements">1. Что нужно</a>
+    <a href="#account">2. Создайте аккаунт</a>
+    <a href="#connect">3. Подключите VPS</a>
+    <a href="#chat">4. Откройте чат и управляйте советниками</a>
+    <a href="#what-happens">5. Что агент делает на вашем VPS</a>
+    <a href="#troubleshooting">6. Если что-то не так</a>
+    <a href="#remove">7. Удаление агента</a>
+  </div>
+
+  <h2 id="requirements">1. Что нужно</h2>
+  <ul>
+    <li><b>Windows VPS</b> (Windows Server 2016 или новее, либо Windows 10/11) с правами администратора по удалённому рабочему столу.</li>
+    <li>Один или несколько <b>терминалов MetaTrader 5</b>, каждый залогинен в торговый счёт. Подходят и обычные установки (Program Files), и портативные.</li>
+    <li><b>Советники</b>, которыми вы торгуете, установленные в терминалах как обычно (<code>MQL5\Experts</code>). Исходный код AlgoHand никогда не нужен.</li>
+    <li>Исходящий HTTPS с VPS (есть по умолчанию; ничего входящего не открывается).</li>
+  </ul>
+  <div class="callout"><b>Сначала демо-счета.</b> Подключите на первый день терминал с демо-счётом, освойтесь с чатом, потом переходите на реальные. Торговля рискованна, автоматизация этого не меняет.</div>
+
+  <h2 id="account">2. Создайте аккаунт</h2>
+  <ol>
+    <li>Откройте <a href="https://app.algohand.com/?lang=ru#register">app.algohand.com</a> и создайте аккаунт с e-mail и паролем не короче десяти символов.</li>
+    <li>Прочитайте и примите <a href="/terms">Условия использования</a>, <a href="/privacy">Политику конфиденциальности</a> и <a href="/risk">Уведомление о рисках</a> (документы на английском языке).</li>
+    <li>Вы попадаете в кабинет. Он пуст, пока не подключён VPS.</li>
+  </ol>
+
+  <h2 id="connect">3. Подключите VPS</h2>
+  <ol>
+    <li>В кабинете нажмите <b>Connect a VPS</b>, дайте машине имя (например, провайдер и локация) и нажмите <b>Create activation token</b>. Кабинет покажет команду PowerShell в одну строку с токеном внутри.</li>
+    <li>Зайдите на VPS по удалённому рабочему столу. Убедитесь, что терминалы запущены и залогинены.</li>
+    <li>Откройте <b>PowerShell от имени администратора</b> (правый клик по кнопке «Пуск» → «Windows PowerShell (администратор)» или «Терминал (администратор)»).</li>
+    <li>Вставьте команду и нажмите Enter. Она выглядит так:</li>
+  </ol>
+  <pre class="cmd">powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr -useb https://algohand.com/dl/install.ps1 -OutFile $env:TEMP\algohand-install.ps1; &amp; $env:TEMP\algohand-install.ps1 -Token enr_XXXXXXXX"</pre>
+  <p>Установщик скачивает агент, проверяет его подпись и задаёт один вопрос: включить ли <b>автоматический вход</b>? На VPS ответьте «да» и введите пароль Windows текущего пользователя. Установщик проверяет его и сохраняет в защищённом хранилище Windows LSA только на этой машине (там же его хранит утилита Sysinternals Autologon); пароль никогда не покидает VPS. После перезагрузки Windows входит сама, и терминалы стартуют без чьего-либо подключения по RDP. Нажмите Enter, чтобы пропустить; включить позже можно, см. раздел «Если что-то не так».</p>
+  <ol start="5">
+    <li>В течение минуты VPS появляется в кабинете со статусом <b>online</b>.</li>
+    <li>Затем агент перезапускает каждый терминал <b>один раз</b>, чтобы подключить свой менеджер. Ваши советники возвращаются на свои графики ровно такими, как были. После этого терминалы работают непрерывно, а агент только наблюдает.</li>
+  </ol>
+  <div class="callout"><b>Токен одноразовый.</b> Если команда оборвалась на середине, создайте новый токен в кабинете и выполните её снова. Токен активации гасится после использования, поэтому команда, попавшая в чужой лог, повторно не сработает.</div>
+
+  <h2 id="chat">4. Откройте чат и управляйте советниками</h2>
+  <p>Ассистент находится вверху кабинета (или откройте его в отдельной вкладке по ссылке рядом). Он вошёл под вашим именем и видит только ваш аккаунт. Попробуйте:</p>
+  <ul>
+    <li>«Что работает на моём VPS?»</li>
+    <li>«Запусти Gold Scalper на XAUUSD с пресетом low».</li>
+    <li>«Поставь золотому советнику средний риск».</li>
+    <li>«Останови всё на счёте 5313…»</li>
+    <li>«Покажи кривую эквити за последний месяц» или «прибыль по часам суток».</li>
+  </ul>
+  <p>Каждая команда, которая что-то меняет, сначала показывается как сводка. Ассистент применяет её только после вашего подтверждения. Смена параметров перезапускает советник; если у советника открыты позиции, а его безопасность при перезапуске не проверена, изменение отклоняется, а не разыгрывается наудачу.</p>
+
+  <h2 id="what-happens">5. Что агент делает на вашем VPS</h2>
+  <ul>
+    <li>Работает как задачи планировщика в <code>C:\TCA</code>: один супервизор плюс один рабочий процесс на терминал. Логи в <code>C:\TCA\logs</code>.</li>
+    <li>Находит ваши терминалы MetaTrader 5, читает их состояние (счёт, баланс, средства, открытые позиции, советники на графиках) и передаёт его в AlgoHand по исходящему HTTPS. Ничего не слушает входящие соединения.</li>
+    <li>Устанавливает в каждый терминал небольшую программу-менеджер (сервис MQL5, а на старых сборках — советник на скрытом графике). Менеджер открывает и закрывает графики и применяет шаблоны; так советники запускаются, останавливаются и перенастраиваются.</li>
+    <li>Поддерживает терминалы в работе: если терминал закрыли или VPS перезагрузился, агент запускает его снова.</li>
+    <li>Никогда не читает и не передаёт пароль от торгового счёта. Работает только с терминалами, которые уже залогинены.</li>
+    <li>Обновляется из релизов AlgoHand, подписанных IT Effectiveness.</li>
+  </ul>
+
+  <h2 id="troubleshooting">6. Если что-то не так</h2>
+  <h3>VPS не появляется в кабинете</h3>
+  <p>Откройте <code>C:\TCA\logs\agent.log</code>. Последние строки говорят, что пошло не так: обычно файрвол блокирует исходящий HTTPS или токен уже был использован. Создайте новый токен и выполните команду снова.</p>
+  <h3>Терминал показывает «TcaManager is not running»</h3>
+  <p>Менеджер не удалось подключить. Так бывает, когда в терминале выключена автоторговля или терминал не залогинен. Проверьте терминал и подождите минуту; агент повторяет попытку сам.</p>
+  <h3>Я пропустил автоматический вход и хочу его включить (или выключить)</h3>
+  <p>Без автоматического входа всё работает, пока вы вошли по удалённому рабочему столу, даже с закрытым окном. Но после перезагрузки терминалы и агент ждут, пока кто-нибудь войдёт. Включите автоматический вход позже одной командой в PowerShell от администратора; она спросит пароль Windows, проверит его и сохранит в защищённом хранилище Windows:</p>
+  <pre class="cmd">powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr -useb https://algohand.com/dl/autologon.ps1 -OutFile $env:TEMP\algohand-autologon.ps1; &amp; $env:TEMP\algohand-autologon.ps1"</pre>
+  <p>Добавьте <code>-Disable</code> в конце, чтобы выключить обратно.</p>
+  <h3>Чат говорит, что советник «unknown»</h3>
+  <p>AlgoHand управляет только советниками из своего каталога с проверенными параметрами и пресетами. Советники, которые вы видите в списке в чате, — те, которыми можно управлять. Остальные продолжают работать нетронутыми; напишите нам на <a href="mailto:support@algohand.com">support@algohand.com</a>, чтобы их подключить.</p>
+  <h3>Я изменил параметр, и советник перезапустился</h3>
+  <p>Так и задумано: в MetaTrader нет способа изменить параметры советника без их повторного применения, а повторное применение означает перезапуск. Советники, которые после перезапуска сами подхватывают свои позиции (по magic number), помечены как безопасные при перезапуске; для остальных перед любым изменением выводится предупреждение.</p>
+
+  <h2 id="remove">7. Удаление агента</h2>
+  <p>В кабинете нажмите <b>Disconnect this VPS</b>. Агент остановится при следующем выходе на связь и удалит своё локальное состояние. Терминалы и советники остаются как есть. Чтобы удалить и файлы, выполните на VPS от имени администратора:</p>
+  <pre class="cmd">schtasks /Delete /TN "TCA Agent" /F; schtasks /Delete /TN "TCA Terminals" /F; Remove-Item -Recurse -Force C:\TCA</pre>
+
+  <div class="cta" style="margin:40px 0 20px"><a class="btn primary" href="https://app.algohand.com/?lang=ru#register">Создать аккаунт</a><a class="btn" href="/ru/traders">Назад к обзору</a></div>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/ru/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Управление советниками MetaTrader 5 через чат. Продукт IT Effectiveness LLC, Грузия.</p></div>
+    <div><b>Продукт</b><a href="/ru/business">Для бизнеса</a><a href="/ru/traders">Трейдерам</a><a href="/ru/pricing">Цены</a><a href="/ru/authors">Авторам EA</a><a href="/ru/eas">Каталог EA</a><a href="/ru/demo">Живое демо</a><a href="/ru/guide">Инструкция</a></div>
+    <div><b>Разработчикам</b><a href="/docs/">Справочник API</a><a href="/docs/openapi.yaml">Документ OpenAPI</a><a href="/docs/claude_tools.json">Описания инструментов</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Документы</b><a href="/terms">Условия использования (EN)</a><a href="/privacy">Конфиденциальность (EN)</a><a href="/risk">Уведомление о рисках (EN)</a><a href="/refund">Возврат средств (EN)</a><a href="https://app.algohand.com/support?lang=ru">Поддержка</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand и Terminal Control API — продукты IT Effectiveness LLC. Юридически значимы английские версии документов.</span><span>MetaTrader — товарный знак MetaQuotes Ltd. Мы не связаны с MetaQuotes. Торговля сопряжена с риском; ничто здесь не является инвестиционной рекомендацией.</span></div>
+</div></footer>
+
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="ru" data-title="Поддержка"></script>
+</body>
+</html>

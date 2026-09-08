@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title.review">AlgoHand EA review</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://algohand.com/favicon.ico" sizes="32x32">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
+<link rel="stylesheet" href="/portal.css">
+<style>
+  .kv2 { display: grid; grid-template-columns: 160px 1fr; gap: 4px 12px; font-size: 14px; }
+  .kv2 .k { color: var(--ink3); }
+  pre.doc { font-family: "IBM Plex Mono", monospace; font-size: 12px; white-space: pre-wrap; background: var(--bg3); border-radius: 10px; padding: 10px 12px; max-height: 420px; overflow: auto; }
+  table.rv { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.rv td, table.rv th { border-top: 1px solid var(--line); padding: 5px 6px; text-align: left; vertical-align: top; }
+  table.rv th { color: var(--ink3); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; border-top: 0; }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="https://algohand.com"><img class="logo mark" src="https://algohand.com/assets/logo-mark.png" alt="">AlgoHand</a>
+  <nav class="main" style="display:flex"><select class="langsel"></select></nav>
+</div></header>
+<main class="wrap dash" style="max-width:960px">
+  <section class="tight" style="border-top:0;padding-top:28px">
+    <div class="rowhead"><div><div class="eyebrow" data-i18n="rv.eyebrow">EA review</div><h2 style="font-size:26px" id="rvname">…</h2></div><span class="status" id="rvstatus"></span></div>
+    <div id="rvinfo" class="card"></div>
+    <div id="rvdoc" class="card" style="margin-top:12px"></div>
+    <form id="rvform" class="lead card" style="margin-top:12px">
+      <div class="row">
+        <div><label data-i18n="rv.eaid">Catalog id (slug)</label><input name="ea_id" pattern="[a-z][a-z0-9_]{2,40}" maxlength="41" placeholder="gold_scalper"></div>
+        <div><label data-i18n="rv.category">Category</label><select name="category"><option value="">—</option><option>scalper</option><option>grid</option><option>trend</option><option>breakout</option><option>news</option><option>other</option></select></div>
+      </div>
+      <label class="check"><input type="checkbox" name="restart_safe"> <span data-i18n="rv.restart">Restart safety verified on a demo account (the EA picked its open positions up again)</span></label>
+      <div><label data-i18n="rv.notes">Notes to the author</label><textarea name="notes" rows="4" maxlength="4000"></textarea></div>
+      <div class="cta">
+        <button class="btn primary" type="submit" data-i18n="rv.approve">Approve and publish</button>
+        <button class="btn" type="button" id="changes" data-i18n="rv.changes">Request changes</button>
+        <button class="kill" type="button" id="reject" data-i18n="rv.reject">Reject</button>
+      </div>
+      <div class="msg"></div>
+    </form>
+  </section>
+</main>
+<script src="/i18n.js"></script>
+<script src="/portal.js"></script>
+<script>Portal.reviewPage();</script>
+</body>
+</html>

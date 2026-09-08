@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="es" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand para traders — Controla cada EA por chat</title>
+<meta name="description" content="Maneja tus EA de MetaTrader 5 desde el móvil. Pausa un robot, baja el riesgo antes de las noticias, revisa el P&amp;L — sin abrir RDP. Tus EA, tu bróker, tu VPS.">
+<link rel="canonical" href="https://algohand.com/es/traders">
+<link rel="alternate" hreflang="en" href="https://algohand.com/traders">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/traders">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/traders">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/traders">
+<meta property="og:title" content="AlgoHand para traders — tus robots, a un mensaje de distancia">
+<meta property="og:description" content="EA en el VPS sin RDP: pausa, riesgo, parámetros, gráficos — desde el chat.">
+<meta property="og:url" content="https://algohand.com/es/traders">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/es/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <button class="navtoggle" type="button" aria-label="Menú">Menú</button>
+  <nav class="main">
+    <a href="/es/traders" aria-current="page">Traders</a>
+    <a href="/es/business">Empresas</a>
+    <a href="/es/authors">Autores de EA</a>
+    <a href="/es/pricing">Precios</a>
+    <a class="btn sm" href="https://app.algohand.com/?lang=es">Entrar</a>
+    <a class="btn sm primary" href="/es/demo">Probar la demo</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: Español">ES<i></i></button>
+    <ul>
+      <li><a href="/traders" hreflang="en" lang="en"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/traders" hreflang="ru" lang="ru"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/traders" hreflang="es" lang="es" aria-current="true"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/es/eas">Catálogo de EA</a>
+    <a class="secondary" href="/docs/">API</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+  <div class="hero" style="padding-bottom:24px">
+    <div>
+      <div class="eyebrow">Para traders que ejecutan EA en un VPS</div>
+      <h1 style="margin-top:14px">Controla cada EA de tu VPS con <em>un solo mensaje.</em></h1>
+      <p class="brandline">Tus robots, a un mensaje de distancia.</p>
+      <p class="lead">¿Noticias en diez minutos y estás en la calle? «Pausa Gold Scalper». ¿Quieres menos riesgo el fin de semana? «Pon BTC Grid en low». ¿Curioso por saber cómo fue la semana? «Muéstrame el P&amp;L por robot».</p>
+      <p class="lead">Sin RDP. Sin forzar la vista en un escritorio remoto desde el móvil.</p>
+      <div class="cta">
+        <a class="btn primary" href="/es/demo">Probar la demo</a>
+        <a class="btn" href="#join">Acceso anticipado</a>
+      </div>
+      <div class="trust">
+        <span>Funciona con los EA que ya tienes</span>
+        <span>Nada cambia sin tu «sí»</span>
+        <span>Tu VPS, tus cuentas</span>
+      </div>
+    </div>
+    <div class="replay" data-replay="auto">
+      <div class="bar"><span>Cómo se ve un domingo por la tarde</span><button type="button">Repetir</button></div>
+      <div class="log" style="min-height:360px">
+        <div class="m user">¿Qué robots están en marcha ahora mismo?</div>
+        <div class="m bot">Cuatro EA en la cuenta ••••3702:
+- Gold Scalper — XAUUSD M5, medium
+- EURUSD Trend — EURUSD M5, medium
+- London Breakout — GBPUSD M15, medium
+- BTC Grid — BTCUSD M15, medium
+Todos en sus gráficos, terminal conectado, AutoTrading activado.</div>
+        <div class="m user">Pon BTC Grid en riesgo bajo antes de la apertura</div>
+        <div class="m tool"><span class="st">✓</span> set_risk <span class="rq">vista previa</span> · preset medium → low · cambian 3 parámetros · el EA se reinicia · 2 posiciones abiertas (grid, recuperación verificada)</div>
+        <div class="m bot">Vista previa para <b>BTC Grid</b> (BTCUSD M15): preset medium → low.
+• LotSizingMethod se mantiene, riesgo por operación 2% → 1%, máximo de órdenes del grid 8 → 5
+• El EA se reinicia y recoge sus 2 posiciones abiertas por magic number (verificado para este EA).
+¿Lo aplico?</div>
+        <div class="m user">sí</div>
+        <div class="m tool"><span class="st">✓</span> set_risk · completado en 2 s · verificado en MT5</div>
+        <div class="m bot">Hecho ✅ BTC Grid vuelve a estar en BTCUSD M15 con el preset low, las dos posiciones siguen gestionadas. Lo vigilaré.</div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="eyebrow">Qué necesitas</div>
+    <h2>Un VPS, tus terminales, diez minutos</h2>
+    <div class="steps" style="margin-top:26px">
+      <div class="step"><h3>Un VPS de Windows con MT5</h3><p>Cualquier proveedor. Tus terminales se quedan exactamente como están, autenticados en tus cuentas, con tus EA y licencias.</p></div>
+      <div class="step"><h3>Un instalador</h3><p>Descarga, ejecuta, pega el código de tu cuenta de AlgoHand. El agente encuentra por sí solo cada terminal de la máquina.</p></div>
+      <div class="step"><h3>Abre el chat</h3><p>En el móvil o el portátil. Tus robots aparecen con sus ajustes reales — nada que recrear, nada que configurar.</p></div>
+      <div class="step"><h3>Mantén el control</h3><p>Cada cambio se muestra primero como simulación. Tú apruebas, el agente lo aplica, el terminal lo confirma. Siempre puedes revisar el registro de auditoría.</p></div>
+    </div>
+  </section>
+
+  <section class="tight" id="offer">
+    <div class="grid3">
+      <div class="card"><div class="eyebrow">Qué pagas</div><h3 style="margin-top:10px">Desde 19 USD al mes</h3><p>Starter 19 USD (1 cuenta), Trader 39 USD (3 cuentas), Desk 79 USD (8 cuentas); un 15% menos pagando por año. EA ilimitados en cada cuenta, cuentas extra desde 8 USD. Precio de acceso anticipado, fijado durante un año; el plan mensual se cancela cualquier mes. <a href="/es/pricing">Todos los planes</a>.</p></div>
+      <div class="card"><div class="eyebrow">Qué incorporamos</div><h3 style="margin-top:10px">Los EA que ya usas</h3><p>Nombres de parámetros, rangos seguros, presets y comportamiento al reiniciar, comprobados por EA. Los EA revisados ya están en el catálogo; uno nuevo lleva unos días.</p></div>
+      <div class="card"><div class="eyebrow">Cuánto tarda en funcionar el chat</div><h3 style="margin-top:10px">Unos diez minutos</h3><p>Crea una cuenta, ejecuta un comando en el VPS, abre el chat. Tus terminales aparecen solos; cambiar ajustes por chat empieza en cuanto tus EA estén incorporados.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Qué puedes preguntar</div>
+    <h2>Preguntas sencillas. Respuestas sencillas.</h2>
+    <div class="grid3" style="margin-top:26px">
+      <div class="card"><h3>«¿Cómo fue la semana pasada?»</h3><p>P&amp;L cerrado por robot, tasa de acierto, mejor y peor operación, drawdown — con gráficos en el chat.</p></div>
+      <div class="card"><h3>«Pausa todo en EURUSD»</h3><p>Parada suave: los EA siguen gestionando sus operaciones abiertas y no abren nuevas. Reanuda con un mensaje.</p></div>
+      <div class="card"><h3>«Reinicia Gold Scalper con MaxSpread 15»</h3><p>El nombre exacto del parámetro y su rango permitido se resuelven por ti. Ves el cambio y luego lo apruebas.</p></div>
+      <div class="card"><h3>«¿Está bien mi VPS?»</h3><p>Terminal conectado, AutoTrading activado, hora del último tick, memoria y disco. Si algo se rompió de noche, te enteras de qué hizo el agente al respecto.</p></div>
+      <div class="card"><h3>«Muéstrame mi curva de balance desde enero»</h3><p>Todo el historial de operaciones de la cuenta, dibujado como curva, con el drawdown máximo marcado.</p></div>
+      <div class="card"><h3>«¿Qué horas dan dinero?»</h3><p>Beneficio y tasa de acierto por hora del día y día de la semana — el tipo de pregunta que antes significaba exportar a Excel.</p></div>
+      <div class="card" style="grid-column:1 / -1"><span class="pill">Nuevo</span><h3 style="margin-top:10px">«Haz un backtest del preset low durante el último año»</h3><p>Se ejecuta en tu VPS en un terminal aparte con prioridad baja, así que tus robots en vivo siguen operando; tú eliges el periodo y el modelado de ticks. Dos ajustes lado a lado, el informe en el chat y «¿lo aplico?» un mensaje después.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid2">
+      <div>
+        <div class="eyebrow">Límites honestos</div>
+        <h2>Lo que no hace</h2>
+        <ul class="checks" style="margin-top:14px">
+          <li>No opera. Maneja los robots que tú elegiste; nunca abre ni cierra posiciones por su cuenta.</li>
+          <li>No cambia ajustes en un EA de grid con operaciones abiertas hasta que la recuperación de ese EA esté verificada — recibes un rechazo claro, no una apuesta.</li>
+          <li>No da asesoramiento financiero. Las cifras de rendimiento son información; las decisiones son tuyas.</li>
+          <li>No necesita tus contraseñas y no las almacena.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Acceso anticipado</div>
+        <h3 style="margin-top:10px">Qué incluye el acceso anticipado</h3>
+        <ul class="checks">
+          <li>Cualquier número de VPS y terminales</li>
+          <li>Incorporación de los EA que usas (comprobamos nombres, rangos y reinicio seguro)</li>
+          <li>Línea directa con las personas que lo construyen</li>
+          <li>Planes desde 19 USD al mes por una cuenta; un 15% menos pagando por año</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="join">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Únete</div>
+        <h2>Acceso anticipado para traders</h2>
+        <p class="sub">Incorporamos a unos pocos traders cada vez para que cada EA se compruebe como es debido. Cuéntanos qué robots usas y con qué bróker; te responderemos con una fecha.</p>
+      </div>
+      <form class="lead" data-lead="trader" data-source="es/traders" data-thanks="¡Gracias! Estás en la lista — te escribiremos con la siguiente plaza disponible.">
+        <div class="row">
+          <div><label>Nombre</label><input name="name" required maxlength="128" autocomplete="name"></div>
+          <div><label>E-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
+        </div>
+        <div><label>Tus EA y tu bróker</label><textarea name="message" maxlength="4000" placeholder="p. ej. BTC Grid y Gold Scalper en IC Markets, VPS en Contabo"></textarea></div>
+        <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Unirme al acceso anticipado</button>
+        <div class="msg"></div>
+        <div class="note">Al enviar este formulario aceptas nuestra <a href="/privacy">Política de privacidad</a> y los <a href="/terms">Términos del servicio</a> (en inglés).</div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/es/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Control por chat de Expert Advisors de MetaTrader 5. Un producto de IT Effectiveness LLC, Tbilisi, Georgia.</p></div>
+    <div><b>Producto</b><a href="/es/business">Para empresas</a><a href="/es/traders">Para traders</a><a href="/es/pricing">Precios</a><a href="/es/authors">Autores de EA</a><a href="/es/eas">Catálogo de EA</a><a href="/es/demo">Demo en vivo</a><a href="/es/guide">Guía</a></div>
+    <div><b>Desarrolladores</b><a href="/docs/">Referencia de la API</a><a href="/docs/openapi.yaml">Documento OpenAPI</a><a href="/docs/claude_tools.json">Definiciones de herramientas</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Legal</b><a href="/terms">Términos del servicio (EN)</a><a href="/privacy">Política de privacidad (EN)</a><a href="/risk">Aviso de riesgo (EN)</a><a href="/refund">Reembolsos (EN)</a><a href="https://app.algohand.com/support?lang=es">Soporte</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand y Terminal Control API son productos de IT Effectiveness LLC. Las versiones en inglés de los documentos legales son las vinculantes.</span><span>MetaTrader es una marca de MetaQuotes Ltd. Sin afiliación con MetaQuotes. Operar implica riesgo; nada de lo aquí expuesto es asesoramiento financiero.</span></div>
+</div></footer>
+
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="es" data-title="Soporte"></script>
+</body>
+</html>

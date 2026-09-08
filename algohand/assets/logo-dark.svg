@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f8bff"/><stop offset="1" stop-color="#6f5cff"/></linearGradient>
+    <linearGradient id="gB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5b8fff"/><stop offset="1" stop-color="#8b6cff"/></linearGradient>
+    <linearGradient id="gI" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f8bff"/><stop offset="1" stop-color="#7b5cff"/></linearGradient>
+  </defs>
+  <!-- AlgoHand mark: A + one rising bar (crossbar of the A and of the H) + i stem with a dot = AH, and Ai. Concept by Eli, Sep 2026. -->
+  <path fill="url(#gA)" d="M35 8 H47 L73 92 H58 L41 35 L24 92 H9 Z"/>
+  <path fill="none" stroke="url(#gB)" stroke-width="12" stroke-linecap="round" d="M17 72 C 40 68, 62 62, 86 58"/>
+  <rect x="80" y="28" width="12.5" height="64" rx="2.5" fill="url(#gI)"/>
+  <circle cx="86.25" cy="15" r="5.8" fill="#4f8bff"/>
+</svg>

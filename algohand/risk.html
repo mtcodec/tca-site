@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand Risk Disclosure</title>
+<meta name="description" content="Risk Disclosure for AlgoHand: leveraged trading risk, automated trading and Expert Advisor risks, technology and third-party risks, and why nothing in the Service is investment advice.">
+<link rel="canonical" href="https://algohand.com/risk">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
+<style>.legal { max-width: 46em; } .legal h2 { font-size: 22px; margin: 34px 0 10px; } .legal p, .legal li { color: var(--ink2); margin: 8px 0; } .legal ol, .legal ul { padding-left: 22px; } .legal .box { background: var(--bg2); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin: 16px 0; } .legal .box p { color: var(--ink); } .legal .warn { border-color: var(--warn); }</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <button class="navtoggle" type="button" aria-label="Menu">Menu</button>
+  <nav class="main">
+    <a href="/traders">Traders</a>
+    <a href="/business">Business</a>
+    <a href="/authors">EA authors</a>
+    <a href="/pricing">Pricing</a>
+    <a class="btn sm" href="https://app.algohand.com/">Sign in</a>
+    <a class="btn sm primary" href="/demo">Try the demo</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: English">EN<i></i></button>
+    <ul>
+      <li><a href="/risk" hreflang="en" lang="en" aria-current="true"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/" hreflang="ru" lang="ru"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/" hreflang="es" lang="es"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/eas">EA catalog</a>
+    <a class="secondary" href="/docs/">API docs</a>
+  </nav>
+</div></header>
+
+<main class="wrap legal" style="padding-top:44px">
+  <div class="eyebrow">Legal</div>
+  <h1 style="font-size:36px;margin-top:10px">Risk Disclosure</h1>
+  <p>Effective date: 6 September 2026 · Version 1.1 (7 September 2026: provider IT Effectiveness LLC) · Part of the <a href="/terms">Terms of Service</a></p>
+  <div class="box warn"><p><b>Trading leveraged products such as forex, CFDs, futures and cryptocurrencies carries a high level of risk and may not be suitable for all investors. You can lose all of the money you deposit and, with some brokers, more. Automated trading does not remove this risk; it can increase it. Only trade with money you can afford to lose. Nothing provided through AlgoHand is investment advice.</b></p></div>
+
+  <h2>1. Market risk</h2>
+  <p>Prices of financial instruments can move quickly and unpredictably, including overnight, over weekends and around economic news. Leverage magnifies both gains and losses: a small market movement can have a large effect on your account and can trigger margin calls or automatic liquidation by your broker. Liquidity may disappear, spreads may widen, and orders may be executed at prices different from those expected (slippage).</p>
+
+  <h2>2. Automated trading and Expert Advisor risk</h2>
+  <ul>
+    <li>An Expert Advisor ("EA") trades according to its own rules. Those rules may be wrong for current market conditions, may contain errors, or may behave differently from what a description, backtest or past result suggested.</li>
+    <li>Grid, martingale, hedging and averaging strategies can accumulate large exposure and losses quickly; a "low" preset reduces but does not remove that risk.</li>
+    <li>Changing a parameter or preset restarts the EA. Some EAs do not correctly recover their open positions after a restart. AlgoHand refuses such changes for EAs whose restart behaviour has not been verified with open positions, but verification reduces risk, it does not eliminate it, and you can always bypass the Service by acting directly on the terminal.</li>
+    <li>Stopping an EA "softly" leaves its open positions managed by the EA; stopping it "hard" leaves them unmanaged. Positions are never closed by AlgoHand. Understand which one you asked for.</li>
+    <li>Backtests and historical performance, including figures shown in the chat, are not indicators of future results. They reflect past prices, a specific broker's conditions and the settings at the time.</li>
+  </ul>
+
+  <h2>3. Technology and connectivity risk</h2>
+  <ul>
+    <li>Your VPS, your internet connection, your broker's servers, MetaTrader software and its updates, EA licence servers and our own servers can fail, slow down or be interrupted. During such periods EAs may not trade, may not be able to close positions, or may be restarted.</li>
+    <li>AlgoHand may restart terminals and re-attach components automatically to keep the Service working. During a restart, EAs are briefly not on the market. Restarts are logged and reported to you.</li>
+    <li>Information shown by the Service (balances, positions, profit, charts) is reported by your terminals with a delay and may be incomplete or inaccurate. Your broker's records are the authoritative source.</li>
+    <li>The chat assistant uses AI, which can misunderstand a request or make mistakes in a summary. Every change is shown as a dry run for your confirmation; read it before you confirm.</li>
+  </ul>
+
+  <h2>4. Third-party risk</h2>
+  <p>Your broker's solvency, regulation, execution quality and terms, the licensing and behaviour of EA vendors, and the reliability of your VPS provider are outside our control. A listing of an EA in the AlgoHand catalogue is not a recommendation or a warranty.</p>
+
+  <h2>5. Regulatory and tax</h2>
+  <p>Trading may be restricted or regulated in your country, and profits may be taxable. It is your responsibility to know and comply with the rules that apply to you. IT Effectiveness is a software company, not a financial institution, and does not hold client funds.</p>
+
+  <h2>6. No advice, your decisions</h2>
+  <p>AlgoHand executes your instructions and reports information. It does not assess whether trading, any EA, any setting or any change is suitable for you. Every decision to run, stop or change a robot is yours, and so are its consequences. If you are in doubt, seek independent advice from a licensed professional before trading.</p>
+
+  <p class="small" style="margin-top:30px">See also: <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a></p>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Chat-driven control for MetaTrader 5 Expert Advisors. A product of IT Effectiveness LLC, Tbilisi, Georgia.</p></div>
+    <div><b>Product</b><a href="/business">For business</a><a href="/traders">For traders</a><a href="/pricing">Pricing</a><a href="/authors">EA authors</a><a href="/eas">EA catalog</a><a href="/demo">Live demo</a></div>
+    <div><b>Developers</b><a href="/docs/">API reference</a><a href="/docs/openapi.yaml">OpenAPI document</a><a href="/docs/claude_tools.json">Tool definitions</a></div>
+    <div><b>Legal</b><a href="/terms">Terms of Service</a><a href="/privacy">Privacy Policy</a><a href="/risk">Risk Disclosure</a><a href="/refund">Refund Policy</a><a href="https://app.algohand.com/support">Support</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand and Terminal Control API are products of IT Effectiveness LLC.</span><span>MetaTrader is a trademark of MetaQuotes Ltd. Not affiliated with MetaQuotes. Trading involves risk; nothing here is financial advice.</span></div>
+</div></footer>
+
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="en" data-title="Support"></script>
+</body>
+</html>

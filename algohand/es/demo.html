@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es" data-api="https://api.algohand.com">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgoHand demo en vivo — Maneja terminales MT5 reales desde el chat</title>
+<meta name="description" content="Prueba AlgoHand en terminales reales de MetaTrader 5 y en un sandbox que se reinicia cada noche. Cada cambio se previsualiza, se confirma y se verifica.">
+<link rel="canonical" href="https://algohand.com/es/demo">
+<link rel="alternate" hreflang="en" href="https://algohand.com/demo">
+<link rel="alternate" hreflang="ru" href="https://algohand.com/ru/demo">
+<link rel="alternate" hreflang="es" href="https://algohand.com/es/demo">
+<link rel="alternate" hreflang="x-default" href="https://algohand.com/demo">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#4f8bff">
+<meta property="og:image" content="https://algohand.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=72ee06c8">
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="/es/" aria-label="AlgoHand — Control MT5 EAs by chat"><img class="logo mark" src="/assets/logo-mark.png" alt=""><span class="lockup"><span class="word">AlgoHand</span><span class="descr">Control MT5 EAs by chat</span></span></a>
+  <button class="navtoggle" type="button" aria-label="Menú">Menú</button>
+  <nav class="main">
+    <a href="/es/traders">Traders</a>
+    <a href="/es/business">Empresas</a>
+    <a href="/es/authors">Autores de EA</a>
+    <a href="/es/pricing">Precios</a>
+    <a class="btn sm" href="https://app.algohand.com/?lang=es">Entrar</a>
+    <a class="btn sm primary" href="/es/demo" aria-current="page">Probar la demo</a>
+    <!-- langmenu -->
+    <div class="langmenu"><button type="button" class="lang" aria-haspopup="true" aria-expanded="false" aria-label="Language: Español">ES<i></i></button>
+    <ul>
+      <li><a href="/demo" hreflang="en" lang="en"><span>English</span><small>EN</small></a></li>
+      <li><a href="/ru/demo" hreflang="ru" lang="ru"><span>Русский</span><small>RU</small></a></li>
+      <li><a href="/es/demo" hreflang="es" lang="es" aria-current="true"><span>Español</span><small>ES</small></a></li>
+    </ul></div>
+    <!-- /langmenu -->
+    <a class="secondary" href="/es/eas">Catálogo de EA</a>
+    <a class="secondary" href="/docs/">API</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+  <div class="hero" style="padding-bottom:24px">
+    <div>
+      <div class="eyebrow">Demo en vivo</div>
+      <h1 style="margin-top:14px">Terminales reales. Comandos reales. <em>Tus preguntas.</em></h1>
+      <p class="lead">El mismo asistente que un bróker integraría. Maneja terminales reales de MetaTrader 5 en nuestro VPS de pruebas (cuentas demo, EA del catálogo piloto) y un VPS simulado que se reinicia cada noche. El acceso es por código, para que nadie reinicie los robots de otros por diversión.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://chat.algohand.com">Abrir el chat</a>
+        <a class="btn" href="#code">Obtener un código de acceso</a>
+      </div>
+      <div class="trust">
+        <span>Dos entornos: VPS real y sandbox</span>
+        <span>Gráficos en el chat</span>
+        <span>Responde en español, inglés y ruso</span>
+        <span>Nada que instalar</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Cosas que probar</div>
+      <ul class="checks" style="margin-top:12px">
+        <li>«¿Cómo va mi cuenta?»</li>
+        <li>«¿Qué EA están en marcha ahora mismo?»</li>
+        <li>«Dibuja mi curva de balance»</li>
+        <li>«Tasa de acierto por hora del día»</li>
+        <li>«Pon Nordwind en NZDUSD en riesgo bajo» — mira la vista previa y luego di que sí</li>
+        <li>«Reinicia Nightowl con MaxSpread 15»</li>
+        <li>«Detén Gridkeeper en AUDNZD» — parada suave, las posiciones siguen gestionadas</li>
+        <li>«Inicia Nordwind también en GBPUSD, preset medium»</li>
+        <li>«Haz un backtest de Nightowl en EURUSD M5 de marzo a junio con OHLC de 1 minuto» — el sandbox responde con métricas simuladas y un informe</li>
+      </ul>
+      <p class="small muted" style="margin-top:14px">El asistente responde en tu idioma. Cada cambio se previsualiza primero, se aplica tras tu «sí» y vuelve con los ajustes leídos del terminal.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="eyebrow">Entornos</div>
+    <h2>Elige el que responda a tu pregunta</h2>
+    <div class="grid2" style="margin-top:26px">
+      <div class="card"><span class="pill">Sandbox</span><h3 style="margin-top:12px">VPS simulado, se reinicia cada noche</h3><p>Un servidor de control completo con un VPS simulado, dos cuentas demo, tres EA en marcha y nueve semanas de historial de operaciones. Los comandos se completan en un segundo. Lo mejor para explorar la API y el chat.</p></div>
+      <div class="card"><span class="pill">Live</span><h3 style="margin-top:12px">Terminales MT5 reales en nuestro VPS de pruebas</h3><p>Dos terminales con cuentas demo y EA del catálogo piloto. Los comandos tardan de uno a tres segundos porque un terminal real aplica una plantilla real. Esto es lo que reciben los clientes.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid2">
+      <div class="replay" data-replay="auto">
+        <div class="bar"><span>Grabado · vista previa → confirmación → verificado · diálogo traducido</span><button type="button">Repetir</button></div>
+        <div class="log" style="min-height:320px">
+          <div class="m user">Pon Nordwind en riesgo bajo</div>
+          <div class="m tool"><span class="st">✓</span> get_client_state · 2 accounts · 3 EAs running</div>
+          <div class="m tool"><span class="st">✓</span> set_risk dry_run=true · preset medium → low · diff LotSizingMethod 4 → 5 · restarts_ea: true · open positions: 0 · nothing queued</div>
+          <div class="m bot">Nordwind está en la cuenta 51234567 (IC Markets), NZDUSD M15, preset medium, sin posiciones abiertas.
+
+Plan:
+- Pasar de medium a low
+- Lot-sizing Method cambia de 4 a 5
+- El EA se reinicia para aplicarlo (sin posiciones abiertas, es seguro)
+
+¿Sigo adelante?</div>
+          <div class="m user">sí</div>
+          <div class="m tool"><span class="st">✓</span> set_risk · command queued 06:48:02</div>
+          <div class="m tool"><span class="st">✓</span> get_command wait=30 · succeeded 06:48:03 · reconciled: true · read back from the terminal: LotSizingMethod = 5, running, 0 positions</div>
+          <div class="m bot">Hecho.
+- Solicitado: 06:48:02
+- Confirmado: 06:48:03
+- Ejecutado: 06:48:03
+
+Nordwind (NZDUSD) funciona ahora en riesgo bajo; reiniciado con Lot-sizing Method 5, leído desde el terminal.</div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">El ciclo de control</div>
+        <h2>Vista previa, tu sí, y luego verificado</h2>
+        <p class="sub">Cada cambio es primero una prueba en seco: la diferencia viene del terminal, no de la petición, y nada se pone en cola hasta que confirmas. Tras tu sí el comando se ejecuta y el resultado es lo que el terminal devuelve: el nuevo valor leído del gráfico, con marcas de tiempo al segundo y la bandera reconciled.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid2">
+      <div class="replay" data-replay="auto">
+        <div class="bar"><span>Grabado · gráficos en el chat · diálogo traducido</span><button type="button">Repetir</button></div>
+        <div class="log" style="min-height:320px">
+          <div class="m user">Dibuja mi curva de balance y muéstrame la tasa de acierto por hora del día</div>
+          <div class="m tool"><span class="st">✓</span> get_equity_curve source=deals · 259 operaciones · 170 puntos</div>
+          <div class="m tool"><span class="st">✓</span> get_pnl group=hour · 55 operaciones · 24 tramos</div>
+          <div class="m bot">Ambos gráficos son de tu cuenta principal (balance 10 250,40 USD).
+
+Curva de balance (todo el historial): creció de 0 a 10 250,40 USD, de forma estable, peor drawdown 158,76 USD (1,58 %) el 17 de julio.
+
+Tasa de acierto por hora (últimos 30 días, hora del bróker): 55 operaciones, 76,4 % ganadoras, +234,75 USD. Tramo más fuerte 08:00 (13 operaciones, 84,6 % ganadoras); punto débil 11:00 (33 % ganadoras, −39,37).
+
+¿Quieres el mismo corte por día de la semana o por EA?</div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Para desarrolladores</div>
+        <h2>La misma demo, desde tu código</h2>
+        <p class="sub">El chat es un cliente ligero sobre la API pública. Con una clave del sandbox puedes llamar a los mismos endpoints desde curl, desde las herramientas de tu asistente o a través de MCP.</p>
+        <pre style="margin-top:16px">curl -H "Authorization: Bearer $KEY" \
+  "https://api.algohand.com/v1/clients/ea-cust-1042/state"
+
+curl -H "Authorization: Bearer $KEY" -X POST \
+  https://api.algohand.com/v1/accounts/acc_9q1x7d/commands \
+  -d '{"client_id":"ea-cust-1042","type":"set_risk",
+       "params":{"instance_id":"inst_d4e5f6","preset":"low"},
+       "dry_run":true}'</pre>
+        <div class="cta"><a class="btn" href="/docs/">Referencia de la API</a><a class="btn" href="/es/business#contact">Solicitar claves del sandbox</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="code">
+    <div class="band">
+      <div>
+        <div class="eyebrow">Acceso</div>
+        <h2>Obtener un código de demo</h2>
+        <p class="sub">Deja tu nombre y e-mail: el código para el sandbox llega por correo al instante y vale 7 días. Los códigos son personales y se pueden revocar. ¿Quieres ver EA reales en terminales en vivo? Dilo en el mensaje y te contactamos.</p>
+        <p class="small muted" style="margin-top:14px">¿Ya tienes un código? <a href="https://chat.algohand.com">Abre el chat</a> e introdúcelo.</p>
+      </div>
+      <form class="lead" data-lead="demo" data-source="es/demo" data-thanks="¡Listo! El código ya está en tu correo (mira también la carpeta de spam). Abre chat.algohand.com e introdúcelo.">
+        <div class="row">
+          <div><label>Nombre</label><input name="name" required maxlength="128" autocomplete="name"></div>
+          <div><label>E-mail</label><input name="email" type="email" required maxlength="256" autocomplete="email"></div>
+        </div>
+        <div><label>Empresa (opcional)</label><input name="company" maxlength="256" autocomplete="organization"></div>
+        <div><label>¿Qué te gustaría probar?</label><textarea name="message" maxlength="4000" placeholder="sandbox, terminales reales o ambos"></textarea></div>
+        <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Enviarme el código</button>
+        <div class="msg"></div>
+        <div class="note">Al enviar este formulario aceptas nuestra <a href="/privacy">Política de privacidad</a> y los <a href="/terms">Términos del servicio</a> (en inglés).</div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand" href="/es/" style="font-size:16px"><img class="logo mark sm" src="/assets/logo-mark.png" alt="">AlgoHand</a><p style="margin-top:10px;max-width:28em">Control por chat de Expert Advisors de MetaTrader 5. Un producto de IT Effectiveness LLC, Tbilisi, Georgia.</p></div>
+    <div><b>Producto</b><a href="/es/business">Para empresas</a><a href="/es/traders">Para traders</a><a href="/es/pricing">Precios</a><a href="/es/authors">Autores de EA</a><a href="/es/eas">Catálogo de EA</a><a href="/es/demo">Demo en vivo</a><a href="/es/guide">Guía</a></div>
+    <div><b>Desarrolladores</b><a href="/docs/">Referencia de la API</a><a href="/docs/openapi.yaml">Documento OpenAPI</a><a href="/docs/claude_tools.json">Definiciones de herramientas</a><a href="https://www.iteffectiveness.tech">IT Effectiveness</a></div>
+    <div><b>Legal</b><a href="/terms">Términos del servicio (EN)</a><a href="/privacy">Política de privacidad (EN)</a><a href="/risk">Aviso de riesgo (EN)</a><a href="/refund">Reembolsos (EN)</a><a href="https://app.algohand.com/support?lang=es">Soporte</a><a href="mailto:info@algohand.com">info@algohand.com</a></div>
+  </div>
+  <div class="legal"><span>© 2026 IT Effectiveness LLC. AlgoHand y Terminal Control API son productos de IT Effectiveness LLC. Las versiones en inglés de los documentos legales son las vinculantes.</span><span>MetaTrader es una marca de MetaQuotes Ltd. Sin afiliación con MetaQuotes. Operar implica riesgo; nada de lo aquí expuesto es asesoramiento financiero.</span></div>
+</div></footer>
+
+<script src="/assets/site.js?v=1d9103c7"></script>
+<script src="https://chat.algohand.com/widget.js" data-mode="support" data-lang="es" data-title="Soporte"></script>
+</body>
+</html>

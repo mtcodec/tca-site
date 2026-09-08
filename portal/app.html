@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title.app">AlgoHand dashboard</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://algohand.com/favicon.ico" sizes="32x32">
+<link rel="icon" href="https://algohand.com/assets/favicon-64.png" type="image/png" sizes="64x64">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://algohand.com/assets/site.css?v=72ee06c8">
+<link rel="stylesheet" href="/portal.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="/app"><img class="logo mark" src="https://algohand.com/assets/logo-mark.png" alt="">AlgoHand</a>
+  <nav class="main" style="display:flex">
+    <span class="muted small" id="who">…</span>
+    <a class="btn sm" id="adminlink" href="/admin" data-i18n="nav.admin" hidden>Team</a>
+    <a class="btn sm" id="studiolink" href="/studio" data-i18n="nav.studio" hidden>Author studio</a>
+    <a class="btn sm primary" id="openchat" href="#chat-section" data-i18n="nav.chat">Chat</a>
+    <a class="btn sm" id="logout" href="#" data-i18n="nav.logout">Sign out</a>
+    <select class="langsel"></select>
+  </nav>
+</div></header>
+
+<main class="wrap dash">
+  <div id="unverified" class="card" style="margin-top:20px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap" hidden>
+    <span class="small" data-i18n="unverified.text">Your e-mail address is not confirmed yet. Open the link we sent you (check the spam folder too).</span>
+    <button class="btn sm" type="button" id="resend" data-i18n="unverified.resend">Send the link again</button>
+  </div>
+  <section class="tight" id="chat-section" style="border-top:0;padding-top:28px">
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="chat.eyebrow">Assistant</div><h2 style="font-size:26px" data-i18n="chat.h2">Talk to your terminals</h2></div>
+      <a class="btn" id="chatnewtab" href="#" target="_blank" rel="noopener" data-i18n="chat.newtab">Open in a new tab</a>
+    </div>
+    <p class="muted small" style="margin-bottom:12px" data-i18n="chat.intro">Ask what is running, start or stop an EA, change its risk, draw the equity curve. Every change is shown to you first and applied only after you confirm.</p>
+    <div class="chatframe"><iframe id="chatframe" title="AlgoHand assistant" src="about:blank" allow="clipboard-write"></iframe><div id="chatwait" class="muted small" data-i18n="chat.wait">Connecting the assistant…</div></div>
+  </section>
+
+  <section class="tight">
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="vps.eyebrow">Your VPS</div><h2 style="font-size:26px" data-i18n="vps.h2">Servers and terminals</h2></div>
+      <button class="btn primary" id="addvps" type="button" data-i18n="vps.add">Connect a VPS</button>
+    </div>
+    <div id="connect" class="card" hidden>
+      <h3 data-i18n="connect.h3">Connect a Windows VPS</h3>
+      <p class="muted small" data-i18n="connect.intro">Give this VPS a name, then run one command on it as Administrator (PowerShell). The command downloads the agent, installs it as a Windows service, finds your MetaTrader 5 terminals and links them to this account.</p>
+      <form id="vpsform" class="lead" style="margin-top:12px">
+        <div class="row"><div><label data-i18n="f.name">Name</label><input name="label" maxlength="128" placeholder="e.g. Contabo London" data-i18n-ph="ph.vpsname"></div><div style="align-self:end"><button class="btn primary" type="submit" data-i18n="btn.token">Create activation token</button></div></div>
+        <div class="msg"></div>
+      </form>
+      <div id="tokenbox" hidden>
+        <ol class="steps-inline">
+          <li data-i18n="steps.1">Log in to the VPS over Remote Desktop with an account that has administrator rights. Make sure your MetaTrader 5 terminals are running and logged in.</li>
+          <li data-i18n="steps.2">Open PowerShell as Administrator and paste this command:</li>
+        </ol>
+        <pre id="cmd" class="cmd"></pre>
+        <div class="cta"><button class="btn sm" type="button" id="copycmd" data-i18n="btn.copy">Copy command</button><span data-i18n-html="link.guide"><a class="btn sm" href="https://algohand.com/guide" target="_blank">Full guide</a></span></div>
+        <p class="muted small" style="margin-top:10px" data-i18n="token.note">The token in the command works once and expires when used. Within a minute the VPS appears below; the terminals follow after the agent restarts them once to attach the manager.</p>
+      </div>
+    </div>
+    <div id="vpslist" class="grid2" style="margin-top:16px"><div class="card muted" data-i18n="loading">Loading…</div></div>
+  </section>
+
+  <section class="tight" id="eas-section">
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="eas.eyebrow">Your EAs</div><h2 style="font-size:26px" data-i18n="eas.h2">Expert Advisors you add yourself</h2></div>
+      <div><label class="btn primary" for="eafile" data-i18n="eas.upload">Upload an .ex5</label><input id="eafile" type="file" accept=".ex5" hidden></div>
+    </div>
+    <p class="muted small" data-i18n="eas.intro">Drop in the compiled EA (.ex5). The agent puts it into MQL5\Experts\TCA on every terminal of your VPS and reads its inputs; then open the chat and say "onboard Gold Scalper": the assistant walks you through the settings, asks you to name the dropdown options it cannot read, and activates the EA. EAs already on your VPS are listed below — no upload needed.</p>
+    <div id="eamsg" class="msg"></div>
+    <div id="ealist" class="card" style="margin-top:12px"><span class="muted" data-i18n="eas.none">No EAs added yet.</span></div>
+    <div id="eavps" style="margin-top:12px"></div>
+  </section>
+
+  <section class="tight" id="billing-section">
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="bill.eyebrow">Billing</div><h2 style="font-size:26px" data-i18n="bill.h2">Subscription</h2></div>
+      <div class="cta" id="billbtns" hidden>
+        <span class="tabs" style="margin:0"><button type="button" class="on" data-cycle="month" data-i18n="bill.cycle.monthly">Monthly</button><button type="button" data-cycle="year" data-i18n="bill.cycle.yearly">Yearly (−30%)</button></span>
+        <button class="btn" id="managesub" type="button" data-i18n="bill.manage" hidden>Manage subscription</button>
+      </div>
+    </div>
+    <p class="muted small" data-i18n="bill.intro">Plans include a number of connected MT5 accounts; accounts beyond that are billed per account. Unlimited EAs on every account. Running EAs are never stopped because of billing.</p>
+    <div id="billing" class="card" style="margin-top:12px"><span class="muted" data-i18n="loading">Loading…</span></div>
+    <div id="plans" class="grid3" style="margin-top:12px"></div>
+  </section>
+
+  <section class="tight" id="support-section">
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="sup.eyebrow">Support</div><h2 style="font-size:26px" data-i18n="sup.h2">Questions and tickets</h2></div>
+      <button class="btn primary" id="newticketbtn" type="button" data-i18n="sup.new">New ticket</button>
+    </div>
+    <p class="muted small" data-i18n="sup.intro">Ask anything about AlgoHand, your VPS or your EAs. The assistant answers most questions within a minute, here and by e-mail; when a person is needed, the ticket goes to the team and their answer comes by e-mail.</p>
+    <form id="ticketform" class="lead card" style="margin-top:12px" hidden>
+      <div><label data-i18n="f.subject">Subject</label><input name="subject" maxlength="256"></div>
+      <div><label data-i18n="f.message">Your question</label><textarea name="message" rows="5" required minlength="5" maxlength="8000"></textarea></div>
+      <button class="btn primary" type="submit" data-i18n="btn.send">Send</button>
+      <div class="msg"></div>
+    </form>
+    <div id="ticketlist" class="card" style="margin-top:12px"><span class="muted" data-i18n="sup.none">No tickets yet.</span></div>
+  </section>
+
+  <section class="tight" id="alerts-section">
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="al.eyebrow">Alerts</div><h2 style="font-size:26px" data-i18n="al.h2">Notifications</h2></div>
+      <a class="btn" href="#chat-section" data-i18n="al.inchat">Set up in the chat</a>
+    </div>
+    <p class="muted small" data-i18n="al.intro">Tell the assistant what to watch: "tell me when the drawdown reaches 10%", "if the balance drops below 4500", "when a deal closes", "if my VPS goes offline", "stop trading 30 minutes before important news and 15 after". Alerts arrive in Telegram when it is linked below, otherwise by e-mail.</p>
+    <div id="alertlist" class="card" style="margin-top:12px"><span class="muted" data-i18n="al.none">No alerts yet.</span></div>
+    <div id="alertrecent" style="margin-top:12px"></div>
+  </section>
+
+  <section class="tight" id="telegram-section">
+    <div class="rowhead">
+      <div><div class="eyebrow">Telegram</div><h2 style="font-size:26px" data-i18n="tg.h2">Alerts and the assistant in Telegram</h2></div>
+      <div class="cta"><button class="btn primary" id="tglink" type="button" data-i18n="tg.connect">Connect Telegram</button><button class="btn" id="tgtest" type="button" data-i18n="tg.test" hidden>Send a test</button><button class="kill" id="tgunlink" type="button" data-i18n="tg.disconnect" hidden>Disconnect</button></div>
+    </div>
+    <p class="muted small" data-i18n="tg.intro">Link your Telegram to get alerts there and to talk to the assistant from your phone. Questions and alerts work at once; changes to your EAs from Telegram need the PIN you set here.</p>
+    <div id="tgstatus" class="card" style="margin-top:12px"><span class="muted" data-i18n="loading">Loading…</span></div>
+    <form id="pinform" class="lead card" style="margin-top:12px;max-width:520px">
+      <div class="row"><div><label data-i18n="tg.pin">PIN for actions (4–8 digits)</label><input name="pin" inputmode="numeric" pattern="[0-9]{4,8}" minlength="4" maxlength="8" required autocomplete="off"></div><div><label data-i18n="f.curpw">Current password</label><input name="current_password" type="password" required autocomplete="current-password"></div></div>
+      <button class="btn" type="submit" data-i18n="tg.savepin">Save PIN</button>
+      <div class="msg"></div>
+    </form>
+  </section>
+
+  <section class="tight" id="llm-section">
+    <div class="rowhead">
+      <div><div class="eyebrow" data-i18n="llm.eyebrow">AI key</div><h2 style="font-size:26px" data-i18n="llm.h2">Your own Anthropic key</h2></div>
+      <div class="cta"><button class="kill" id="llmdelete" type="button" data-i18n="llm.remove" hidden>Remove the key</button></div>
+    </div>
+    <p class="muted small" data-i18n="llm.intro">Optional. With your own Anthropic API key the assistant in the dashboard, in Telegram and in the white-label chat runs on your key: no monthly message allowance, and Claude usage is billed to your Anthropic account. Business plans need it for the white-label chat and MCP. The key is stored encrypted and never shown again.</p>
+    <div id="llmstatus" class="card" style="margin-top:12px"><span class="muted" data-i18n="loading">Loading…</span></div>
+    <form id="llmform" class="lead card" style="margin-top:12px;max-width:640px">
+      <div><label data-i18n="llm.key">Anthropic API key</label><input name="api_key" type="password" autocomplete="off" placeholder="sk-ant-…" required minlength="20"></div>
+      <button class="btn" type="submit" data-i18n="llm.save">Save the key</button>
+      <div class="msg"></div>
+    </form>
+  </section>
+
+  <section class="tight" id="keys-section">
+    <div class="rowhead">
+      <div><div class="eyebrow">API</div><h2 style="font-size:26px" data-i18n="keys.h2">API keys</h2></div>
+      <button class="btn" id="addkey" type="button" data-i18n="keys.add">Create key</button>
+    </div>
+    <p class="muted small" data-i18n-html="keys.intro">For your own dashboard or assistant. Base URL <code>https://api.algohand.com</code>, header <code>Authorization: Bearer &lt;key&gt;</code>, your client id is <code id="cid">…</code>. <a href="https://algohand.com/docs/" target="_blank">API reference</a></p>
+    <div id="newkey" class="card" hidden></div>
+    <div id="keylist" class="card" style="margin-top:12px"><span class="muted" data-i18n="keys.none">No keys yet.</span></div>
+  </section>
+
+  <section class="tight">
+    <div class="eyebrow" data-i18n="acct.eyebrow">Account</div>
+    <h2 style="font-size:26px" data-i18n="acct.h2">Settings</h2>
+    <form id="pwform" class="lead" style="max-width:420px;margin-top:12px">
+      <div><label data-i18n="f.curpw">Current password</label><input name="current_password" type="password" required autocomplete="current-password"></div>
+      <div><label data-i18n="f.newpw">New password (10+ characters)</label><input name="new_password" type="password" minlength="10" required autocomplete="new-password"></div>
+      <button class="btn" type="submit" data-i18n="btn.changepw">Change password</button>
+      <div class="msg"></div>
+    </form>
+  </section>
+</main>
+<footer><div class="wrap legal" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:0;padding-top:0"><span data-i18n-html="footer">© 2026 IT Effectiveness LLC · <a href="https://algohand.com/terms">Terms</a> · <a href="https://algohand.com/privacy">Privacy</a> · <a href="https://algohand.com/risk">Risk</a></span><span><a href="mailto:support@algohand.com">support@algohand.com</a></span></div></footer>
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script src="/i18n.js"></script>
+<script src="/portal.js"></script>
+<script>Portal.appPage();</script>
+</body>
+</html>
